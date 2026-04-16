@@ -34,11 +34,9 @@ class Primary {
 
 	// TODO thick / thin, div, part
 
-	static type = 'extra';
-
-	static vareia = new Primary('vareia', Primary.type, font_object.byzantina, '\\');
-	static diastoli = new Primary('diastoli', Primary.type, font_object.byzantina, 'o');
-	static stavros = new Primary('stavros', Primary.type, font_object.fthores, '\'');
+	static vareia = new Primary('vareia', 'kallopistikos', font_object.byzantina, '\\');
+	static diastoli = new Primary('diastoli', 'metro', font_object.byzantina, 'o');
+	static stavros = new Primary('stavros', 'metro', font_object.fthores, '\''); // TODO type
 
 	/**
 	 * @param {string} name
@@ -88,7 +86,7 @@ class PosotitaPrimary extends Primary {
 	static oligon = new PosotitaPrimary('oligon', [+1], font_object.byzantina, 's');
 	static petasti = new PosotitaPrimary('petasti', [+1], font_object.byzantina, 'S');
 	static kentimata = new PosotitaPrimary('kentimata', [+1], font_object.byzantina, 'x');
-	static oligon_kentima_kato = new PosotitaPrimary('oligon-kentima-kato', [+2], font_object.byzantina, 'd');
+	// static oligon_kentima_kato = new PosotitaPrimary('oligon-kentima-kato', [+2], font_object.byzantina, 'd');
 	static oligon_kentimata = new PosotitaPrimary('oligon-kentimata', [+1, +1], font_object.byzantina, 'v');
 	static oligon_kentima_dipla = new PosotitaPrimary('oligon-kentima-dipla', [+2], font_object.byzantina, 'sC');
 	static apostrofos = new PosotitaPrimary('apostrofos', [-1], font_object.byzantina, 'j');
@@ -116,6 +114,13 @@ class PosotitaPrimary extends Primary {
 	starts_with_syneches_elafron() {
 		return this === PosotitaPrimary.syneches_elafron;
 	}
+
+	/**
+	 * @returns {boolean}
+	 */
+	is_red() {
+		return false;
+	}
 }
 
 
@@ -142,81 +147,158 @@ class MartyriaPrimary extends Primary {
 }
 
 
-/**
- * @typedef Secondary
- * @type {object}
- * @property {string} name
- * @property {string} type
- * @property {?number} action
- * @property {string} font
- * @property {string} char
- */
+class Secondary {
 
-const secondary_name = {
-	yfesi_apli: 'yfesi-apli',
-	yfesi_monogrammi: 'yfesi-monogrammi',
-	klasma: 'klasma',
-	gorgon: 'gorgon',
-	psifiston: 'psifiston',
-	martyriko_simadi_di: 'martyriko-simadi-di',
-};
+	/**
+	 * @type {string}
+	 */
+	name;
 
-const secondary_type = {
-	alloiosi: 'alloiosi',
-	chronos: 'chronos',
-	diairon: 'diairon',
-	kallopismos: 'kallopismos',
-	martyriko_simadi: 'martyriko-simadi',
-};
+	/**
+	 * @type {string}
+	 */
+	type;
 
-/**
- * @type {Secondary[]}
- */
-const secondary_list = [
-	{
-		name: secondary_name.yfesi_apli,
-		type: secondary_type.alloiosi,
-		action: -2,
-		font: font_object.byzantina,
-		char: 'y',
-	},
-	{
-		name: secondary_name.yfesi_monogrammi,
-		type: secondary_type.alloiosi,
-		action: -4,
-		font: font_object.byzantina,
-		char: 'Y',
-	},
-	{
-		name: secondary_name.klasma,
-		type: secondary_type.chronos,
-		action: 1,
-		font: font_object.byzantina,
-		char: 'u',
-	},
-	{
-		name: secondary_name.gorgon,
-		type: secondary_type.diairon,
-		action: 2,
-		font: font_object.byzantina,
-		char: 'r',
-	},
-	{
-		name: secondary_name.psifiston,
-		type: secondary_type.kallopismos,
-		action: null,
-		font: font_object.byzantina,
-		char: '/',
-	},
-	{
-		name: secondary_name.martyriko_simadi_di,
-		type: secondary_type.martyriko_simadi,
-		action: null,
-		font: font_object.byzantina,
-		char: '&',
-	},
-];
-const secondary_map = new Map(secondary_list.map(secondary => [secondary.name, secondary]));
+	/**
+	 * @type {string}
+	 */
+	font;
+
+	/**
+	 * @type {string}
+	 */
+	char;
+
+	static martyriko_simadi = 'martyriko-simadi';
+
+	static psifiston = new Secondary('psifiston', 'kallopistikos', font_object.byzantina, '/');
+	static martyriko_simadi_di = new Secondary('martyriko_simadi_di', Secondary.martyriko_simadi, font_object.byzantina, '&');
+
+	/**
+	 * @param {string} name
+	 * @param {string} type
+	 * @param {string} font
+	 * @param {string} char
+	 */
+	constructor(name, type, font, char) {
+		this.name = name;
+		this.type = type;
+		this.font = font;
+		this.char = char;
+	}
+
+	/**
+	 * @returns {boolean}
+	 */
+	is_red() {
+		return this.type === Secondary.martyriko_simadi;
+	}
+
+	/**
+	 * @returns {HTMLSpanElement}
+	 */
+	get_span() {
+		const secondary_span = document.createElement('span');
+		secondary_span.classList.add(this.font);
+		if (this.is_red())
+			secondary_span.classList.add(color_object.red);
+		secondary_span.innerHTML = this.char;
+		return secondary_span;
+	}
+}
+
+
+class ChronosSecondary extends Secondary {
+
+	/**
+	 * @type {number}
+	 */
+	beats;
+
+	static type = 'chronos';
+
+	static klasma = new ChronosSecondary('klasma', 1, font_object.byzantina, 'u');
+
+	/**
+	 * @param {string} name
+	 * @param {number} beats
+	 * @param {string} font
+	 * @param {string} char
+	 */
+	constructor(name, beats, font, char) {
+		super(name, ChronosSecondary.type, font, char);
+		this.beats = beats;
+	}
+
+	/**
+	 * @returns {boolean}
+	 */
+	is_red() {
+		return false;
+	}
+}
+
+class GorgonSecondary extends Secondary {
+
+	/**
+	 * @type {number}
+	 */
+	tuplet;
+
+	static type = 'gorgon';
+
+	static gorgon = new GorgonSecondary('gorgon', 2, font_object.byzantina, 'r');
+
+	/**
+	 * @param {string} name
+	 * @param {number} tuplet
+	 * @param {string} font
+	 * @param {string} char
+	 */
+	constructor(name, tuplet, font, char) {
+		super(name, GorgonSecondary.type, font, char);
+		this.tuplet = tuplet;
+	}
+
+	/**
+	 * @returns {boolean}
+	 */
+	is_red() {
+		return false;
+	}
+}
+
+
+class AlloiosiSecondary extends Secondary {
+
+	/**
+	 * @type {number}
+	 */
+	steps;
+
+	static type = 'alloiosi';
+
+	static yfesi_apli = new AlloiosiSecondary('yfesi_apli', -2, font_object.byzantina, 'y');
+	static yfesi_monogrammi = new AlloiosiSecondary('yfesi_monogrammi', -4, font_object.byzantina, 'Y');
+
+	/**
+	 * @param {string} name
+	 * @param {number} steps
+	 * @param {string} font
+	 * @param {string} char
+	 */
+	constructor(name, steps, font, char) {
+		super(name, AlloiosiSecondary.type, font, char);
+		this.steps = steps;
+	}
+
+	/**
+	 * @returns {boolean}
+	 */
+	is_red() {
+		return true;
+	}
+}
 
 
 class Block {
@@ -257,17 +339,7 @@ class Block {
 		symbol_div.classList.add('bz-symbol');
 		block_div.append(symbol_div);
 		symbol_div.append(this.primary.get_span());
-		symbol_div.append(...this.secondary_list.map(name => {
-			const secondary = secondary_map.get(name);
-			if (secondary === undefined)
-				throw new Error(`secondary ${name} not found`);
-			const secondary_span = document.createElement('span');
-			secondary_span.classList.add(secondary.font);
-			if (new Set([secondary_type.alloiosi, secondary_type.martyriko_simadi]).has(secondary.type))
-				secondary_span.classList.add(color_object.red);
-			secondary_span.innerHTML = secondary.char;
-			return secondary_span;
-		}));
+		symbol_div.append(...this.secondary_list.map(secondary => secondary.get_span()));
 		if (this.text !== null) {
 			const text_div = document.createElement('div');
 			text_div.classList.add('bz-text');
@@ -294,12 +366,12 @@ const block_list = [
 	new Block(PosotitaPrimary.apostrofos, [], 'ος'),
 	new Block(PosotitaPrimary.oligon, [], 'με'),
 	new Block(PosotitaPrimary.oligon, [], 'πει'),
-	new Block(PosotitaPrimary.oligon_kentimata, [secondary_name.yfesi_monogrammi], 'ρα'),
+	new Block(PosotitaPrimary.oligon_kentimata, [AlloiosiSecondary.yfesi_monogrammi], 'ρα'),
 	new Block(PosotitaPrimary.elafron, [], 'ζει'),
 	new Block(PosotitaPrimary.ison, [], 'ταις'),
 	new Block(PosotitaPrimary.ison, [], 'η'),
 	new Block(PosotitaPrimary.apostrofos, [], 'δο'),
-	new Block(PosotitaPrimary.oligon_kentimata, [secondary_name.yfesi_apli, secondary_name.psifiston], 'ναις'),
+	new Block(PosotitaPrimary.oligon_kentimata, [AlloiosiSecondary.yfesi_apli, Secondary.psifiston], 'ναις'),
 	new Block(PosotitaPrimary.apostrofos, [], 'φλε'),
 	new Block(PosotitaPrimary.apostrofos, [], 'γει'),
 	new Block(PosotitaPrimary.apostrofos, [], 'με'),
@@ -308,18 +380,18 @@ const block_list = [
 	new Block(PosotitaPrimary.apostrofos, [], 'δε'),
 	new Block(PosotitaPrimary.oligon, [], 'πε'),
 	new Block(PosotitaPrimary.oligon, [], 'ποι'),
-	new Block(PosotitaPrimary.oligon, [secondary_name.klasma], 'θως'),
+	new Block(PosotitaPrimary.oligon, [ChronosSecondary.klasma], 'θως'),
 	new Block(PosotitaPrimary.ison, [], 'εν'),
 	new Block(PosotitaPrimary.oligon, [], 'σοι'),
 	new Block(PosotitaPrimary.apostrofos_petasti, [], 'Κυ'),
 	new Block(PosotitaPrimary.apostrofos, [], 'ρι'),
 	new Block(PosotitaPrimary.syneches_elafron, [], 'ε'),
 	new Block(PosotitaPrimary.oligon, [], 'τρο'),
-	new Block(PosotitaPrimary.oligon, [secondary_name.psifiston], 'που'),
+	new Block(PosotitaPrimary.oligon, [Secondary.psifiston], 'που'),
 	new Block(PosotitaPrimary.apostrofos, [], 'μαι'),
 	new Block(PosotitaPrimary.apostrofos_kentimata, [], 'του'),
-	new Block(PosotitaPrimary.elafron, [secondary_name.klasma], 'τον'),
-	new Block(MartyriaPrimary.martyria_ni, [secondary_name.martyriko_simadi_di], null),
+	new Block(PosotitaPrimary.elafron, [ChronosSecondary.klasma], 'τον'),
+	new Block(MartyriaPrimary.martyria_ni, [Secondary.martyriko_simadi_di], null),
 	// Οι μισούντες Σιών
 	new Block(PosotitaPrimary.oligon_kentima_dipla, [], 'Οι'),
 	new Block(PosotitaPrimary.oligon, [], 'μι'),
@@ -328,14 +400,14 @@ const block_list = [
 	new Block(PosotitaPrimary.elafron, [], 'ντες'),
 	new Block(PosotitaPrimary.oligon, [], 'Σι'),
 	new Block(Primary.diastoli, [], null),
-	new Block(PosotitaPrimary.oligon, [secondary_name.klasma], 'ων'),
+	new Block(PosotitaPrimary.oligon, [ChronosSecondary.klasma], 'ων'),
 	new Block(PosotitaPrimary.ison, [], 'γε'),
 	new Block(PosotitaPrimary.ison, [], 'νη'),
 	new Block(PosotitaPrimary.ison, [], 'θη'),
 	new Block(PosotitaPrimary.kentimata, [], 'η'),
 	new Block(PosotitaPrimary.ison, [], 'τω'),
 	new Block(PosotitaPrimary.elafron, [], 'σαν'),
-	new Block(PosotitaPrimary.oligon, [secondary_name.klasma], 'δη'),
+	new Block(PosotitaPrimary.oligon, [ChronosSecondary.klasma], 'δη'),
 	new Block(Primary.diastoli, [], null),
 	new Block(PosotitaPrimary.ison, [], 'πριν'),
 	new Block(PosotitaPrimary.ison, [], 'εκ'),
@@ -347,7 +419,7 @@ const block_list = [
 	new Block(PosotitaPrimary.elafron, [], 'ως'),
 	new Block(PosotitaPrimary.oligon_kentimata, [], 'χορ'),
 	new Block(Primary.diastoli, [], null),
-	new Block(PosotitaPrimary.elafron, [secondary_name.klasma], 'τος'),
+	new Block(PosotitaPrimary.elafron, [ChronosSecondary.klasma], 'τος'),
 	new Block(PosotitaPrimary.oligon, [], 'συγ'),
 	new Block(Primary.diastoli, [], null),
 	new Block(PosotitaPrimary.petasti, [], 'κο'),
@@ -355,11 +427,11 @@ const block_list = [
 	new Block(PosotitaPrimary.oligon, [], 'γαρ'),
 	new Block(PosotitaPrimary.oligon, [], 'Χρι'),
 	new Block(Primary.diastoli, [], null),
-	new Block(PosotitaPrimary.oligon, [secondary_name.klasma], 'στος'),
+	new Block(PosotitaPrimary.oligon, [ChronosSecondary.klasma], 'στος'),
 	new Block(Primary.stavros, [], null),
 	new Block(PosotitaPrimary.ison, [], 'αυ'),
 	new Block(Primary.diastoli, [], null),
-	new Block(PosotitaPrimary.oligon_kentimata, [secondary_name.yfesi_monogrammi, secondary_name.gorgon], 'χε'), // TODO gorgon
+	new Block(PosotitaPrimary.oligon_kentimata, [AlloiosiSecondary.yfesi_monogrammi, GorgonSecondary.gorgon], 'χε'), // TODO gorgon
 	new Block(PosotitaPrimary.apostrofos, [], 'ε'),
 	new Block(PosotitaPrimary.apostrofos, [], 'νας'),
 	new Block(PosotitaPrimary.ison, [], 'αυ'),
@@ -368,8 +440,8 @@ const block_list = [
 	new Block(PosotitaPrimary.ison, [], 'μη'),
 	new Block(PosotitaPrimary.elafron, [], 'βα'),
 	new Block(PosotitaPrimary.oligon_kentimata, [], 'σα'),
-	new Block(PosotitaPrimary.elafron, [secondary_name.klasma], 'νων'),
-	new Block(MartyriaPrimary.martyria_ni, [secondary_name.martyriko_simadi_di], null),
+	new Block(PosotitaPrimary.elafron, [ChronosSecondary.klasma], 'νων'),
+	new Block(MartyriaPrimary.martyria_ni, [Secondary.martyriko_simadi_di], null),
 ];
 
 /**
@@ -412,12 +484,6 @@ function block_sees_syneches_elafron(block_list, block_index) {
  */
 const part_list = [];
 block_list.forEach((block, block_index, block_list) => {
-	const secondary_list = block.secondary_list.map(name => {
-		const secondary = secondary_map.get(name);
-		if (secondary === undefined)
-			throw new Error(`secondary ${name} not found`);
-		return secondary;
-	});
 	switch (block.primary.type) {
 		case PosotitaPrimary.type:
 			/**
@@ -437,13 +503,21 @@ block_list.forEach((block, block_index, block_list) => {
 			break;
 		// TODO siopi
 	}
-	secondary_list.forEach(secondary => {
+	block.secondary_list.forEach(secondary => {
 		switch (secondary.type) {
-			case secondary_type.alloiosi:
-				part_list[part_list.length - 1].steps = secondary.action;
+			case AlloiosiSecondary.type:
+				/**
+				 * @type {AlloiosiSecondary}
+				 */
+				const alloiosi = secondary;
+				part_list[part_list.length - 1].steps = alloiosi.steps;
 				break;
-			case secondary_type.chronos:
-				part_list[part_list.length - 1].duration += secondary.action;
+			case ChronosSecondary.type:
+				/**
+				 * @type {ChronosSecondary}
+				 */
+				const chronos = secondary;
+				part_list[part_list.length - 1].duration += chronos.beats;
 				break;
 		}
 	});
