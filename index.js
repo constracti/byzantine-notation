@@ -59,6 +59,18 @@ class Primary {
 	is_red() {
 		return this === Primary.stavros;
 	}
+
+	/**
+	 * @returns {HTMLSpanElement}
+	 */
+	get_span() {
+		const primary_span = document.createElement('span');
+		primary_span.classList.add(this.font);
+		if (this.is_red())
+			primary_span.classList.add(color_object.red);
+		primary_span.innerHTML = this.char;
+		return primary_span;
+	}
 }
 
 
@@ -206,108 +218,158 @@ const secondary_list = [
 ];
 const secondary_map = new Map(secondary_list.map(secondary => [secondary.name, secondary]));
 
-/**
- * @typedef Block
- * @type {object}
- * @property {Primary} primary
- * @property {string[]} secondary_list
- * @property {?string} text
- */
 
-/**
- * @type {Block[]}
- */
+class Block {
+
+	/**
+	 * @type {Primary}
+	 */
+	primary;
+
+	/**
+	 * @type {Secondary[]}
+	 */
+	secondary_list;
+
+	/**
+	 * @type {?string}
+	 */
+	text;
+
+	/**
+	 * @param {Primary} primary
+	 * @param {Secondary[]} secondary_list
+	 * @param {?string} text
+	 */
+	constructor(primary, secondary_list, text) {
+		this.primary = primary;
+		this.secondary_list = secondary_list;
+		this.text = text;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	get_div() {
+		const block_div = document.createElement('div');
+		block_div.classList.add('bz-block');
+		const symbol_div = document.createElement('div');
+		symbol_div.classList.add('bz-symbol');
+		block_div.append(symbol_div);
+		symbol_div.append(this.primary.get_span());
+		symbol_div.append(...this.secondary_list.map(name => {
+			const secondary = secondary_map.get(name);
+			if (secondary === undefined)
+				throw new Error(`secondary ${name} not found`);
+			const secondary_span = document.createElement('span');
+			secondary_span.classList.add(secondary.font);
+			if (new Set([secondary_type.alloiosi, secondary_type.martyriko_simadi]).has(secondary.type))
+				secondary_span.classList.add(color_object.red);
+			secondary_span.innerHTML = secondary.char;
+			return secondary_span;
+		}));
+		if (this.text !== null) {
+			const text_div = document.createElement('div');
+			text_div.classList.add('bz-text');
+			text_div.textContent = this.text;
+			block_div.append(text_div);
+		}
+		return block_div;
+	}
+}
+
+
 const block_list = [
 	// Εκ νεότητός μου
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'Εκ'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'νε'},
-	{primary: PosotitaPrimary.oligon_kentima_dipla, secondary_list: [], text: 'ο'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'τη'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'τος'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'μου'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'ο'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'εχ'},
-	{primary: Primary.vareia, secondary_list: [], text: null},
-	{primary: PosotitaPrimary.apostrofos, secondary_list: [], text: 'θρο'},
-	{primary: PosotitaPrimary.apostrofos, secondary_list: [], text: 'ος'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'με'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'πει'},
-	{primary: PosotitaPrimary.oligon_kentimata, secondary_list: [secondary_name.yfesi_monogrammi], text: 'ρα'},
-	{primary: PosotitaPrimary.elafron, secondary_list: [], text: 'ζει'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'ταις'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'η'},
-	{primary: PosotitaPrimary.apostrofos, secondary_list: [], text: 'δο'},
-	{primary: PosotitaPrimary.oligon_kentimata, secondary_list: [secondary_name.yfesi_apli, secondary_name.psifiston], text: 'ναις'},
-	{primary: PosotitaPrimary.apostrofos, secondary_list: [], text: 'φλε'},
-	{primary: PosotitaPrimary.apostrofos, secondary_list: [], text: 'γει'},
-	{primary: PosotitaPrimary.apostrofos, secondary_list: [], text: 'με'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'ε'},
-	{primary: PosotitaPrimary.ison_petasti, secondary_list: [], text: 'γω'},
-	{primary: PosotitaPrimary.apostrofos, secondary_list: [], text: 'δε'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'πε'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'ποι'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [secondary_name.klasma], text: 'θως'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'εν'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'σοι'},
-	{primary: PosotitaPrimary.apostrofos_petasti, secondary_list: [], text: 'Κυ'},
-	{primary: PosotitaPrimary.apostrofos, secondary_list: [], text: 'ρι'},
-	{primary: PosotitaPrimary.syneches_elafron, secondary_list: [], text: 'ε'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'τρο'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [secondary_name.psifiston], text: 'που'},
-	{primary: PosotitaPrimary.apostrofos, secondary_list: [], text: 'μαι'},
-	{primary: PosotitaPrimary.apostrofos_kentimata, secondary_list: [], text: 'του'},
-	{primary: PosotitaPrimary.elafron, secondary_list: [secondary_name.klasma], text: 'τον'},
-	{primary: MartyriaPrimary.martyria_ni, secondary_list: [secondary_name.martyriko_simadi_di], text: null},
+	new Block(PosotitaPrimary.ison, [], 'Εκ'),
+	new Block(PosotitaPrimary.ison, [], 'νε'),
+	new Block(PosotitaPrimary.oligon_kentima_dipla, [], 'ο'),
+	new Block(PosotitaPrimary.oligon, [], 'τη'),
+	new Block(PosotitaPrimary.oligon, [], 'τος'),
+	new Block(PosotitaPrimary.ison, [], 'μου'),
+	new Block(PosotitaPrimary.ison, [], 'ο'),
+	new Block(PosotitaPrimary.ison, [], 'εχ'),
+	new Block(Primary.vareia, [], null),
+	new Block(PosotitaPrimary.apostrofos, [], 'θρο'),
+	new Block(PosotitaPrimary.apostrofos, [], 'ος'),
+	new Block(PosotitaPrimary.oligon, [], 'με'),
+	new Block(PosotitaPrimary.oligon, [], 'πει'),
+	new Block(PosotitaPrimary.oligon_kentimata, [secondary_name.yfesi_monogrammi], 'ρα'),
+	new Block(PosotitaPrimary.elafron, [], 'ζει'),
+	new Block(PosotitaPrimary.ison, [], 'ταις'),
+	new Block(PosotitaPrimary.ison, [], 'η'),
+	new Block(PosotitaPrimary.apostrofos, [], 'δο'),
+	new Block(PosotitaPrimary.oligon_kentimata, [secondary_name.yfesi_apli, secondary_name.psifiston], 'ναις'),
+	new Block(PosotitaPrimary.apostrofos, [], 'φλε'),
+	new Block(PosotitaPrimary.apostrofos, [], 'γει'),
+	new Block(PosotitaPrimary.apostrofos, [], 'με'),
+	new Block(PosotitaPrimary.ison, [], 'ε'),
+	new Block(PosotitaPrimary.ison_petasti, [], 'γω'),
+	new Block(PosotitaPrimary.apostrofos, [], 'δε'),
+	new Block(PosotitaPrimary.oligon, [], 'πε'),
+	new Block(PosotitaPrimary.oligon, [], 'ποι'),
+	new Block(PosotitaPrimary.oligon, [secondary_name.klasma], 'θως'),
+	new Block(PosotitaPrimary.ison, [], 'εν'),
+	new Block(PosotitaPrimary.oligon, [], 'σοι'),
+	new Block(PosotitaPrimary.apostrofos_petasti, [], 'Κυ'),
+	new Block(PosotitaPrimary.apostrofos, [], 'ρι'),
+	new Block(PosotitaPrimary.syneches_elafron, [], 'ε'),
+	new Block(PosotitaPrimary.oligon, [], 'τρο'),
+	new Block(PosotitaPrimary.oligon, [secondary_name.psifiston], 'που'),
+	new Block(PosotitaPrimary.apostrofos, [], 'μαι'),
+	new Block(PosotitaPrimary.apostrofos_kentimata, [], 'του'),
+	new Block(PosotitaPrimary.elafron, [secondary_name.klasma], 'τον'),
+	new Block(MartyriaPrimary.martyria_ni, [secondary_name.martyriko_simadi_di], null),
 	// Οι μισούντες Σιών
-	{primary: PosotitaPrimary.oligon_kentima_dipla, secondary_list: [], text: 'Οι'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'μι'},
-	{primary: Primary.diastoli, secondary_list: [], text: null},
-	{primary: PosotitaPrimary.petasti, secondary_list: [], text: 'σου'},
-	{primary: PosotitaPrimary.elafron, secondary_list: [], text: 'ντες'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'Σι'},
-	{primary: Primary.diastoli, secondary_list: [], text: null},
-	{primary: PosotitaPrimary.oligon, secondary_list: [secondary_name.klasma], text: 'ων'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'γε'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'νη'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'θη'},
-	{primary: PosotitaPrimary.kentimata, secondary_list: [], text: 'η'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'τω'},
-	{primary: PosotitaPrimary.elafron, secondary_list: [], text: 'σαν'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [secondary_name.klasma], text: 'δη'},
-	{primary: Primary.diastoli, secondary_list: [], text: null},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'πριν'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'εκ'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'σπα'},
-	{primary: Primary.diastoli, secondary_list: [], text: null},
-	{primary: PosotitaPrimary.elafron_apostrofos, secondary_list: [], text: 'σθη'},
-	{primary: PosotitaPrimary.kentimata, secondary_list: [], text: 'η'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'ναι'},
-	{primary: PosotitaPrimary.elafron, secondary_list: [], text: 'ως'},
-	{primary: PosotitaPrimary.oligon_kentimata, secondary_list: [], text: 'χορ'},
-	{primary: Primary.diastoli, secondary_list: [], text: null},
-	{primary: PosotitaPrimary.elafron, secondary_list: [secondary_name.klasma], text: 'τος'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'συγ'},
-	{primary: Primary.diastoli, secondary_list: [], text: null},
-	{primary: PosotitaPrimary.petasti, secondary_list: [], text: 'κο'},
-	{primary: PosotitaPrimary.apostrofos, secondary_list: [], text: 'ψει'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'γαρ'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'Χρι'},
-	{primary: Primary.diastoli, secondary_list: [], text: null},
-	{primary: PosotitaPrimary.oligon, secondary_list: [secondary_name.klasma], text: 'στος'},
-	{primary: Primary.stavros, secondary_list: [], text: null},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'αυ'},
-	{primary: Primary.diastoli, secondary_list: [], text: null},
-	{primary: PosotitaPrimary.oligon_kentimata, secondary_list: [secondary_name.yfesi_monogrammi, secondary_name.gorgon], text: 'χε'}, // TODO gorgon
-	{primary: PosotitaPrimary.apostrofos, secondary_list: [], text: 'ε'},
-	{primary: PosotitaPrimary.apostrofos, secondary_list: [], text: 'νας'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'αυ'},
-	{primary: PosotitaPrimary.elafron_apostrofos, secondary_list: [], text: 'των'},
-	{primary: PosotitaPrimary.oligon, secondary_list: [], text: 'το'},
-	{primary: PosotitaPrimary.ison, secondary_list: [], text: 'μη'},
-	{primary: PosotitaPrimary.elafron, secondary_list: [], text: 'βα'},
-	{primary: PosotitaPrimary.oligon_kentimata, secondary_list: [], text: 'σα'},
-	{primary: PosotitaPrimary.elafron, secondary_list: [secondary_name.klasma], text: 'νων'},
-	{primary: MartyriaPrimary.martyria_ni, secondary_list: [secondary_name.martyriko_simadi_di], text: null},
+	new Block(PosotitaPrimary.oligon_kentima_dipla, [], 'Οι'),
+	new Block(PosotitaPrimary.oligon, [], 'μι'),
+	new Block(Primary.diastoli, [], null),
+	new Block(PosotitaPrimary.petasti, [], 'σου'),
+	new Block(PosotitaPrimary.elafron, [], 'ντες'),
+	new Block(PosotitaPrimary.oligon, [], 'Σι'),
+	new Block(Primary.diastoli, [], null),
+	new Block(PosotitaPrimary.oligon, [secondary_name.klasma], 'ων'),
+	new Block(PosotitaPrimary.ison, [], 'γε'),
+	new Block(PosotitaPrimary.ison, [], 'νη'),
+	new Block(PosotitaPrimary.ison, [], 'θη'),
+	new Block(PosotitaPrimary.kentimata, [], 'η'),
+	new Block(PosotitaPrimary.ison, [], 'τω'),
+	new Block(PosotitaPrimary.elafron, [], 'σαν'),
+	new Block(PosotitaPrimary.oligon, [secondary_name.klasma], 'δη'),
+	new Block(Primary.diastoli, [], null),
+	new Block(PosotitaPrimary.ison, [], 'πριν'),
+	new Block(PosotitaPrimary.ison, [], 'εκ'),
+	new Block(PosotitaPrimary.ison, [], 'σπα'),
+	new Block(Primary.diastoli, [], null),
+	new Block(PosotitaPrimary.elafron_apostrofos, [], 'σθη'),
+	new Block(PosotitaPrimary.kentimata, [], 'η'),
+	new Block(PosotitaPrimary.ison, [], 'ναι'),
+	new Block(PosotitaPrimary.elafron, [], 'ως'),
+	new Block(PosotitaPrimary.oligon_kentimata, [], 'χορ'),
+	new Block(Primary.diastoli, [], null),
+	new Block(PosotitaPrimary.elafron, [secondary_name.klasma], 'τος'),
+	new Block(PosotitaPrimary.oligon, [], 'συγ'),
+	new Block(Primary.diastoli, [], null),
+	new Block(PosotitaPrimary.petasti, [], 'κο'),
+	new Block(PosotitaPrimary.apostrofos, [], 'ψει'),
+	new Block(PosotitaPrimary.oligon, [], 'γαρ'),
+	new Block(PosotitaPrimary.oligon, [], 'Χρι'),
+	new Block(Primary.diastoli, [], null),
+	new Block(PosotitaPrimary.oligon, [secondary_name.klasma], 'στος'),
+	new Block(Primary.stavros, [], null),
+	new Block(PosotitaPrimary.ison, [], 'αυ'),
+	new Block(Primary.diastoli, [], null),
+	new Block(PosotitaPrimary.oligon_kentimata, [secondary_name.yfesi_monogrammi, secondary_name.gorgon], 'χε'), // TODO gorgon
+	new Block(PosotitaPrimary.apostrofos, [], 'ε'),
+	new Block(PosotitaPrimary.apostrofos, [], 'νας'),
+	new Block(PosotitaPrimary.ison, [], 'αυ'),
+	new Block(PosotitaPrimary.elafron_apostrofos, [], 'των'),
+	new Block(PosotitaPrimary.oligon, [], 'το'),
+	new Block(PosotitaPrimary.ison, [], 'μη'),
+	new Block(PosotitaPrimary.elafron, [], 'βα'),
+	new Block(PosotitaPrimary.oligon_kentimata, [], 'σα'),
+	new Block(PosotitaPrimary.elafron, [secondary_name.klasma], 'νων'),
+	new Block(MartyriaPrimary.martyria_ni, [secondary_name.martyriko_simadi_di], null),
 ];
 
 /**
@@ -393,34 +455,7 @@ block_list.forEach((block, block_index, block_list) => {
 const container_div = document.getElementById('container-div');
 
 container_div.append(...block_list.map((block, block_index) => {
-	const block_div = document.createElement('div');
-	block_div.classList.add('bz-block');
-	const symbol_div = document.createElement('div');
-	symbol_div.classList.add('bz-symbol');
-	block_div.append(symbol_div);
-	const primary_span = document.createElement('span');
-	primary_span.classList.add(block.primary.font);
-	if (block.primary.is_red())
-		primary_span.classList.add(color_object.red);
-	primary_span.innerHTML = block.primary.char;
-	symbol_div.append(primary_span);
-	symbol_div.append(...block.secondary_list.map(name => {
-		const secondary = secondary_map.get(name);
-		if (secondary === undefined)
-			throw new Error(`secondary ${name} not found`);
-		const secondary_span = document.createElement('span');
-		secondary_span.classList.add(secondary.font);
-		if (new Set([secondary_type.alloiosi, secondary_type.martyriko_simadi]).has(secondary.type))
-			secondary_span.classList.add(color_object.red);
-		secondary_span.innerHTML = secondary.char;
-		return secondary_span;
-	}));
-	if (block.text !== null) {
-		const text_div = document.createElement('div');
-		text_div.classList.add('bz-text');
-		text_div.textContent = block.text;
-		block_div.append(text_div);
-	}
+	const block_div = block.get_div();
 	const part_index = part_map.get(block_index);
 	if (part_index !== undefined) {
 		block_div.classList.add('bz-pointer');
