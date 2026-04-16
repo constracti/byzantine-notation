@@ -3,6 +3,10 @@
 	src: url(fonts/BZByzantina.TTF);
 }
 @font-face {
+	font-family: BZFthores;
+	src: url(fonts/BZFthores.TTF);
+}
+@font-face {
 	font-family: BZIson;
 	src: url(fonts/BZIson.TTF);
 }
@@ -12,37 +16,38 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
-#container {
+#container-div {
 	display: flex;
-	flex-direction: column;
-	background-color: white;
-}
-.bz-paragraph {
-	display: flex;
-	padding: 2px;
 	flex-wrap: wrap;
-	margin-bottom: 24px;
+	/* background-color: white; */
 }
-.bz-box {
-	/* border: solid thin; */
-	/* margin: 2px; */
+.bz-block {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	margin-bottom: 2em;
 }
-.bz-symbol>* {
-	display: inline;
-	font-size: 24px;
+.bz-block.bz-pointer {
+	cursor: pointer;
+}
+.bz-block.bz-active {
+	text-shadow: 0 0 0.5em yellow, 0 0 0.5em yellow, 0 0 0.5em yellow, 0 0 0.5em yellow;
+}
+.bz-symbol {
+	/* byzantina posotita characters leave a space of 7px */
+	font-size: 2em;
 }
 .bz-text {
 	font-family: GFSDidot;
-	font-size: 18px;
-	margin: 0 2px;
+	font-size: 1.5em;
+	margin: 0 0.1em;
 }
 
 .bz-byzantina {
 	font-family: BZByzantina;
+}
+.bz-fthores {
+	font-family: BZFthores;
 }
 .bz-ison {
 	font-family: BZIson;
@@ -51,6 +56,8 @@
 .bz-red {
 	color: red;
 }
+/*
 .bz-blue {
 	color: blue;
 }
+	*/
