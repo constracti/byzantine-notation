@@ -3,6 +3,10 @@
 	src: url(fonts/BZByzantina.TTF);
 }
 @font-face {
+	font-family: BZLoipa;
+	src: url(fonts/BZLoipa.TTF);
+}
+@font-face {
 	font-family: BZFthores;
 	src: url(fonts/BZFthores.TTF);
 }
@@ -45,6 +49,9 @@
 
 .bz-byzantina {
 	font-family: BZByzantina;
+}
+.bz-loipa {
+	font-family: BZLoipa;
 }
 .bz-fthores {
 	font-family: BZFthores;
