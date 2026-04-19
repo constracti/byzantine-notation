@@ -15,6 +15,10 @@
 	src: url(fonts/BZIson.TTF);
 }
 @font-face {
+	font-family: BZXronos;
+	src: url(fonts/BZXronos.TTF);
+}
+@font-face {
 	font-family: GFSDidot;
 	src: url(fonts/GFSDidot.otf);
 	font-weight: normal;
@@ -58,6 +62,9 @@
 }
 .bz-ison {
 	font-family: BZIson;
+}
+.bz-chronos {
+	font-family: BZXronos;
 }
 
 .bz-red {

@@ -3,6 +3,7 @@ const font_object = {
 	loipa: 'bz-loipa', // TODO top margin
 	fthores: 'bz-fthores',
 	ison: 'bz-ison',
+	chronos: 'bz-chronos',
 };
 
 const color_object = {
@@ -519,6 +520,107 @@ class Posotita {
 }
 
 
+class AgogiBlock extends AbstractBlock {
+
+	/**
+	 * @type {Agogi}
+	 */
+	agogi;
+
+	/**
+	 * @param {Agogi} agogi
+	 */
+	constructor(agogi) {
+		super('agogi');
+		this.agogi = agogi;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	get_div() {
+		const block_div = super.get_div();
+		const symbol_div = document.createElement('div');
+		symbol_div.classList.add('bz-symbol');
+		symbol_div.append(this.agogi.get_primary_span());
+		block_div.append(symbol_div);
+		return block_div;
+	}
+
+	/**
+	 * @param {MusicContext} music_context
+	 * @param {number} block_index
+	 * @returns {?Part[]}
+	 */
+	get_parts(music_context, block_index) {
+		music_context.tempo = this.agogi.tempo;
+		return null;
+	}
+}
+
+
+class Agogi {
+
+	/**
+	 * @type {name}
+	 */
+	name;
+
+	/**
+	 * @type {number}
+	 */
+	tempo;
+
+	/**
+	 * @type {Letter}
+	 */
+	primary_letter;
+
+	/**
+	 * @type {Letter}
+	 */
+	secondary_letter;
+
+	static metria = new Agogi('metria', 120, {font: font_object.chronos, char: 'k'}, {font: font_object.chronos, char: 'K'});
+	static tacheia = new Agogi('tacheia', 180, {font: font_object.chronos, char: 'l'}, {font: font_object.chronos, char: 'L'});
+
+	/**
+	 * @param {string} name
+	 * @param {number} tempo
+	 * @param {Letter} primary_letter
+	 * @param {Letter} secondary_letter
+	 */
+	constructor(name, tempo, primary_letter, secondary_letter) {
+		this.name = name;
+		this.tempo = tempo;
+		this.primary_letter = primary_letter;
+		this.secondary_letter = secondary_letter;
+	}
+
+	/**
+	 * @returns {HTMLSpanElement}
+	 */
+	get_primary_span() {
+		const span = document.createElement('span');
+		span.classList.add(this.primary_letter.font);
+		span.classList.add(color_object.red);
+		span.innerHTML = this.primary_letter.char;
+		return span;
+	}
+
+	/**
+	 * @returns {HTMLSpanElement}
+	 */
+	get_secondary_span() {
+		const span = document.createElement('span');
+		span.classList.add(this.secondary_letter.font);
+		span.classList.add(color_object.red);
+		span.innerHTML = this.secondary_letter.char;
+		return span;
+	}
+}
+
+
 class SecondaryCharacter {
 
 	/**
@@ -751,6 +853,7 @@ const block_list = [
 	new MartyriaBlock(MartyriaFthongos.ni, MartyrikoSimadi.delta, false),
 	// Δόξα, Και νυν
 	SimpleBlock.diastoli,
+	new AgogiBlock(Agogi.tacheia),
 	new PosotitaBlock(Posotita.ypsili_dexia, [SecondaryCharacter.rythmos_trisimos], 'Δο'),
 	new PosotitaBlock(Posotita.ison, [], 'ξα'),
 	new PosotitaBlock(Posotita.ison, [], 'Πα'),
@@ -782,6 +885,7 @@ const block_list = [
 	SimpleBlock.diastoli,
 	new PosotitaBlock(Posotita.ison, [], 'τους'),
 	new PosotitaBlock(Posotita.ison, [], 'αι'),
+	new AgogiBlock(Agogi.metria),
 	new PosotitaBlock(Posotita.ison, [SecondaryCharacter.psifiston], 'ω'),
 	new PosotitaBlock(Posotita.apostrofos, [], 'νας'),
 	new PosotitaBlock(Posotita.apostrofos, [], 'των'),
@@ -822,7 +926,7 @@ const part_map = new Map();
  */
 const music_context = {
 	pitch: 0,
-	tempo: 1,
+	tempo: Agogi.metria.tempo,
 };
 
 /**
@@ -893,5 +997,5 @@ function play(index) {
 		block_div.classList.remove('bz-active');
 		oscillator_node.stop();
 		play(index + 1);
-	}, 300 * part.beats * part.tempo);
+	}, 60 / part.tempo * part.beats * 1000);
 }
