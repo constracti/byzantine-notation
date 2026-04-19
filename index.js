@@ -1,11 +1,11 @@
 const font_object = {
 	byzantina: 'bz-byzantina',
+	loipa: 'bz-loipa', // TODO top margin
 	fthores: 'bz-fthores',
 	ison: 'bz-ison',
 };
 
 const color_object = {
-	black: null,
 	red: 'bz-red',
 };
 
@@ -15,24 +15,68 @@ const color_object = {
  * @returns {HTMLSpanElement}
  */
 function custom_span(font, char) {
-	const element = document.createElement('span');
-	element.classList.add(font);
-	element.innerHTML = char;
-	return element;
+	const span = document.createElement('span');
+	span.classList.add(font);
+	span.innerHTML = char;
+	return span;
 }
 
 
-class Primary {
+/**
+ * @typedef Letter
+ * @type {object}
+ * @property {string} font
+ * @property {string} char
+ */
+
+
+class AbstractBlock {
+
+	/**
+	 * @type {?string}
+	 */
+	type;
+
+	/**
+	 * @param {?string} type
+	 */
+	constructor(type) {
+		this.type = type;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	get_div() {
+		const block_div = document.createElement('div');
+		block_div.classList.add('bz-block');
+		return block_div;
+	}
+
+	/**
+	 * @param {MusicContext} music_context
+	 * @param {number} block_index
+	 * @returns {?Part[]}
+	 */
+	get_parts(music_context, block_index) {
+		return null;
+	}
+
+	/**
+	 * @returns {[{index: number, beats: number}]}
+	 */
+	get_times() {
+		return [];
+	}
+}
+
+
+class SimpleBlock extends AbstractBlock {
 
 	/**
 	 * @type {string}
 	 */
 	name;
-
-	/**
-	 * @type {string}
-	 */
-	type;
 
 	/**
 	 * @type {string}
@@ -44,229 +88,438 @@ class Primary {
 	 */
 	char;
 
-	// TODO thick / thin, div, part
+	/**
+	 * @type {?string}
+	 */
+	color;
 
-	static vareia = new Primary('vareia', 'kallopistikos', font_object.byzantina, '\\');
-	static diastoli = new Primary('diastoli', 'metro', font_object.byzantina, 'o');
-	static stavros = new Primary('stavros', 'metro', font_object.fthores, '\''); // TODO type
+	static vareia = new SimpleBlock('vareia', font_object.byzantina, '\\', null);
+	static diastoli = new SimpleBlock('diastoli', font_object.byzantina, 'o', null);
+	static stavros = new SimpleBlock('stavros', font_object.fthores, '\'', color_object.red);
 
 	/**
 	 * @param {string} name
-	 * @param {string} type
 	 * @param {string} font
 	 * @param {string} char
+	 * @param {?string} color
 	 */
-	constructor(name, type, font, char) {
+	constructor(name, font, char, color) {
+		super(null);
 		this.name = name;
-		this.type = type;
 		this.font = font;
 		this.char = char;
+		this.color = color;
 	}
 
 	/**
-	 * @returns {boolean}
+	 * @returns {HTMLDivElement}
 	 */
-	is_red() {
-		return this === Primary.stavros;
+	get_div() {
+		const block_div = super.get_div();
+		const symbol_div = document.createElement('div');
+		symbol_div.classList.add('bz-symbol');
+		const span = document.createElement('span');
+		span.classList.add(this.font);
+		if (this.color !== null)
+			span.classList.add(this.color);
+		span.innerHTML = this.char;
+		symbol_div.append(span);
+		block_div.append(symbol_div);
+		return block_div;
+	}
+}
+
+
+class MartyriaBlock extends AbstractBlock {
+
+	/**
+	 * @type {MartyriaFthongos}
+	 */
+	fthongos;
+
+	/**
+	 * @type {MartyrikoSimadi}
+	 */
+	simadi;
+
+	/**
+	 * @type {boolean}
+	 */
+	teleies;
+
+	/**
+	 * @param {MartyriaFthongos} fthongos
+	 * @param {MartyrikoSimadi} simadi
+	 * @param {boolean} teleies
+	 */
+	constructor(fthongos, simadi, teleies) {
+		super('martyria');
+		this.fthongos = fthongos;
+		this.simadi = simadi;
+		this.teleies = teleies;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	get_div() {
+		const block_div = super.get_div();
+		const symbol_div = document.createElement('div');
+		symbol_div.classList.add('bz-symbol');
+		symbol_div.append(this.fthongos.get_span());
+		symbol_div.append(this.simadi.get_span());
+		if (this.teleies)
+			symbol_div.append(MartyriaBlock.#get_teleies_span());
+		block_div.append(symbol_div);
+		return block_div;
+	}
+
+	/**
+	 * @returns {HTMLSpanElement}
+	 */
+	static #get_teleies_span() {
+		const span = document.createElement('span');
+		span.classList.add(font_object.byzantina);
+		span.classList.add(color_object.red);
+		span.innerHTML = '`';
+		return span;
+	}
+}
+
+
+class MartyriaFthongos {
+
+	/**
+	 * @type {string}
+	 */
+	name;
+
+	/**
+	 * @type {number} 0 for ni, 1 for pa, ..., 6 for zo
+	 */
+	note;
+
+	/**
+	 * @type {string}
+	 */
+	font;
+
+	/**
+	 * @type {string}
+	 */
+	char;
+
+	static ni = new MartyriaFthongos('ni', 0, font_object.byzantina, '7');
+	static di = new MartyriaFthongos('di', 4, font_object.byzantina, '4');
+
+	/**
+	 * @param {string} name
+	 * @param {number} note
+	 * @param {string} font
+	 * @param {string} char
+	 */
+	constructor(name, note, font, char) {
+		this.name = name;
+		this.note = note;
+		this.font = font;
+		this.char = char;
 	}
 
 	/**
 	 * @returns {HTMLSpanElement}
 	 */
 	get_span() {
-		const primary_span = document.createElement('span');
-		primary_span.classList.add(this.font);
-		if (this.is_red())
-			primary_span.classList.add(color_object.red);
-		primary_span.innerHTML = this.char;
-		return primary_span;
+		const span = document.createElement('span');
+		span.classList.add(this.font);
+		span.classList.add(color_object.red);
+		span.innerHTML = this.char;
+		return span;
+	}
+}
+
+
+class MartyrikoSimadi {
+
+	/**
+	 * @type {string}
+	 */
+	name;
+
+	/**
+	 * @type {string}
+	 */
+	font;
+
+	/**
+	 * @type {string}
+	 */
+	char;
+
+	static delta = new MartyrikoSimadi('delta', font_object.byzantina, '&');
+
+	/**
+	 * @param {string} name
+	 * @param {string} font
+	 * @param {string} char
+	 */
+	constructor(name, font, char) {
+		this.name = name;
+		this.font = font;
+		this.char = char;
+	}
+
+	/**
+	 * @returns {HTMLSpanElement}
+	 */
+	get_span() {
+		const span = document.createElement('span');
+		span.classList.add(this.font);
+		span.classList.add(color_object.red);
+		span.innerHTML = this.char;
+		return span;
+	}
+}
+
+
+class PosotitaBlock extends AbstractBlock {
+
+	/**
+	 * @type {Posotita}
+	 */
+	posotita;
+
+	/**
+	 * @type {?Chronos}
+	 */
+	chronos = null;
+
+	/**
+	 * @type {?Gorgon}
+	 */
+	gorgon = null;
+
+	/**
+	 * @type {?SecondaryCharacter}
+	 */
+	kallopismos = null;
+
+	/**
+	 * @type {?Alloiosi}
+	 */
+	alloiosi = null;
+
+	/**
+	 * @type {?SecondaryCharacter}
+	 */
+	rythmos = null;
+
+	/**
+	 * @type {SecondaryCharacter[]}
+	 */
+	secondary_list;
+
+	/**
+	 * @type {?string}
+	 */
+	syllavi;
+
+	/**
+	 * @param {Posotita} posotita
+	 * @param {SecondaryCharacter[]} secondary_list
+	 * @param {?string} syllavi
+	 */
+	constructor(posotita, secondary_list, syllavi) {
+		super('posotita');
+		this.posotita = posotita;
+		this.secondary_list = secondary_list;
+		secondary_list.forEach(secondary => {
+			switch (secondary.type) {
+				case SecondaryCharacter.type_chronos:
+					this.chronos = secondary;
+					break;
+				case SecondaryCharacter.type_gorgon:
+					this.gorgon = secondary;
+					break;
+				case SecondaryCharacter.type_kallopismos:
+					this.kallopismos = secondary;
+					break;
+				case SecondaryCharacter.type_alloiosi:
+					this.alloiosi = secondary;
+					break;
+				case SecondaryCharacter.type_rythmos:
+					this.rythmos = secondary;
+					break;
+			}
+		});
+		this.syllavi = syllavi;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	get_div() {
+		const block_div = super.get_div();
+		const symbol_div = document.createElement('div');
+		symbol_div.classList.add('bz-symbol');
+		if (this.posotita === Posotita.oligon_kentimata && this.gorgon === Gorgon.gorgon) {
+			symbol_div.append(custom_span(font_object.byzantina, 'V'));
+		} else {
+			symbol_div.append(this.posotita.get_span());
+			if (this.gorgon !== null)
+				symbol_div.append(this.gorgon.get_span(this.posotita.thin));
+		}
+		this.secondary_list.forEach(secondary => {
+			if (secondary === this.gorgon)
+				return;
+			symbol_div.append(secondary.get_span(this.posotita.thin));
+		});
+		block_div.append(symbol_div);
+		if (this.syllavi !== null)
+			block_div.append(PosotitaBlock.#get_syllavi_span(this.syllavi));
+		return block_div;
+	}
+
+	/**
+	 * @param {string} syllavi
+	 * @returns {HTMLSpanElement}
+	 */
+	static #get_syllavi_span(syllavi) {
+		const span = document.createElement('span');
+		span.classList.add('bz-text');
+		span.textContent = syllavi;
+		return span;
 	}
 
 	/**
 	 * @param {MusicContext} music_context
 	 * @param {number} block_index
-	 * @param {Block[]} block_list
 	 * @returns {?Part[]}
 	 */
-	get_parts(music_context, block_index, block_list) {
-		return null;
+	get_parts(music_context, block_index) {
+		/**
+		 * @type {Part[]}
+		 */
+		const part_list = [];
+		this.posotita.move_list.forEach(move => {
+			music_context.pitch += move;
+			part_list.push({
+				pitch: music_context.pitch,
+				steps: 0,
+				tempo: music_context.tempo,
+				beats: 1,
+				block: block_index,
+			});
+		});
+		if (this.alloiosi !== null) {
+			if (part_list.length >= 1)
+				part_list[part_list.length - 1].steps += this.alloiosi.steps;
+		}
+		return part_list;
+	}
+
+	/**
+	 * @returns {[{index: number, beats: number}]}
+	 */
+	get_times() {
+		/**
+		 * @type {[{index: number, beats: number}]}
+		 */
+		const time_list = [];
+		if (this.posotita === Posotita.syneches_elafron) {
+			time_list.push({index: -1, beats: 1/2 - 1});
+			time_list.push({index: 0, beats: 1/2 - 1});
+		}
+		if (this.chronos !== null) {
+			time_list.push({index: this.posotita.move_list.length - 1, beats: this.chronos.beats});
+		}
+		if (this.gorgon !== null) {
+			this.gorgon.tuple.forEach((value, index) => {
+				time_list.push({index: this.posotita.move_list.length - 1 + index - 1, beats: value - 1});
+			})
+		}
+		return time_list;
 	}
 }
 
 
-class PosotitaPrimary extends Primary {
+class Posotita {
+
+	/**
+	 * @type {string}
+	 */
+	name;
 
 	/**
 	 * @type {number[]}
 	 */
 	move_list;
 
-	static type = 'posotita';
+	/**
+	 * @type {string}
+	 */
+	font;
 
-	static ison = new PosotitaPrimary('ison', [0], font_object.byzantina, 'a');
-	static ison_petasti = new PosotitaPrimary('ison-petasti', [0], font_object.byzantina, 'A');
-	static oligon = new PosotitaPrimary('oligon', [+1], font_object.byzantina, 's');
-	static petasti = new PosotitaPrimary('petasti', [+1], font_object.byzantina, 'S');
-	static kentimata = new PosotitaPrimary('kentimata', [+1], font_object.byzantina, 'x');
-	// static oligon_kentima_kato = new PosotitaPrimary('oligon-kentima-kato', [+2], font_object.byzantina, 'd');
-	static oligon_kentimata = new PosotitaPrimary('oligon-kentimata', [+1, +1], font_object.byzantina, 'v');
-	static oligon_kentima_dipla = new PosotitaPrimary('oligon-kentima-dipla', [+2], font_object.byzantina, 'sC');
-	static apostrofos = new PosotitaPrimary('apostrofos', [-1], font_object.byzantina, 'j');
-	static apostrofos_petasti = new PosotitaPrimary('apostrofos-petasti', [-1], font_object.byzantina, 'J');
-	static elafron = new PosotitaPrimary('elafron', [-2], font_object.byzantina, 'k');
-	static elafron_apostrofos = new PosotitaPrimary('elafron-apostrofos', [-3], font_object.byzantina, 'l');
-	static syneches_elafron = new PosotitaPrimary('syneches-elafron', [-1, -1], font_object.byzantina, 'h');
+	/**
+	 * @type {string}
+	 */
+	char;
+
+	/**
+	 * @type {boolean}
+	 */
+	thin;
+
+	// isotita
+	static ison = new Posotita('ison', [0], font_object.byzantina, 'a', false);
+	static ison_petasti = new Posotita('ison-petasti', [0], font_object.byzantina, 'A', false);
+	static ison_stirigma = new Posotita('ison-stirigma', [0], font_object.loipa, '0', false);
+	// anavasi
+	static oligon = new Posotita('oligon', [+1], font_object.byzantina, 's', false);
+	static petasti = new Posotita('petasti', [+1], font_object.byzantina, 'S', false);
+	static kentimata = new Posotita('kentimata', [+1], font_object.byzantina, 'x', true);
+	// static oligon_kentima_kato = new PosotitaCharaktiras('oligon-kentima-kato', [+2], font_object.byzantina, 'd', false);
+	static oligon_kentimata = new Posotita('oligon-kentimata', [+1, +1], font_object.byzantina, 'v', false);
+	static oligon_kentima_dipla = new Posotita('oligon-kentima-dipla', [+2], font_object.byzantina, 'sC', false);
+	static ypsili_dexia = new Posotita('ypsili-dexia', [+4], font_object.byzantina, 'g', false);
+	// katavasi
+	static apostrofos = new Posotita('apostrofos', [-1], font_object.byzantina, 'j', true);
+	static apostrofos_petasti = new Posotita('apostrofos-petasti', [-1], font_object.byzantina, 'J', false);
+	static elafron = new Posotita('elafron', [-2], font_object.byzantina, 'k', false);
+	static elafron_apostrofos = new Posotita('elafron-apostrofos', [-3], font_object.byzantina, 'l', false);
+	static chamili = new Posotita('chamili', [-4], font_object.byzantina, ';', false);
+	// symploki
+	static syneches_elafron = new Posotita('syneches-elafron', [-1, -1], font_object.byzantina, 'h', false);
 	// TODO center text below syneches elafron
-	static apostrofos_kentimata = new PosotitaPrimary('apostrofos-kentimata', [-1, +1], font_object.byzantina, '-');
+	static apostrofos_kentimata = new Posotita('apostrofos-kentimata', [-1, +1], font_object.byzantina, '-', false);
 
 	/**
 	 * @param {string} name
 	 * @param {number[]} move_list
 	 * @param {string} font
 	 * @param {string} char
+	 * @param {boolean} thin
 	 */
-	constructor(name, move_list, font, char) {
-		super(name, PosotitaPrimary.type, font, char);
+	constructor(name, move_list, font, char, thin) {
+		this.name = name;
 		this.move_list = move_list;
+		this.font = font;
+		this.char = char;
+		this.thin = thin;
 	}
 
 	/**
-	 * @returns {boolean}
+	 * @returns {HTMLSpanElement}
 	 */
-	starts_with_syneches_elafron() {
-		return this === PosotitaPrimary.syneches_elafron; // TODO also symploki
-	}
-
-	/**
-	 * @returns {boolean}
-	 */
-	is_red() {
-		return false;
-	}
-
-	/**
-	 * @param {MusicContext} music_context
-	 * @param {number} block_index
-	 * @param {Block[]} block_list
-	 * @returns {?Part[]}
-	 */
-	get_parts(music_context, block_index, block_list) {
-		const block = block_list[block_index];
-		/**
-		 * @type {Part[]}
-		 */
-		const part_list = [];
-		this.move_list.forEach(move => {
-			music_context.pitch += move;
-			part_list.push({
-				pitch: music_context.pitch,
-				steps: 0,
-				duration: 1,
-				block: block_index,
-			});
-		});
-		// TODO duration from previous gorgon
-		// duration from current syneches elafron
-		if (this.starts_with_syneches_elafron()) {
-			if (part_list.length >= 1) // condition must be true
-				part_list[0].duration -= 1 / 2;
-		}
-		// duration from current gorgon
-		if (block.gorgon !== null) {
-			if (part_list.length >= 2)
-				part_list[part_list.length - 2].duration -= 1 - 1 / block.gorgon.tuplet;
-			if (part_list.length >= 1) // condition must be true
-				part_list[part_list.length - 1].duration -= 1 - 1 / block.gorgon.tuplet;
-			// TODO next parts
-		}
-		// duration from next gorgon or syneches elafron
-		const tuplet = this.#is_followed_by_gorgon(block_index, block_list);
-		if (tuplet !== null) {
-			if (part_list.length >= 1) // condition must be true
-				part_list[part_list.length - 1].duration -= 1 - 1 / tuplet;
-		}
-		// chronos & alloiosi // TODO maybe on secondary subclasses
-		block.secondary_list.forEach(secondary => {
-			switch (secondary.type) {
-				case AlloiosiSecondary.type:
-					/**
-					 * @type {AlloiosiSecondary}
-					 */
-					const alloiosi = secondary;
-					if (part_list.length >= 1) // condition must be true
-						part_list[part_list.length - 1].steps = alloiosi.steps;
-					break;
-				case ChronosSecondary.type:
-					/**
-					 * @type {ChronosSecondary}
-					 */
-					const chronos = secondary;
-					if (part_list.length >= 1) // condition must be true
-						part_list[part_list.length - 1].duration += chronos.beats;
-					break;
-			}
-		});
-		// return
-		return part_list;
-	}
-
-	/**
-	 * @param {number} block_index
-	 * @param {Block[]} block_list
-	 * @returns {?number} tuplet or null
-	 */
-	#is_followed_by_gorgon(block_index, block_list) {
-		while (true) {
-			block_index++;
-			if (block_index === block_list.length)
-				return null;
-			const block = block_list[block_index];
-			switch (block.primary.type) {
-				case PosotitaPrimary.type:
-					/**
-					 * @type {PosotitaPrimary}
-					 */
-					const posotita = block.primary;
-					if (posotita.starts_with_syneches_elafron())
-						return 2;
-					if (posotita.move_list.length >= 2)
-						return null;
-					if (block.gorgon === null)
-						return null;
-					return block.gorgon.tuplet;
-				// TODO siopi
-				default:
-					continue;
-			}
-		}
+	get_span() {
+		const span = document.createElement('span');
+		span.classList.add(this.font);
+		span.innerHTML = this.char;
+		return span;
 	}
 }
 
 
-class MartyriaPrimary extends Primary {
-
-	static type = 'martyria';
-
-	static martyria_ni = new MartyriaPrimary('martyria-ni', '7');
-
-	/**
-	 * @param {string} name
-	 * @param {string} char
-	 */
-	constructor(name, char) {
-		super(name, MartyriaPrimary.type, font_object.byzantina, char);
-	}
-
-	/**
-	 * @returns {boolean}
-	 */
-	is_red() {
-		return true;
-	}
-}
-
-
-class Secondary {
+class SecondaryCharacter {
 
 	/**
 	 * @type {string}
@@ -279,135 +532,120 @@ class Secondary {
 	type;
 
 	/**
-	 * @type {string}
+	 * @type {Letter}
 	 */
-	font;
+	letter;
 
 	/**
-	 * @type {string}
+	 * @type {?Letter}
 	 */
-	char;
+	letter_thin;
 
-	static martyriko_simadi = 'martyriko-simadi';
+	static type_chronos = 'chronos';
+	static type_gorgon = 'gorgon';
+	static type_kallopismos = 'kallopismos';
+	static type_rythmos = 'rythmos';
+	static type_alloiosi = 'alloiosi';
 
-	static psifiston = new Secondary('psifiston', 'kallopistikos', font_object.byzantina, '/');
-	static martyriko_simadi_di = new Secondary('martyriko_simadi_di', Secondary.martyriko_simadi, font_object.byzantina, '&');
+	static psifiston = new SecondaryCharacter('psifiston', SecondaryCharacter.type_kallopismos, {font: font_object.byzantina, char: '/'}, null);
+	static rythmos_trisimos = new SecondaryCharacter('rythmos-trisimos', SecondaryCharacter.type_rythmos, {font: font_object.fthores, char: '6'}, {font: font_object.fthores, char: '^'});
 
 	/**
 	 * @param {string} name
 	 * @param {string} type
-	 * @param {string} font
-	 * @param {string} char
+	 * @param {Letter} letter
+	 * @param {?Letter} letter_thin
 	 */
-	constructor(name, type, font, char) {
+	constructor(name, type, letter, letter_thin) {
 		this.name = name;
 		this.type = type;
-		this.font = font;
-		this.char = char;
+		this.letter = letter;
+		this.letter_thin = letter_thin;
 	}
 
-	/**
-	 * @returns {boolean}
-	 */
 	is_red() {
-		return this.type === Secondary.martyriko_simadi;
+		return this.type === SecondaryCharacter.type_rythmos;
 	}
 
 	/**
+	 * @param {boolean} thin
 	 * @returns {HTMLSpanElement}
 	 */
-	get_span() {
-		const secondary_span = document.createElement('span');
-		secondary_span.classList.add(this.font);
+	get_span(thin) {
+		const span = document.createElement('span');
+		const letter = thin && this.letter_thin !== null ? this.letter_thin : this.letter;
+		span.classList.add(letter.font);
 		if (this.is_red())
-			secondary_span.classList.add(color_object.red);
-		secondary_span.innerHTML = this.char;
-		return secondary_span;
+			span.classList.add(color_object.red);
+		span.innerHTML = letter.char;
+		return span;
 	}
 }
 
 
-class ChronosSecondary extends Secondary {
+class Chronos extends SecondaryCharacter {
 
 	/**
 	 * @type {number}
 	 */
 	beats;
 
-	static type = 'chronos';
-
-	static klasma = new ChronosSecondary('klasma', 1, font_object.byzantina, 'u');
+	static klasma = new Chronos('klasma', 1, {font: font_object.byzantina, char: 'u'}, {font: font_object.byzantina, char: 'i'});
 
 	/**
 	 * @param {string} name
 	 * @param {number} beats
-	 * @param {string} font
-	 * @param {string} char
+	 * @param {Letter} letter
+	 * @param {?Letter} letter_thin
 	 */
-	constructor(name, beats, font, char) {
-		super(name, ChronosSecondary.type, font, char);
+	constructor(name, beats, letter, letter_thin) {
+		super(name, SecondaryCharacter.type_chronos, letter, letter_thin);
 		this.beats = beats;
-	}
-
-	/**
-	 * @returns {boolean}
-	 */
-	is_red() {
-		return false;
 	}
 }
 
-class GorgonSecondary extends Secondary {
+
+class Gorgon extends SecondaryCharacter {
 
 	/**
-	 * @type {number}
+	 * @type {number[]}
 	 */
-	tuplet;
+	tuple;
 
-	static type = 'gorgon';
-
-	static gorgon = new GorgonSecondary('gorgon', 2, font_object.byzantina, 'r');
+	static gorgon = new Gorgon('gorgon', [1/2, 1/2], {font: font_object.byzantina, char: 'e'}, null);
 
 	/**
 	 * @param {string} name
-	 * @param {number} tuplet
-	 * @param {string} font
-	 * @param {string} char
+	 * @param {number[]} tuple
+	 * @param {Letter} letter
+	 * @param {?Letter} letter_thin
 	 */
-	constructor(name, tuplet, font, char) {
-		super(name, GorgonSecondary.type, font, char);
-		this.tuplet = tuplet;
-	}
-
-	/**
-	 * @returns {boolean}
-	 */
-	is_red() {
-		return false;
+	constructor(name, tuple, letter, letter_thin) {
+		super(name, SecondaryCharacter.type_gorgon, letter, letter_thin);
+		this.tuple = tuple;
 	}
 }
 
 
-class AlloiosiSecondary extends Secondary {
+class Alloiosi extends SecondaryCharacter {
 
 	/**
 	 * @type {number}
 	 */
 	steps;
 
-	static type = 'alloiosi';
-
-	static yfesi_apli = new AlloiosiSecondary('yfesi_apli', -2, font_object.byzantina, 'y');
-	static yfesi_monogrammi = new AlloiosiSecondary('yfesi_monogrammi', -4, font_object.byzantina, 'Y');
+	static yfesi_apli = new Alloiosi('yfesi_apli', -2, {font: font_object.byzantina, char: 'y'}, null);
+	static yfesi_monogrammi = new Alloiosi('yfesi_monogrammi', -4, {font: font_object.byzantina, char: 'Y'}, null);
 
 	/**
+	 * 
 	 * @param {string} name
 	 * @param {number} steps
-	 * @param {string} font
-	 * @param {string} char
+	 * @param {Letter} letter
+	 * @param {?Letter} letter_thin
 	 */
-	constructor(name, steps, font, char) {
-		super(name, AlloiosiSecondary.type, font, char);
+	constructor(name, steps, letter, letter_thin) {
+		super(name, SecondaryCharacter.type_alloiosi, letter, letter_thin);
 		this.steps = steps;
 	}
 
@@ -420,160 +658,140 @@ class AlloiosiSecondary extends Secondary {
 }
 
 
-class Block {
-
-	/**
-	 * @type {Primary}
-	 */
-	primary;
-
-	/**
-	 * @type {?GorgonSecondary}
-	 */
-	gorgon;
-
-	/**
-	 * @type {Secondary[]}
-	 */
-	secondary_list;
-
-	/**
-	 * @type {?string}
-	 */
-	text;
-
-	/**
-	 * @param {Primary} primary
-	 * @param {?GorgonSecondary} gorgon 
-	 * @param {Secondary[]} secondary_list
-	 * @param {?string} text
-	 */
-	constructor(primary, gorgon, secondary_list, text) {
-		this.primary = primary;
-		this.gorgon = gorgon;
-		this.secondary_list = secondary_list;
-		this.text = text;
-	}
-
-	/**
-	 * @returns {HTMLDivElement}
-	 */
-	get_div() {
-		const block_div = document.createElement('div');
-		block_div.classList.add('bz-block');
-		const symbol_div = document.createElement('div');
-		symbol_div.classList.add('bz-symbol');
-		block_div.append(symbol_div);
-		if (this.primary === PosotitaPrimary.oligon_kentimata && this.gorgon === GorgonSecondary.gorgon) {
-			symbol_div.append(custom_span(font_object.byzantina, 'V'));
-		} else {
-			symbol_div.append(this.primary.get_span());
-			if (this.gorgon !== null)
-				symbol_div.append(this.gorgon.get_span());
-		}
-		symbol_div.append(...this.secondary_list.map(secondary => secondary.get_span()));
-		if (this.text !== null) {
-			const text_div = document.createElement('div');
-			text_div.classList.add('bz-text');
-			text_div.textContent = this.text;
-			block_div.append(text_div);
-		}
-		return block_div;
-	}
-}
-
-
 const block_list = [
 	// Εκ νεότητός μου
-	new Block(PosotitaPrimary.ison, null, [], 'Εκ'),
-	new Block(PosotitaPrimary.ison, null, [], 'νε'),
-	new Block(PosotitaPrimary.oligon_kentima_dipla, null, [], 'ο'),
-	new Block(PosotitaPrimary.oligon, null, [], 'τη'),
-	new Block(PosotitaPrimary.oligon, null, [], 'τος'),
-	new Block(PosotitaPrimary.ison, null, [], 'μου'),
-	new Block(PosotitaPrimary.ison, null, [], 'ο'),
-	new Block(PosotitaPrimary.ison, null, [], 'εχ'),
-	new Block(Primary.vareia, null, [], null),
-	new Block(PosotitaPrimary.apostrofos, null, [], 'θρο'),
-	new Block(PosotitaPrimary.apostrofos, null, [], 'ος'),
-	new Block(PosotitaPrimary.oligon, null, [], 'με'),
-	new Block(PosotitaPrimary.oligon, null, [], 'πει'),
-	new Block(PosotitaPrimary.oligon_kentimata, null, [AlloiosiSecondary.yfesi_monogrammi], 'ρα'),
-	new Block(PosotitaPrimary.elafron, null, [], 'ζει'),
-	new Block(PosotitaPrimary.ison, null, [], 'ταις'),
-	new Block(PosotitaPrimary.ison, null, [], 'η'),
-	new Block(PosotitaPrimary.apostrofos, null, [], 'δο'),
-	new Block(PosotitaPrimary.oligon_kentimata, null, [AlloiosiSecondary.yfesi_apli, Secondary.psifiston], 'ναις'),
-	new Block(PosotitaPrimary.apostrofos, null, [], 'φλε'),
-	new Block(PosotitaPrimary.apostrofos, null, [], 'γει'),
-	new Block(PosotitaPrimary.apostrofos, null, [], 'με'),
-	new Block(PosotitaPrimary.ison, null, [], 'ε'),
-	new Block(PosotitaPrimary.ison_petasti, null, [], 'γω'),
-	new Block(PosotitaPrimary.apostrofos, null, [], 'δε'),
-	new Block(PosotitaPrimary.oligon, null, [], 'πε'),
-	new Block(PosotitaPrimary.oligon, null, [], 'ποι'),
-	new Block(PosotitaPrimary.oligon, null, [ChronosSecondary.klasma], 'θως'),
-	new Block(PosotitaPrimary.ison, null, [], 'εν'),
-	new Block(PosotitaPrimary.oligon, null, [], 'σοι'),
-	new Block(PosotitaPrimary.apostrofos_petasti, null, [], 'Κυ'),
-	new Block(PosotitaPrimary.apostrofos, null, [], 'ρι'),
-	new Block(PosotitaPrimary.syneches_elafron, null, [], 'ε'),
-	new Block(PosotitaPrimary.oligon, null, [], 'τρο'),
-	new Block(PosotitaPrimary.oligon, null, [Secondary.psifiston], 'που'),
-	new Block(PosotitaPrimary.apostrofos, null, [], 'μαι'),
-	new Block(PosotitaPrimary.apostrofos_kentimata, null, [], 'του'),
-	new Block(PosotitaPrimary.elafron, null, [ChronosSecondary.klasma], 'τον'),
-	new Block(MartyriaPrimary.martyria_ni, null, [Secondary.martyriko_simadi_di], null),
+	new PosotitaBlock(Posotita.ison, [], 'Εκ'),
+	new PosotitaBlock(Posotita.ison, [], 'νε'),
+	new PosotitaBlock(Posotita.oligon_kentima_dipla, [], 'ο'),
+	new PosotitaBlock(Posotita.oligon, [], 'τη'),
+	new PosotitaBlock(Posotita.oligon, [], 'τος'),
+	new PosotitaBlock(Posotita.ison, [], 'μου'),
+	new PosotitaBlock(Posotita.ison, [], 'ο'),
+	new PosotitaBlock(Posotita.ison, [], 'εχ'),
+	SimpleBlock.vareia,
+	new PosotitaBlock(Posotita.apostrofos, [], 'θρο'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'ος'),
+	new PosotitaBlock(Posotita.oligon, [], 'με'),
+	new PosotitaBlock(Posotita.oligon, [], 'πει'),
+	new PosotitaBlock(Posotita.oligon_kentimata, [Alloiosi.yfesi_monogrammi], 'ρα'),
+	new PosotitaBlock(Posotita.elafron, [], 'ζει'),
+	new PosotitaBlock(Posotita.ison, [], 'ταις'),
+	new PosotitaBlock(Posotita.ison, [], 'η'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'δο'),
+	new PosotitaBlock(Posotita.oligon_kentimata, [SecondaryCharacter.psifiston, Alloiosi.yfesi_apli], 'ναις'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'φλε'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'γει'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'με'),
+	new PosotitaBlock(Posotita.ison, [], 'ε'),
+	new PosotitaBlock(Posotita.ison_petasti, [], 'γω'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'δε'),
+	new PosotitaBlock(Posotita.oligon, [], 'πε'),
+	new PosotitaBlock(Posotita.oligon, [], 'ποι'),
+	new PosotitaBlock(Posotita.oligon, [Chronos.klasma], 'θως'),
+	new PosotitaBlock(Posotita.ison, [], 'εν'),
+	new PosotitaBlock(Posotita.oligon, [], 'σοι'),
+	new PosotitaBlock(Posotita.apostrofos_petasti, [], 'Κυ'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'ρι'),
+	new PosotitaBlock(Posotita.syneches_elafron, [], 'ε'),
+	new PosotitaBlock(Posotita.oligon, [], 'τρο'),
+	new PosotitaBlock(Posotita.oligon, [SecondaryCharacter.psifiston], 'που'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'μαι'),
+	new PosotitaBlock(Posotita.apostrofos_kentimata, [], 'του'),
+	new PosotitaBlock(Posotita.elafron, [Chronos.klasma], 'τον'),
+	new MartyriaBlock(MartyriaFthongos.ni, MartyrikoSimadi.delta, false),
 	// Οι μισούντες Σιών
-	new Block(PosotitaPrimary.oligon_kentima_dipla, null, [], 'Οι'),
-	new Block(PosotitaPrimary.oligon, null, [], 'μι'),
-	new Block(Primary.diastoli, null, [], null),
-	new Block(PosotitaPrimary.petasti, null, [], 'σου'),
-	new Block(PosotitaPrimary.elafron, null, [], 'ντες'),
-	new Block(PosotitaPrimary.oligon, null, [], 'Σι'),
-	new Block(Primary.diastoli, null, [], null),
-	new Block(PosotitaPrimary.oligon, null, [ChronosSecondary.klasma], 'ων'),
-	new Block(PosotitaPrimary.ison, null, [], 'γε'),
-	new Block(PosotitaPrimary.ison, null, [], 'νη'),
-	new Block(PosotitaPrimary.ison, null, [], 'θη'),
-	new Block(PosotitaPrimary.kentimata, null, [], 'η'),
-	new Block(PosotitaPrimary.ison, null, [], 'τω'),
-	new Block(PosotitaPrimary.elafron, null, [], 'σαν'),
-	new Block(PosotitaPrimary.oligon, null, [ChronosSecondary.klasma], 'δη'),
-	new Block(Primary.diastoli, null, [], null),
-	new Block(PosotitaPrimary.ison, null, [], 'πριν'),
-	new Block(PosotitaPrimary.ison, null, [], 'εκ'),
-	new Block(PosotitaPrimary.ison, null, [], 'σπα'),
-	new Block(Primary.diastoli, null, [], null),
-	new Block(PosotitaPrimary.elafron_apostrofos, null, [], 'σθη'),
-	new Block(PosotitaPrimary.kentimata, null, [], 'η'),
-	new Block(PosotitaPrimary.ison, null, [], 'ναι'),
-	new Block(PosotitaPrimary.elafron, null, [], 'ως'),
-	new Block(PosotitaPrimary.oligon_kentimata, null, [], 'χορ'),
-	new Block(Primary.diastoli, null, [], null),
-	new Block(PosotitaPrimary.elafron, null, [ChronosSecondary.klasma], 'τος'),
-	new Block(PosotitaPrimary.oligon, null, [], 'συγ'),
-	new Block(Primary.diastoli, null, [], null),
-	new Block(PosotitaPrimary.petasti, null, [], 'κο'),
-	new Block(PosotitaPrimary.apostrofos, null, [], 'ψει'),
-	new Block(PosotitaPrimary.oligon, null, [], 'γαρ'),
-	new Block(PosotitaPrimary.oligon, null, [], 'Χρι'),
-	new Block(Primary.diastoli, null, [], null),
-	new Block(PosotitaPrimary.oligon, null, [ChronosSecondary.klasma], 'στος'),
-	new Block(Primary.stavros, null, [], null),
-	new Block(PosotitaPrimary.ison, null, [], 'αυ'),
-	new Block(Primary.diastoli, null, [], null),
-	new Block(PosotitaPrimary.oligon_kentimata, GorgonSecondary.gorgon, [AlloiosiSecondary.yfesi_monogrammi], 'χε'), // TODO gorgon
-	new Block(PosotitaPrimary.apostrofos, null, [], 'ε'),
-	new Block(PosotitaPrimary.apostrofos, null, [], 'νας'),
-	new Block(PosotitaPrimary.ison, null, [], 'αυ'),
-	new Block(PosotitaPrimary.elafron_apostrofos, null, [], 'των'),
-	new Block(PosotitaPrimary.oligon, null, [], 'το'),
-	new Block(PosotitaPrimary.ison, null, [], 'μη'),
-	new Block(PosotitaPrimary.elafron, null, [], 'βα'),
-	new Block(PosotitaPrimary.oligon_kentimata, null, [], 'σα'),
-	new Block(PosotitaPrimary.elafron, null, [ChronosSecondary.klasma], 'νων'),
-	new Block(MartyriaPrimary.martyria_ni, null, [Secondary.martyriko_simadi_di], null),
+	new PosotitaBlock(Posotita.oligon_kentima_dipla, [], 'Οι'),
+	new PosotitaBlock(Posotita.oligon, [], 'μι'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.petasti, [SecondaryCharacter.rythmos_trisimos], 'σου'),
+	new PosotitaBlock(Posotita.elafron, [], 'ντες'),
+	new PosotitaBlock(Posotita.oligon, [], 'Σι'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.oligon, [Chronos.klasma], 'ων'),
+	new PosotitaBlock(Posotita.ison, [], 'γε'),
+	new PosotitaBlock(Posotita.ison, [], 'νη'),
+	new PosotitaBlock(Posotita.ison, [], 'θη'),
+	new PosotitaBlock(Posotita.kentimata, [], 'η'),
+	new PosotitaBlock(Posotita.ison, [], 'τω'),
+	new PosotitaBlock(Posotita.elafron, [], 'σαν'),
+	new PosotitaBlock(Posotita.oligon, [Chronos.klasma], 'δη'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.ison, [SecondaryCharacter.rythmos_trisimos], 'πριν'),
+	new PosotitaBlock(Posotita.ison, [], 'εκ'),
+	new PosotitaBlock(Posotita.ison, [], 'σπα'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.elafron_apostrofos, [], 'σθη'),
+	new PosotitaBlock(Posotita.kentimata, [], 'η'),
+	new PosotitaBlock(Posotita.ison, [], 'ναι'),
+	new PosotitaBlock(Posotita.elafron, [], 'ως'),
+	new PosotitaBlock(Posotita.oligon_kentimata, [], 'χορ'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.elafron, [Chronos.klasma, SecondaryCharacter.rythmos_trisimos], 'τος'),
+	new PosotitaBlock(Posotita.oligon, [], 'συγ'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.petasti, [], 'κο'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'ψει'),
+	new PosotitaBlock(Posotita.oligon, [], 'γαρ'),
+	new PosotitaBlock(Posotita.oligon, [], 'Χρι'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.oligon, [Chronos.klasma, SecondaryCharacter.rythmos_trisimos], 'στος'),
+	SimpleBlock.stavros,
+	new PosotitaBlock(Posotita.ison, [], 'αυ'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.oligon_kentimata, [Gorgon.gorgon, Alloiosi.yfesi_monogrammi], 'χε'), // TODO gorgon
+	new PosotitaBlock(Posotita.apostrofos, [], 'ε'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'νας'),
+	new PosotitaBlock(Posotita.ison, [], 'αυ'),
+	new PosotitaBlock(Posotita.elafron_apostrofos, [], 'των'),
+	new PosotitaBlock(Posotita.oligon, [], 'το'),
+	new PosotitaBlock(Posotita.ison, [], 'μη'),
+	new PosotitaBlock(Posotita.elafron, [], 'βα'),
+	new PosotitaBlock(Posotita.oligon_kentimata, [], 'σα'),
+	new PosotitaBlock(Posotita.elafron, [Chronos.klasma], 'νων'),
+	new MartyriaBlock(MartyriaFthongos.ni, MartyrikoSimadi.delta, false),
+	// Δόξα, Και νυν
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.ypsili_dexia, [SecondaryCharacter.rythmos_trisimos], 'Δο'),
+	new PosotitaBlock(Posotita.ison, [], 'ξα'),
+	new PosotitaBlock(Posotita.ison, [], 'Πα'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.ison_stirigma, [SecondaryCharacter.rythmos_trisimos], 'τρι'),
+	new PosotitaBlock(Posotita.ison, [], 'και'),
+	new PosotitaBlock(Posotita.ison, [], 'Υι'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.ison_stirigma, [SecondaryCharacter.rythmos_trisimos], 'ω'),
+	new PosotitaBlock(Posotita.ison, [], 'και'),
+	new PosotitaBlock(Posotita.ison, [], 'Α'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.apostrofos, [], 'γι'),
+	new PosotitaBlock(Posotita.oligon, [], 'ω'),
+	new PosotitaBlock(Posotita.petasti, [], 'Πνευ'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'μα'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.ison, [Chronos.klasma, SecondaryCharacter.rythmos_trisimos], 'τι'),
+	new MartyriaBlock(MartyriaFthongos.di, MartyrikoSimadi.delta, true),
+	new PosotitaBlock(Posotita.chamili, [], 'και'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.ypsili_dexia, [SecondaryCharacter.rythmos_trisimos], 'νυν'),
+	new PosotitaBlock(Posotita.ison, [], 'και'),
+	new PosotitaBlock(Posotita.ison, [], 'α'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.petasti, [SecondaryCharacter.rythmos_trisimos], 'ει'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'και'),
+	new PosotitaBlock(Posotita.ison, [], 'εις'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.ison, [], 'τους'),
+	new PosotitaBlock(Posotita.ison, [], 'αι'),
+	new PosotitaBlock(Posotita.ison, [SecondaryCharacter.psifiston], 'ω'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'νας'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'των'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'αι'),
+	new PosotitaBlock(Posotita.oligon_kentimata, [SecondaryCharacter.psifiston], 'ω'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'νων'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'α'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.apostrofos, [Chronos.klasma, SecondaryCharacter.rythmos_trisimos], 'μην'), // TODO rythmos on klasma
+	new MartyriaBlock(MartyriaFthongos.ni, MartyrikoSimadi.delta, false),
 ];
 
 /**
@@ -581,7 +799,8 @@ const block_list = [
  * @type {object}
  * @property {number} pitch
  * @property {number} steps
- * @property {number} duration
+ * @property {number} tempo
+ * @property {number} beats
  * @property {number} block
  */
 
@@ -595,6 +814,7 @@ const part_map = new Map();
  * @typedef MusicContext TODO include scale
  * @type {object}
  * @property {number} pitch
+ * @property {number} tempo
  */
 
 /**
@@ -602,18 +822,29 @@ const part_map = new Map();
  */
 const music_context = {
 	pitch: 0,
+	tempo: 1,
 };
 
 /**
  * @type {Part[]}
  */
 const part_list = [];
-block_list.forEach((block, block_index, block_list) => {
-	const part_list_of_block = block.primary.get_parts(music_context, block_index, block_list);
+// initially, ignore beats
+block_list.forEach((block, block_index) => {
+	const part_list_of_block = block.get_parts(music_context, block_index);
 	if (part_list_of_block === null)
 		return;
 	part_map.set(block_index, part_list.length);
 	part_list.push(...part_list_of_block);
+});
+// TODO finally, apply beats
+block_list.forEach((block, block_index) => {
+	const part_index = part_map.get(block_index);
+	if (part_index === undefined)
+		return;
+	block.get_times().forEach(time => {
+		part_list[part_index + time.index].beats += time.beats;
+	});
 });
 
 /**
@@ -662,5 +893,5 @@ function play(index) {
 		block_div.classList.remove('bz-active');
 		oscillator_node.stop();
 		play(index + 1);
-	}, 300 * part.duration);
+	}, 300 * part.beats * part.tempo);
 }
