@@ -39,6 +39,10 @@ class Glyph {
 		span.innerHTML = this.char;
 		return span;
 	}
+
+	static get_empty_span() {
+		return document.createElement('span');
+	}
 }
 
 
@@ -356,17 +360,9 @@ class PosotitaBlock extends AbstractBlock {
 		const block_div = super.get_div();
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
-		if (this.posotita === Posotita.oligon_kentimata && this.gorgon === Gorgon.gorgon) {
-			symbol_div.append(new Glyph(Glyph.font_byzantina, 'V').get_span());
-		} else {
-			symbol_div.append(this.posotita.get_span());
-			if (this.gorgon !== null)
-				symbol_div.append(this.gorgon.get_span(this.posotita.thin));
-		}
+		symbol_div.append(this.posotita.get_span(this));
 		this.secondary_list.forEach(secondary => {
-			if (secondary === this.gorgon)
-				return;
-			symbol_div.append(secondary.get_span(this.posotita.thin));
+			symbol_div.append(secondary.get_span(this));
 		});
 		block_div.append(symbol_div);
 		if (this.syllavi !== null)
@@ -428,9 +424,15 @@ class PosotitaBlock extends AbstractBlock {
 			time_list.push({index: this.posotita.move_list.length - 1, beats: this.chronos.beats});
 		}
 		if (this.gorgon !== null) {
-			this.gorgon.tuple.forEach((value, index) => {
-				time_list.push({index: this.posotita.move_list.length - 1 + index - 1, beats: value - 1});
-			})
+			if (this.posotita === Posotita.yporroi) {
+				this.gorgon.tuple.forEach((value, index) => {
+					time_list.push({index: index - 1, beats: value - 1});
+				})
+			} else {
+				this.gorgon.tuple.forEach((value, index) => {
+					time_list.push({index: this.posotita.move_list.length - 1 + index - 1, beats: value - 1});
+				})
+			}
 		}
 		return time_list;
 	}
@@ -481,6 +483,7 @@ class Posotita {
 	// symploki
 	static oligon_kentimata = new Posotita('oligon-kentimata', [+1, +1], new Glyph(Glyph.font_byzantina, 'v'), false);
 	static syneches_elafron = new Posotita('syneches-elafron', [-1, -1], new Glyph(Glyph.font_byzantina, 'h'), false);
+	static yporroi = new Posotita('yporroi', [-1, -1], new Glyph(Glyph.font_byzantina, '\''), true);
 	// TODO center text below syneches elafron
 	static apostrofos_kentimata = new Posotita('apostrofos-kentimata', [-1, +1], new Glyph(Glyph.font_byzantina, '-'), false);
 
@@ -498,10 +501,31 @@ class Posotita {
 	}
 
 	/**
+	 * @param {PosotitaBlock} block
 	 * @returns {HTMLSpanElement}
 	 */
-	get_span() {
+	get_span(block) {
+		if (this === Posotita.oligon_kentimata && block.gorgon === Gorgon.gorgon)
+			return new Glyph(Glyph.font_byzantina, 'V').get_span();
+		if (this === Posotita.yporroi && block.gorgon === Gorgon.gorgon)
+			return new Glyph(Glyph.font_byzantina, ':').get_span();
 		return this.glyph.get_span();
+	}
+
+	/**
+	 * @returns {boolean}
+	 */
+	is_petasti() {
+		switch (this) {
+			case Posotita.ison_petasti:
+			case Posotita.petasti:
+			case Posotita.oligon_petasti:
+			case Posotita.oligon_kentima_petasti:
+			case Posotita.apostrofos_petasti:
+				return true;
+			default:
+				return false;
+		}
 	}
 }
 
@@ -655,11 +679,17 @@ class SecondaryCharacter {
 	}
 
 	/**
-	 * @param {boolean} thin
+	 * @param {PosotitaBlock} block
 	 * @returns {HTMLSpanElement}
 	 */
-	get_span(thin) {
-		const glyph = thin && this.glyph_thin !== null ? this.glyph_thin : this.glyph;
+	get_span(block) {
+		if (block.posotita === Posotita.oligon_kentimata && this === Gorgon.gorgon)
+			return Glyph.get_empty_span();
+		if (block.posotita === Posotita.yporroi && this === Gorgon.gorgon)
+			return Glyph.get_empty_span();
+		if (block.posotita.is_petasti() && this === Chronos.klasma)
+			return new Glyph(Glyph.font_byzantina, 'I').get_span();
+		const glyph = block.posotita.thin && this.glyph_thin !== null ? this.glyph_thin : this.glyph;
 		const span = glyph.get_span();
 		if (this.is_red())
 			span.classList.add(color_object.red);
@@ -926,7 +956,7 @@ const block_list = [
 ];
 
 block_list.push(...[
-	new PosotitaBlock(Posotita.oligon, [], null),
+	new PosotitaBlock(Posotita.oligon, [Chronos.klasma], null),
 	new MartyriaBlock(MartyriaFthongos.pa, MartyrikoSimadi.protos, false),
 	new PosotitaBlock(Posotita.petasti, [], 'Κυ'),
 	new PosotitaBlock(Posotita.apostrofos, [], 'ρι'),
@@ -947,8 +977,14 @@ block_list.push(...[
 	new MartyriaBlock(MartyriaFthongos.pa, MartyrikoSimadi.protos, false),
 	new PosotitaBlock(Posotita.ison, [], 'ει'),
 	SimpleBlock.diastoli,
-	new PosotitaBlock(Posotita.oligon_kentima_petasti, [Chronos.klasma], 'σα'), // TODO klasma kato (force)
+	new PosotitaBlock(Posotita.oligon_kentima_petasti, [Chronos.klasma], 'σα'),
 	new PosotitaBlock(Posotita.apostrofos_kentimata, [], 'κου'),
+	new PosotitaBlock(Posotita.apostrofos, [Chronos.klasma], 'σο'),
+	new PosotitaBlock(Posotita.yporroi, [Gorgon.gorgon], null),
+	new PosotitaBlock(Posotita.oligon, [Gorgon.gorgon, SecondaryCharacter.antikenoma], 'ο'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'ον'),
+	new PosotitaBlock(Posotita.ison, [Chronos.klasma], 'μου'),
+	new MartyriaBlock(MartyriaFthongos.pa, MartyrikoSimadi.protos, false),
 ]);
 
 /**
