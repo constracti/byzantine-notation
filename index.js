@@ -1,34 +1,45 @@
-const font_object = {
-	byzantina: 'bz-byzantina',
-	loipa: 'bz-loipa', // TODO top margin
-	fthores: 'bz-fthores',
-	ison: 'bz-ison',
-	chronos: 'bz-chronos',
-};
-
 const color_object = {
 	red: 'bz-red',
 };
 
-/**
- * @param {string} font
- * @param {string} char
- * @returns {HTMLSpanElement}
- */
-function custom_span(font, char) {
-	const span = document.createElement('span');
-	span.classList.add(font);
-	span.innerHTML = char;
-	return span;
+
+class Glyph {
+
+	/**
+	 * @type {string}
+	 */
+	font;
+
+	/**
+	 * @type {string}
+	 */
+	char;
+
+	static font_byzantina = 'bz-byzantina';
+	static font_loipa = 'bz-loipa'; // TODO top margin
+	static font_fthores = 'bz-fthores';
+	static font_ison = 'bz-ison';
+	static font_chronos = 'bz-chronos';
+
+	/**
+	 * @param {string} font
+	 * @param {string} char
+	 */
+	constructor(font, char) {
+		this.font = font;
+		this.char = char;
+	}
+
+	/**
+	 * @returns {HTMLSpanElement}
+	 */
+	get_span() {
+		const span = document.createElement('span');
+		span.classList.add(this.font);
+		span.innerHTML = this.char;
+		return span;
+	}
 }
-
-
-/**
- * @typedef Letter
- * @type {object}
- * @property {string} font
- * @property {string} char
- */
 
 
 class AbstractBlock {
@@ -94,21 +105,19 @@ class SimpleBlock extends AbstractBlock {
 	 */
 	color;
 
-	static vareia = new SimpleBlock('vareia', font_object.byzantina, '\\', null);
-	static diastoli = new SimpleBlock('diastoli', font_object.byzantina, 'o', null);
-	static stavros = new SimpleBlock('stavros', font_object.fthores, '\'', color_object.red);
+	static vareia = new SimpleBlock('vareia', new Glyph(Glyph.font_byzantina, '\\'), null);
+	static diastoli = new SimpleBlock('diastoli', new Glyph(Glyph.font_byzantina, 'o'), null);
+	static stavros = new SimpleBlock('stavros', new Glyph(Glyph.font_fthores, '\''), color_object.red);
 
 	/**
 	 * @param {string} name
-	 * @param {string} font
-	 * @param {string} char
+	 * @param {Glyph} glyph
 	 * @param {?string} color
 	 */
-	constructor(name, font, char, color) {
+	constructor(name, glyph, color) {
 		super(null);
 		this.name = name;
-		this.font = font;
-		this.char = char;
+		this.glyph = glyph;
 		this.color = color;
 	}
 
@@ -119,11 +128,9 @@ class SimpleBlock extends AbstractBlock {
 		const block_div = super.get_div();
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
-		const span = document.createElement('span');
-		span.classList.add(this.font);
+		const span = this.glyph.get_span();
 		if (this.color !== null)
 			span.classList.add(this.color);
-		span.innerHTML = this.char;
 		symbol_div.append(span);
 		block_div.append(symbol_div);
 		return block_div;
@@ -179,10 +186,9 @@ class MartyriaBlock extends AbstractBlock {
 	 * @returns {HTMLSpanElement}
 	 */
 	static #get_teleies_span() {
-		const span = document.createElement('span');
-		span.classList.add(font_object.byzantina);
+		const glyph = new Glyph(Glyph.font_byzantina, '`');
+		const span = glyph.get_span();
 		span.classList.add(color_object.red);
-		span.innerHTML = '`';
 		return span;
 	}
 }
@@ -201,39 +207,35 @@ class MartyriaFthongos {
 	note;
 
 	/**
-	 * @type {string}
+	 * @type {Glyph}
 	 */
-	font;
+	glyph;
 
-	/**
-	 * @type {string}
-	 */
-	char;
-
-	static ni = new MartyriaFthongos('ni', 0, font_object.byzantina, '7');
-	static di = new MartyriaFthongos('di', 4, font_object.byzantina, '4');
+	static ni = new MartyriaFthongos('ni', 0, new Glyph(Glyph.font_byzantina, '7'));
+	static pa = new MartyriaFthongos('pa', 1, new Glyph(Glyph.font_byzantina, '1'));
+	static vou = new MartyriaFthongos('vou', 2, new Glyph(Glyph.font_byzantina, '2'));
+	static ga = new MartyriaFthongos('ga', 3, new Glyph(Glyph.font_byzantina, '3'));
+	static di = new MartyriaFthongos('di', 4, new Glyph(Glyph.font_byzantina, '4'));
+	static ke = new MartyriaFthongos('ke', 5, new Glyph(Glyph.font_byzantina, '5'));
+	static zo = new MartyriaFthongos('zo', 6, new Glyph(Glyph.font_byzantina, '6'));
 
 	/**
 	 * @param {string} name
 	 * @param {number} note
-	 * @param {string} font
-	 * @param {string} char
+	 * @param {Glyph} glyph
 	 */
-	constructor(name, note, font, char) {
+	constructor(name, note, glyph) {
 		this.name = name;
 		this.note = note;
-		this.font = font;
-		this.char = char;
+		this.glyph = glyph;
 	}
 
 	/**
 	 * @returns {HTMLSpanElement}
 	 */
 	get_span() {
-		const span = document.createElement('span');
-		span.classList.add(this.font);
+		const span = this.glyph.get_span();
 		span.classList.add(color_object.red);
-		span.innerHTML = this.char;
 		return span;
 	}
 }
@@ -247,36 +249,28 @@ class MartyrikoSimadi {
 	name;
 
 	/**
-	 * @type {string}
+	 * @type {Glyph}
 	 */
-	font;
+	glyph;
 
-	/**
-	 * @type {string}
-	 */
-	char;
-
-	static delta = new MartyrikoSimadi('delta', font_object.byzantina, '&');
+	static protos = new MartyrikoSimadi('protos', new Glyph(Glyph.font_byzantina, '!'));
+	static delta = new MartyrikoSimadi('delta', new Glyph(Glyph.font_byzantina, '&'));
 
 	/**
 	 * @param {string} name
-	 * @param {string} font
-	 * @param {string} char
+	 * @param {Glyph} glyph
 	 */
-	constructor(name, font, char) {
+	constructor(name, glyph) {
 		this.name = name;
-		this.font = font;
-		this.char = char;
+		this.glyph = glyph;
 	}
 
 	/**
 	 * @returns {HTMLSpanElement}
 	 */
 	get_span() {
-		const span = document.createElement('span');
-		span.classList.add(this.font);
+		const span = this.glyph.get_span();
 		span.classList.add(color_object.red);
-		span.innerHTML = this.char;
 		return span;
 	}
 }
@@ -363,7 +357,7 @@ class PosotitaBlock extends AbstractBlock {
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
 		if (this.posotita === Posotita.oligon_kentimata && this.gorgon === Gorgon.gorgon) {
-			symbol_div.append(custom_span(font_object.byzantina, 'V'));
+			symbol_div.append(new Glyph(Glyph.font_byzantina, 'V').get_span());
 		} else {
 			symbol_div.append(this.posotita.get_span());
 			if (this.gorgon !== null)
@@ -461,50 +455,45 @@ class Posotita {
 	font;
 
 	/**
-	 * @type {string}
+	 * @type {Glyph}
 	 */
-	char;
-
-	/**
-	 * @type {boolean}
-	 */
-	thin;
+	glyph;
 
 	// isotita
-	static ison = new Posotita('ison', [0], font_object.byzantina, 'a', false);
-	static ison_petasti = new Posotita('ison-petasti', [0], font_object.byzantina, 'A', false);
-	static ison_stirigma = new Posotita('ison-stirigma', [0], font_object.loipa, '0', false);
+	static ison = new Posotita('ison', [0], new Glyph(Glyph.font_byzantina, 'a'), false);
+	static ison_petasti = new Posotita('ison-petasti', [0], new Glyph(Glyph.font_byzantina, 'A'), false);
+	static ison_stirigma = new Posotita('ison-stirigma', [0], new Glyph(Glyph.font_loipa, '0'), false);
 	// anavasi
-	static oligon = new Posotita('oligon', [+1], font_object.byzantina, 's', false);
-	static petasti = new Posotita('petasti', [+1], font_object.byzantina, 'S', false);
-	static kentimata = new Posotita('kentimata', [+1], font_object.byzantina, 'x', true);
-	// static oligon_kentima_kato = new PosotitaCharaktiras('oligon-kentima-kato', [+2], font_object.byzantina, 'd', false);
-	static oligon_kentimata = new Posotita('oligon-kentimata', [+1, +1], font_object.byzantina, 'v', false);
-	static oligon_kentima_dipla = new Posotita('oligon-kentima-dipla', [+2], font_object.byzantina, 'sC', false);
-	static ypsili_dexia = new Posotita('ypsili-dexia', [+4], font_object.byzantina, 'g', false);
+	static oligon = new Posotita('oligon', [+1], new Glyph(Glyph.font_byzantina, 's'), false);
+	static petasti = new Posotita('petasti', [+1], new Glyph(Glyph.font_byzantina, 'S'), false);
+	static kentimata = new Posotita('kentimata', [+1], new Glyph(Glyph.font_byzantina, 'x'), true);
+	// static oligon_kentima_kato = new Posotita('oligon-kentima-kato', [+2], new Glyph(Glyph.font_byzantina, 'd'), false);
+	static oligon_kentima_dipla = new Posotita('oligon-kentima-dipla', [+2], new Glyph(Glyph.font_byzantina, 'sC'), false);
+	static oligon_petasti = new Posotita('oligon-petasti', [+2], new Glyph(Glyph.font_byzantina, 'D'), false);
+	static oligon_kentima_petasti = new Posotita('oligon-kentima-petasti', [+3], new Glyph(Glyph.font_byzantina, 'F'), false);
+	static ypsili_dexia = new Posotita('ypsili-dexia', [+4], new Glyph(Glyph.font_byzantina, 'g'), false);
 	// katavasi
-	static apostrofos = new Posotita('apostrofos', [-1], font_object.byzantina, 'j', true);
-	static apostrofos_petasti = new Posotita('apostrofos-petasti', [-1], font_object.byzantina, 'J', false);
-	static elafron = new Posotita('elafron', [-2], font_object.byzantina, 'k', false);
-	static elafron_apostrofos = new Posotita('elafron-apostrofos', [-3], font_object.byzantina, 'l', false);
-	static chamili = new Posotita('chamili', [-4], font_object.byzantina, ';', false);
+	static apostrofos = new Posotita('apostrofos', [-1], new Glyph(Glyph.font_byzantina, 'j'), true);
+	static apostrofos_petasti = new Posotita('apostrofos-petasti', [-1], new Glyph(Glyph.font_byzantina, 'J'), false);
+	static elafron = new Posotita('elafron', [-2], new Glyph(Glyph.font_byzantina, 'k'), false);
+	static elafron_apostrofos = new Posotita('elafron-apostrofos', [-3], new Glyph(Glyph.font_byzantina, 'l'), false);
+	static chamili = new Posotita('chamili', [-4], new Glyph(Glyph.font_byzantina, ';'), false);
 	// symploki
-	static syneches_elafron = new Posotita('syneches-elafron', [-1, -1], font_object.byzantina, 'h', false);
+	static oligon_kentimata = new Posotita('oligon-kentimata', [+1, +1], new Glyph(Glyph.font_byzantina, 'v'), false);
+	static syneches_elafron = new Posotita('syneches-elafron', [-1, -1], new Glyph(Glyph.font_byzantina, 'h'), false);
 	// TODO center text below syneches elafron
-	static apostrofos_kentimata = new Posotita('apostrofos-kentimata', [-1, +1], font_object.byzantina, '-', false);
+	static apostrofos_kentimata = new Posotita('apostrofos-kentimata', [-1, +1], new Glyph(Glyph.font_byzantina, '-'), false);
 
 	/**
 	 * @param {string} name
 	 * @param {number[]} move_list
-	 * @param {string} font
-	 * @param {string} char
+	 * @param {Glyph} glyph
 	 * @param {boolean} thin
 	 */
-	constructor(name, move_list, font, char, thin) {
+	constructor(name, move_list, glyph, thin) {
 		this.name = name;
 		this.move_list = move_list;
-		this.font = font;
-		this.char = char;
+		this.glyph = glyph;
 		this.thin = thin;
 	}
 
@@ -512,10 +501,7 @@ class Posotita {
 	 * @returns {HTMLSpanElement}
 	 */
 	get_span() {
-		const span = document.createElement('span');
-		span.classList.add(this.font);
-		span.innerHTML = this.char;
-		return span;
+		return this.glyph.get_span();
 	}
 }
 
@@ -572,39 +558,37 @@ class Agogi {
 	tempo;
 
 	/**
-	 * @type {Letter}
+	 * @type {Glyph}
 	 */
-	primary_letter;
+	primary_glyph;
 
 	/**
-	 * @type {Letter}
+	 * @type {Glyph}
 	 */
-	secondary_letter;
+	secondary_glyph;
 
-	static metria = new Agogi('metria', 120, {font: font_object.chronos, char: 'k'}, {font: font_object.chronos, char: 'K'});
-	static tacheia = new Agogi('tacheia', 180, {font: font_object.chronos, char: 'l'}, {font: font_object.chronos, char: 'L'});
+	static metria = new Agogi('metria', 120, new Glyph(Glyph.font_chronos, 'k'), new Glyph(Glyph.font_chronos, 'K'));
+	static tacheia = new Agogi('tacheia', 180, new Glyph(Glyph.font_chronos, 'l'), new Glyph(Glyph.font_chronos, 'L'));
 
 	/**
 	 * @param {string} name
 	 * @param {number} tempo
-	 * @param {Letter} primary_letter
-	 * @param {Letter} secondary_letter
+	 * @param {Glyph} primary_glyph
+	 * @param {Glyph} secondary_glyph
 	 */
-	constructor(name, tempo, primary_letter, secondary_letter) {
+	constructor(name, tempo, primary_glyph, secondary_glyph) {
 		this.name = name;
 		this.tempo = tempo;
-		this.primary_letter = primary_letter;
-		this.secondary_letter = secondary_letter;
+		this.primary_glyph = primary_glyph;
+		this.secondary_glyph = secondary_glyph;
 	}
 
 	/**
 	 * @returns {HTMLSpanElement}
 	 */
 	get_primary_span() {
-		const span = document.createElement('span');
-		span.classList.add(this.primary_letter.font);
+		const span = this.primary_glyph.get_span();
 		span.classList.add(color_object.red);
-		span.innerHTML = this.primary_letter.char;
 		return span;
 	}
 
@@ -612,10 +596,8 @@ class Agogi {
 	 * @returns {HTMLSpanElement}
 	 */
 	get_secondary_span() {
-		const span = document.createElement('span');
-		span.classList.add(this.secondary_letter.font);
+		const span = this.secondary_glyph.get_span();
 		span.classList.add(color_object.red);
-		span.innerHTML = this.secondary_letter.char;
 		return span;
 	}
 }
@@ -634,14 +616,14 @@ class SecondaryCharacter {
 	type;
 
 	/**
-	 * @type {Letter}
+	 * @type {Glyph}
 	 */
-	letter;
+	glyph;
 
 	/**
-	 * @type {?Letter}
+	 * @type {?Glyph}
 	 */
-	letter_thin;
+	glyph_thin;
 
 	static type_chronos = 'chronos';
 	static type_gorgon = 'gorgon';
@@ -649,20 +631,23 @@ class SecondaryCharacter {
 	static type_rythmos = 'rythmos';
 	static type_alloiosi = 'alloiosi';
 
-	static psifiston = new SecondaryCharacter('psifiston', SecondaryCharacter.type_kallopismos, {font: font_object.byzantina, char: '/'}, null);
-	static rythmos_trisimos = new SecondaryCharacter('rythmos-trisimos', SecondaryCharacter.type_rythmos, {font: font_object.fthores, char: '6'}, {font: font_object.fthores, char: '^'});
+	static psifiston = new SecondaryCharacter('psifiston', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, '/'), null);
+	static antikenoma = new SecondaryCharacter('antikenoma', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, 'm'), new Glyph(Glyph.font_byzantina, 'M'));
+	static omalon_diplo = new SecondaryCharacter('omalon-diplo', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, ','), null);
+	static rythmos_trisimos = new SecondaryCharacter('rythmos-trisimos', SecondaryCharacter.type_rythmos, new Glyph(Glyph.font_fthores, '6'), new Glyph(Glyph.font_fthores, '^'));
+	static rythmos_tetrasimos = new SecondaryCharacter('rythmos-tetrasimos', SecondaryCharacter.type_rythmos, new Glyph(Glyph.font_fthores, '7'), new Glyph(Glyph.font_fthores, '&'));
 
 	/**
 	 * @param {string} name
 	 * @param {string} type
-	 * @param {Letter} letter
-	 * @param {?Letter} letter_thin
+	 * @param {Glyph} glyph
+	 * @param {?Glyph} glyph_thin
 	 */
-	constructor(name, type, letter, letter_thin) {
+	constructor(name, type, glyph, glyph_thin) {
 		this.name = name;
 		this.type = type;
-		this.letter = letter;
-		this.letter_thin = letter_thin;
+		this.glyph = glyph;
+		this.glyph_thin = glyph_thin;
 	}
 
 	is_red() {
@@ -674,12 +659,10 @@ class SecondaryCharacter {
 	 * @returns {HTMLSpanElement}
 	 */
 	get_span(thin) {
-		const span = document.createElement('span');
-		const letter = thin && this.letter_thin !== null ? this.letter_thin : this.letter;
-		span.classList.add(letter.font);
+		const glyph = thin && this.glyph_thin !== null ? this.glyph_thin : this.glyph;
+		const span = glyph.get_span();
 		if (this.is_red())
 			span.classList.add(color_object.red);
-		span.innerHTML = letter.char;
 		return span;
 	}
 }
@@ -692,16 +675,17 @@ class Chronos extends SecondaryCharacter {
 	 */
 	beats;
 
-	static klasma = new Chronos('klasma', 1, {font: font_object.byzantina, char: 'u'}, {font: font_object.byzantina, char: 'i'});
+	static klasma = new Chronos('klasma', 1, new Glyph(Glyph.font_byzantina, 'u'), new Glyph(Glyph.font_byzantina, 'i'));
+	static apli = new Chronos('apli', 1, new Glyph(Glyph.font_byzantina, '8'), new Glyph(Glyph.font_byzantina, '*'));
 
 	/**
 	 * @param {string} name
 	 * @param {number} beats
-	 * @param {Letter} letter
-	 * @param {?Letter} letter_thin
+	 * @param {Glyph} glyph
+	 * @param {?Glyph} glyph_thin
 	 */
-	constructor(name, beats, letter, letter_thin) {
-		super(name, SecondaryCharacter.type_chronos, letter, letter_thin);
+	constructor(name, beats, glyph, glyph_thin) {
+		super(name, SecondaryCharacter.type_chronos, glyph, glyph_thin);
 		this.beats = beats;
 	}
 }
@@ -714,16 +698,16 @@ class Gorgon extends SecondaryCharacter {
 	 */
 	tuple;
 
-	static gorgon = new Gorgon('gorgon', [1/2, 1/2], {font: font_object.byzantina, char: 'e'}, null);
+	static gorgon = new Gorgon('gorgon', [1/2, 1/2], new Glyph(Glyph.font_byzantina, 'e'), new Glyph(Glyph.font_byzantina, 'r'));
 
 	/**
 	 * @param {string} name
 	 * @param {number[]} tuple
-	 * @param {Letter} letter
-	 * @param {?Letter} letter_thin
+	 * @param {Glyph} glyph
+	 * @param {?Glyph} glyph_thin
 	 */
-	constructor(name, tuple, letter, letter_thin) {
-		super(name, SecondaryCharacter.type_gorgon, letter, letter_thin);
+	constructor(name, tuple, glyph, glyph_thin) {
+		super(name, SecondaryCharacter.type_gorgon, glyph, glyph_thin);
 		this.tuple = tuple;
 	}
 }
@@ -736,18 +720,18 @@ class Alloiosi extends SecondaryCharacter {
 	 */
 	steps;
 
-	static yfesi_apli = new Alloiosi('yfesi_apli', -2, {font: font_object.byzantina, char: 'y'}, null);
-	static yfesi_monogrammi = new Alloiosi('yfesi_monogrammi', -4, {font: font_object.byzantina, char: 'Y'}, null);
+	static yfesi_apli = new Alloiosi('yfesi_apli', -2, new Glyph(Glyph.font_byzantina, 'y'), null);
+	static yfesi_monogrammi = new Alloiosi('yfesi_monogrammi', -4, new Glyph(Glyph.font_byzantina, 'Y'), null);
 
 	/**
 	 * 
 	 * @param {string} name
 	 * @param {number} steps
-	 * @param {Letter} letter
-	 * @param {?Letter} letter_thin
+	 * @param {Glyph} glyph
+	 * @param {?Glyph} glyph_thin
 	 */
-	constructor(name, steps, letter, letter_thin) {
-		super(name, SecondaryCharacter.type_alloiosi, letter, letter_thin);
+	constructor(name, steps, glyph, glyph_thin) {
+		super(name, SecondaryCharacter.type_alloiosi, glyph, glyph_thin);
 		this.steps = steps;
 	}
 
@@ -840,7 +824,7 @@ const block_list = [
 	SimpleBlock.stavros,
 	new PosotitaBlock(Posotita.ison, [], 'αυ'),
 	SimpleBlock.diastoli,
-	new PosotitaBlock(Posotita.oligon_kentimata, [Gorgon.gorgon, Alloiosi.yfesi_monogrammi], 'χε'), // TODO gorgon
+	new PosotitaBlock(Posotita.oligon_kentimata, [Gorgon.gorgon, Alloiosi.yfesi_monogrammi], 'χε'),
 	new PosotitaBlock(Posotita.apostrofos, [], 'ε'),
 	new PosotitaBlock(Posotita.apostrofos, [], 'νας'),
 	new PosotitaBlock(Posotita.ison, [], 'αυ'),
@@ -896,7 +880,76 @@ const block_list = [
 	SimpleBlock.diastoli,
 	new PosotitaBlock(Posotita.apostrofos, [Chronos.klasma, SecondaryCharacter.rythmos_trisimos], 'μην'), // TODO rythmos on klasma
 	new MartyriaBlock(MartyriaFthongos.ni, MartyrikoSimadi.delta, false),
+	// Αγίω Πνεύματι
+	new PosotitaBlock(Posotita.ison, [], 'Α'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.oligon_kentima_dipla, [], 'γι'),
+	new PosotitaBlock(Posotita.oligon, [], 'ω'),
+	new PosotitaBlock(Posotita.oligon, [], 'Πνευ'),
+	new PosotitaBlock(Posotita.ison, [], 'μα'),
+	new PosotitaBlock(Posotita.ison, [], 'τι'),
+	new PosotitaBlock(Posotita.ison, [], 'το'),
+	new PosotitaBlock(Posotita.petasti, [], 'ζην'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'τα'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.oligon_kentimata, [Alloiosi.yfesi_monogrammi, SecondaryCharacter.rythmos_trisimos], 'παν'),
+	new PosotitaBlock(Posotita.elafron, [], 'τα'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.petasti, [SecondaryCharacter.rythmos_trisimos], 'φως'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'εκ'),
+	new PosotitaBlock(Posotita.ison, [], 'φω'),
+	SimpleBlock.diastoli,
+	SimpleBlock.vareia,
+	new PosotitaBlock(Posotita.apostrofos, [], 'το'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'ος'),
+	new PosotitaBlock(Posotita.oligon, [], 'Θε'),
+	new PosotitaBlock(Posotita.oligon, [], 'ος'),
+	new PosotitaBlock(Posotita.oligon_kentimata, [Alloiosi.yfesi_monogrammi], 'με'),
+	new PosotitaBlock(Posotita.elafron, [Chronos.klasma], 'γας'),
+	new PosotitaBlock(Posotita.ison, [], 'συν'),
+	new PosotitaBlock(Posotita.oligon, [], 'Πα'),
+	new PosotitaBlock(Posotita.petasti, [Alloiosi.yfesi_monogrammi], 'τρι'),
+	SimpleBlock.stavros,
+	new PosotitaBlock(Posotita.elafron, [], 'υ'),
+	SimpleBlock.vareia,
+	new PosotitaBlock(Posotita.oligon, [], 'μνου'),
+	new PosotitaBlock(Posotita.ison, [SecondaryCharacter.omalon_diplo], 'ου'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'μεν'),
+	new PosotitaBlock(Posotita.ison, [], 'αυ'),
+	new PosotitaBlock(Posotita.elafron_apostrofos, [], 'το'),
+	new PosotitaBlock(Posotita.kentimata, [], 'ο'),
+	new PosotitaBlock(Posotita.ison, [], 'και'),
+	new PosotitaBlock(Posotita.elafron, [], 'τω'),
+	new PosotitaBlock(Posotita.oligon_kentimata, [], 'Λο'),
+	new PosotitaBlock(Posotita.elafron, [Chronos.klasma], 'γω'),
+	new MartyriaBlock(MartyriaFthongos.ni, MartyrikoSimadi.delta, false),
 ];
+
+block_list.push(...[
+	new PosotitaBlock(Posotita.oligon, [], null),
+	new MartyriaBlock(MartyriaFthongos.pa, MartyrikoSimadi.protos, false),
+	new PosotitaBlock(Posotita.petasti, [], 'Κυ'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'ρι'),
+	new PosotitaBlock(Posotita.ison, [], 'ε'),
+	SimpleBlock.stavros,
+	new PosotitaBlock(Posotita.oligon, [], 'ε'),
+	new PosotitaBlock(Posotita.oligon, [Chronos.klasma, SecondaryCharacter.psifiston], 'κε'),
+	new PosotitaBlock(Posotita.apostrofos, [Chronos.klasma], 'κρα'),
+	new PosotitaBlock(Posotita.apostrofos, [Chronos.apli, SecondaryCharacter.antikenoma], 'ξα'),
+	new PosotitaBlock(Posotita.apostrofos, [Gorgon.gorgon], 'α'),
+	SimpleBlock.vareia,
+	new PosotitaBlock(Posotita.ison, [], 'προ'),
+	new PosotitaBlock(Posotita.apostrofos, [Gorgon.gorgon], 'ο'),
+	new PosotitaBlock(Posotita.oligon, [], 'ος'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.oligon_petasti, [SecondaryCharacter.rythmos_tetrasimos], 'σε'), // TODO rythmos on posotita
+	new PosotitaBlock(Posotita.apostrofos, [Chronos.klasma], 'ε'),
+	new MartyriaBlock(MartyriaFthongos.pa, MartyrikoSimadi.protos, false),
+	new PosotitaBlock(Posotita.ison, [], 'ει'),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.oligon_kentima_petasti, [Chronos.klasma], 'σα'), // TODO klasma kato (force)
+	new PosotitaBlock(Posotita.apostrofos_kentimata, [], 'κου'),
+]);
 
 /**
  * @typedef Part
@@ -941,7 +994,7 @@ block_list.forEach((block, block_index) => {
 	part_map.set(block_index, part_list.length);
 	part_list.push(...part_list_of_block);
 });
-// TODO finally, apply beats
+// finally, apply beats
 block_list.forEach((block, block_index) => {
 	const part_index = part_map.get(block_index);
 	if (part_index === undefined)
