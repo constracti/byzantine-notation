@@ -15,6 +15,8 @@ class Glyph {
 	 */
 	char;
 
+	static empty = new Glyph('bz-empty', '');
+
 	static font_byzantina = 'bz-byzantina';
 	static font_loipa = 'bz-loipa'; // TODO top margin
 	static font_fthores = 'bz-fthores';
@@ -38,10 +40,6 @@ class Glyph {
 		span.classList.add(this.font);
 		span.innerHTML = this.char;
 		return span;
-	}
-
-	static get_empty_span() {
-		return document.createElement('span');
 	}
 }
 
@@ -250,7 +248,7 @@ class MartyrikoSimadi {
 	/**
 	 * @type {string}
 	 */
-	name;
+	name; // TODO martyriko simadi names
 
 	/**
 	 * @type {Glyph}
@@ -258,6 +256,8 @@ class MartyrikoSimadi {
 	glyph;
 
 	static protos = new MartyrikoSimadi('protos', new Glyph(Glyph.font_byzantina, '!'));
+	static nana = new MartyrikoSimadi('nana', new Glyph(Glyph.font_byzantina, '#'));
+	static varys = new MartyrikoSimadi('varys', new Glyph(Glyph.font_byzantina, '^'));
 	static delta = new MartyrikoSimadi('delta', new Glyph(Glyph.font_byzantina, '&'));
 
 	/**
@@ -469,11 +469,12 @@ class Posotita {
 	static oligon = new Posotita('oligon', [+1], new Glyph(Glyph.font_byzantina, 's'), false);
 	static petasti = new Posotita('petasti', [+1], new Glyph(Glyph.font_byzantina, 'S'), false);
 	static kentimata = new Posotita('kentimata', [+1], new Glyph(Glyph.font_byzantina, 'x'), true);
-	// static oligon_kentima_kato = new Posotita('oligon-kentima-kato', [+2], new Glyph(Glyph.font_byzantina, 'd'), false);
+	static oligon_kentima_kato = new Posotita('oligon-kentima-kato', [+2], new Glyph(Glyph.font_byzantina, 'd'), false);
 	static oligon_kentima_dipla = new Posotita('oligon-kentima-dipla', [+2], new Glyph(Glyph.font_byzantina, 'sC'), false);
 	static oligon_petasti = new Posotita('oligon-petasti', [+2], new Glyph(Glyph.font_byzantina, 'D'), false);
 	static oligon_kentima_petasti = new Posotita('oligon-kentima-petasti', [+3], new Glyph(Glyph.font_byzantina, 'F'), false);
 	static ypsili_dexia = new Posotita('ypsili-dexia', [+4], new Glyph(Glyph.font_byzantina, 'g'), false);
+	static ypsili_aristera = new Posotita('ypsili-aristera', [+5], new Glyph(Glyph.font_loipa, 's'), false);
 	// katavasi
 	static apostrofos = new Posotita('apostrofos', [-1], new Glyph(Glyph.font_byzantina, 'j'), true);
 	static apostrofos_petasti = new Posotita('apostrofos-petasti', [-1], new Glyph(Glyph.font_byzantina, 'J'), false);
@@ -482,9 +483,11 @@ class Posotita {
 	static chamili = new Posotita('chamili', [-4], new Glyph(Glyph.font_byzantina, ';'), false);
 	// symploki
 	static oligon_kentimata = new Posotita('oligon-kentimata', [+1, +1], new Glyph(Glyph.font_byzantina, 'v'), false);
+	static kentimata_oligon = new Posotita('kentimata-oligon', [+1, +1], new Glyph(Glyph.font_byzantina, 'c'), false);
 	static syneches_elafron = new Posotita('syneches-elafron', [-1, -1], new Glyph(Glyph.font_byzantina, 'h'), false);
 	static yporroi = new Posotita('yporroi', [-1, -1], new Glyph(Glyph.font_byzantina, '\''), true);
 	// TODO center text below syneches elafron
+	static ison_kentimata = new Posotita('ison-kentimata', [0, +1], new Glyph(Glyph.font_byzantina, '_'), false);
 	static apostrofos_kentimata = new Posotita('apostrofos-kentimata', [-1, +1], new Glyph(Glyph.font_byzantina, '-'), false);
 
 	/**
@@ -505,11 +508,21 @@ class Posotita {
 	 * @returns {HTMLSpanElement}
 	 */
 	get_span(block) {
+		return this.get_glyph(block).get_span();
+	}
+
+	/**
+	 * @param {PosotitaBlock} block
+	 * @returns {Glyph}
+	 */
+	get_glyph(block) {
 		if (this === Posotita.oligon_kentimata && block.gorgon === Gorgon.gorgon)
-			return new Glyph(Glyph.font_byzantina, 'V').get_span();
+			return new Glyph(Glyph.font_byzantina, 'V'); // oligon kentimata gorgon
 		if (this === Posotita.yporroi && block.gorgon === Gorgon.gorgon)
-			return new Glyph(Glyph.font_byzantina, ':').get_span();
-		return this.glyph.get_span();
+			return new Glyph(Glyph.font_byzantina, ':'); // yporroi gorgon
+		if (this === Posotita.yporroi && block.gorgon === Gorgon.digorgon)
+			return new Glyph(Glyph.font_loipa, 'e'); // yporroi digorgon
+		return this.glyph;
 	}
 
 	/**
@@ -657,6 +670,7 @@ class SecondaryCharacter {
 
 	static psifiston = new SecondaryCharacter('psifiston', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, '/'), null);
 	static antikenoma = new SecondaryCharacter('antikenoma', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, 'm'), new Glyph(Glyph.font_byzantina, 'M'));
+	static omalon_mono = new SecondaryCharacter('omalon-mono', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, '<'), null);
 	static omalon_diplo = new SecondaryCharacter('omalon-diplo', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, ','), null);
 	static rythmos_trisimos = new SecondaryCharacter('rythmos-trisimos', SecondaryCharacter.type_rythmos, new Glyph(Glyph.font_fthores, '6'), new Glyph(Glyph.font_fthores, '^'));
 	static rythmos_tetrasimos = new SecondaryCharacter('rythmos-tetrasimos', SecondaryCharacter.type_rythmos, new Glyph(Glyph.font_fthores, '7'), new Glyph(Glyph.font_fthores, '&'));
@@ -683,17 +697,20 @@ class SecondaryCharacter {
 	 * @returns {HTMLSpanElement}
 	 */
 	get_span(block) {
-		if (block.posotita === Posotita.oligon_kentimata && this === Gorgon.gorgon)
-			return Glyph.get_empty_span();
-		if (block.posotita === Posotita.yporroi && this === Gorgon.gorgon)
-			return Glyph.get_empty_span();
-		if (block.posotita.is_petasti() && this === Chronos.klasma)
-			return new Glyph(Glyph.font_byzantina, 'I').get_span();
-		const glyph = block.posotita.thin && this.glyph_thin !== null ? this.glyph_thin : this.glyph;
-		const span = glyph.get_span();
+		const span = this.get_glyph(block).get_span();
 		if (this.is_red())
 			span.classList.add(color_object.red);
 		return span;
+	}
+
+	/**
+	 * @param {PosotitaBlock} block
+	 * @returns {Glyph}
+	 */
+	get_glyph(block) {
+		if (block.posotita.thin && this.glyph_thin !== null)
+			return this.glyph_thin;
+		return this.glyph;
 	}
 }
 
@@ -718,6 +735,16 @@ class Chronos extends SecondaryCharacter {
 		super(name, SecondaryCharacter.type_chronos, glyph, glyph_thin);
 		this.beats = beats;
 	}
+
+	/**
+	 * @param {PosotitaBlock} block
+	 * @returns {Glyph}
+	 */
+	get_glyph(block) {
+		if (block.posotita.is_petasti() && this === Chronos.klasma)
+			return new Glyph(Glyph.font_byzantina, 'I'); // petasti kato
+		return super.get_glyph(block);
+	}
 }
 
 
@@ -729,6 +756,7 @@ class Gorgon extends SecondaryCharacter {
 	tuple;
 
 	static gorgon = new Gorgon('gorgon', [1/2, 1/2], new Glyph(Glyph.font_byzantina, 'e'), new Glyph(Glyph.font_byzantina, 'r'));
+	static digorgon = new Gorgon('digorgon', [1/3, 1/3, 1/3], new Glyph(Glyph.font_loipa, '2'), new Glyph(Glyph.font_loipa, '@'));
 
 	/**
 	 * @param {string} name
@@ -740,6 +768,25 @@ class Gorgon extends SecondaryCharacter {
 		super(name, SecondaryCharacter.type_gorgon, glyph, glyph_thin);
 		this.tuple = tuple;
 	}
+
+	/**
+	 * @param {PosotitaBlock} block
+	 * @returns {Glyph}
+	 */
+	get_glyph(block) {
+		if (block.posotita === Posotita.oligon_kentimata && this === Gorgon.gorgon)
+			return Glyph.empty;
+		if (block.posotita === Posotita.yporroi && this === Gorgon.gorgon)
+			return Glyph.empty;
+		if (block.posotita === Posotita.yporroi && this === Gorgon.digorgon)
+			return Glyph.empty;
+		if (block.posotita === Posotita.ison_kentimata)
+			return this.glyph_thin ?? this.glyph;
+		if (block.posotita === Posotita.oligon && this === Gorgon.gorgon && block.kallopismos === null)
+			return new Glyph(Glyph.font_byzantina, 'E'); // gorgon kato
+		// TODO gorgon kato on kentimata
+		return super.get_glyph(block);
+	}
 }
 
 
@@ -750,8 +797,8 @@ class Alloiosi extends SecondaryCharacter {
 	 */
 	steps;
 
-	static yfesi_apli = new Alloiosi('yfesi_apli', -2, new Glyph(Glyph.font_byzantina, 'y'), null);
-	static yfesi_monogrammi = new Alloiosi('yfesi_monogrammi', -4, new Glyph(Glyph.font_byzantina, 'Y'), null);
+	static yfesi_apli = new Alloiosi('yfesi_apli', -2, new Glyph(Glyph.font_byzantina, 't'), new Glyph(Glyph.font_byzantina, 'y'));
+	static yfesi_monogrammi = new Alloiosi('yfesi_monogrammi', -4, new Glyph(Glyph.font_byzantina, 'T'), new Glyph(Glyph.font_byzantina, 'Y'));
 
 	/**
 	 * 
@@ -770,6 +817,16 @@ class Alloiosi extends SecondaryCharacter {
 	 */
 	is_red() {
 		return true;
+	}
+
+	/**
+	 * @param {PosotitaBlock} block
+	 * @returns {Glyph}
+	 */
+	get_glyph(block) {
+		if (block.posotita === Posotita.oligon_kentimata)
+			return this.glyph_thin ?? this.glyph;
+		return super.get_glyph(block);
 	}
 }
 
@@ -983,6 +1040,78 @@ block_list.push(...[
 	new PosotitaBlock(Posotita.yporroi, [Gorgon.gorgon], null),
 	new PosotitaBlock(Posotita.oligon, [Gorgon.gorgon, SecondaryCharacter.antikenoma], 'ο'),
 	new PosotitaBlock(Posotita.apostrofos, [], 'ον'),
+	new PosotitaBlock(Posotita.ison, [Chronos.klasma], 'μου'),
+	new MartyriaBlock(MartyriaFthongos.pa, MartyrikoSimadi.protos, false),
+	new PosotitaBlock(Posotita.oligon, [Gorgon.gorgon], 'ει'),
+	new PosotitaBlock(Posotita.oligon, [], 'σα'),
+	new PosotitaBlock(Posotita.oligon, [SecondaryCharacter.psifiston, Alloiosi.yfesi_apli], 'α'),
+	new PosotitaBlock(Posotita.syneches_elafron, [], 'κου'),
+	new PosotitaBlock(Posotita.apostrofos, [Chronos.apli, Gorgon.gorgon], 'ου'),
+	new PosotitaBlock(Posotita.ison_kentimata, [Gorgon.gorgon], 'σο'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'ον'),
+	SimpleBlock.vareia,
+	new PosotitaBlock(Posotita.apostrofos, [], 'μου'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'ου'),
+	new PosotitaBlock(Posotita.oligon, [], 'Κυ'),
+	new PosotitaBlock(Posotita.kentimata_oligon, [], 'υ'),
+	new PosotitaBlock(Posotita.oligon_kentimata, [Gorgon.gorgon], 'υ'),
+	SimpleBlock.vareia,
+	new PosotitaBlock(Posotita.apostrofos, [Chronos.klasma], 'ρι'),
+	new PosotitaBlock(Posotita.yporroi, [Gorgon.gorgon], null),
+	new PosotitaBlock(Posotita.oligon, [Gorgon.gorgon, SecondaryCharacter.antikenoma], 'ι'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'ι'),
+	new PosotitaBlock(Posotita.ison, [Chronos.klasma], 'ε'),
+	new MartyriaBlock(MartyriaFthongos.pa, MartyrikoSimadi.protos, false),
+	new PosotitaBlock(Posotita.oligon_kentima_petasti, [], 'Κυ'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'ρι'),
+	new PosotitaBlock(Posotita.ison, [], 'ε'),
+	SimpleBlock.stavros,
+	new PosotitaBlock(Posotita.oligon, [], 'ε'),
+	new PosotitaBlock(Posotita.oligon_kentimata, [SecondaryCharacter.psifiston, Alloiosi.yfesi_apli], 'κε'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'κρα'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'α'),
+	new PosotitaBlock(Posotita.apostrofos_petasti, [Chronos.klasma], 'ξα'),
+	new PosotitaBlock(Posotita.syneches_elafron, [], 'προ'),
+	new PosotitaBlock(Posotita.kentimata, [], 'ος'),
+	new PosotitaBlock(Posotita.oligon_kentimata, [Gorgon.gorgon], 'σε'),
+	new PosotitaBlock(Posotita.apostrofos, [Chronos.klasma], 'ε'),
+	new MartyriaBlock(MartyriaFthongos.ga, MartyrikoSimadi.nana, false),
+	new PosotitaBlock(Posotita.elafron, [], 'ει'),
+	new PosotitaBlock(Posotita.ison, [], 'σα'),
+	new PosotitaBlock(Posotita.ison, [], 'κου'),
+	new PosotitaBlock(Posotita.oligon_kentima_kato, [Chronos.klasma, SecondaryCharacter.psifiston], 'σο'),
+	new PosotitaBlock(Posotita.yporroi, [Gorgon.gorgon], 'ο'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'ο'),
+	new PosotitaBlock(Posotita.apostrofos, [Gorgon.gorgon], 'ον'),
+	SimpleBlock.diastoli,
+	SimpleBlock.vareia,
+	new PosotitaBlock(Posotita.oligon, [SecondaryCharacter.rythmos_trisimos], 'μου'),
+	new PosotitaBlock(Posotita.yporroi, [Gorgon.digorgon], 'ου'),
+	new PosotitaBlock(Posotita.oligon, [Chronos.klasma], 'ου'),
+	new MartyriaBlock(MartyriaFthongos.zo, MartyrikoSimadi.varys, false),
+	SimpleBlock.diastoli,
+	new PosotitaBlock(Posotita.ypsili_aristera, [Chronos.klasma, SecondaryCharacter.omalon_mono], 'προ'),
+	new PosotitaBlock(Posotita.apostrofos, [Chronos.klasma], 'σχες'),
+	new PosotitaBlock(Posotita.ison, [], 'τη'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'φω'),
+	new PosotitaBlock(Posotita.oligon, [], 'νη'),
+	new PosotitaBlock(Posotita.oligon, [SecondaryCharacter.psifiston], 'η'),
+	new PosotitaBlock(Posotita.yporroi, [Gorgon.gorgon], 'η'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'η'),
+	SimpleBlock.vareia,
+	new PosotitaBlock(Posotita.apostrofos, [], 'τη'),
+	new PosotitaBlock(Posotita.apostrofos, [Gorgon.gorgon], 'η'),
+	new PosotitaBlock(Posotita.oligon, [], 'ης'),
+	SimpleBlock.stavros,
+	new PosotitaBlock(Posotita.oligon, [Chronos.klasma], 'δε'),
+	new PosotitaBlock(Posotita.oligon_kentimata, [Gorgon.gorgon], 'η'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'η'),
+	new PosotitaBlock(Posotita.oligon_kentimata, [], 'σε'),
+	SimpleBlock.vareia,
+	new PosotitaBlock(Posotita.apostrofos, [Chronos.klasma], 'ω'),
+	new PosotitaBlock(Posotita.yporroi, [Gorgon.gorgon], 'ω'),
+	new PosotitaBlock(Posotita.oligon, [Gorgon.gorgon, SecondaryCharacter.antikenoma], 'ω'),
+	new PosotitaBlock(Posotita.apostrofos, [], 'ως'),
 	new PosotitaBlock(Posotita.ison, [Chronos.klasma], 'μου'),
 	new MartyriaBlock(MartyriaFthongos.pa, MartyrikoSimadi.protos, false),
 ]);
