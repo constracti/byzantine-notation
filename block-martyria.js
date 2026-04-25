@@ -1,13 +1,13 @@
 import { Glyph } from './glyph.js';
 import { AbstractBlock } from './block-abstract.js';
-import { MartyriaFthongos } from './martyria-fthongos.js';
+import { Fthongos } from './fthongos.js';
 import { MartyrikoSimadi } from './martyriko-simadi.js';
 
 
 export class MartyriaBlock extends AbstractBlock {
 
 	/**
-	 * @type {MartyriaFthongos}
+	 * @type {Fthongos}
 	 */
 	fthongos;
 
@@ -22,7 +22,7 @@ export class MartyriaBlock extends AbstractBlock {
 	teleies;
 
 	/**
-	 * @param {MartyriaFthongos} fthongos
+	 * @param {Fthongos} fthongos
 	 * @param {MartyrikoSimadi} simadi
 	 * @param {boolean} teleies
 	 */
@@ -40,7 +40,7 @@ export class MartyriaBlock extends AbstractBlock {
 		const block_div = super.get_div();
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
-		symbol_div.append(this.fthongos.get_span());
+		symbol_div.append(this.fthongos.get_martyria_span());
 		symbol_div.append(this.simadi.get_span());
 		if (this.teleies)
 			symbol_div.append(MartyriaBlock.#get_teleies_span());

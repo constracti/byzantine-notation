@@ -8,6 +8,7 @@ export class AbstractBlock {
 	 */
 	type;
 
+	static type_ichos = 'ichos';
 	static type_posotita = 'posotita';
 	static type_martyria = 'martyria';
 	static type_agogi = 'agogi';

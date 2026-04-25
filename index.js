@@ -1,5 +1,5 @@
 import { AbstractBlock } from './block-abstract.js';
-import { MartyriaFthongos } from './martyria-fthongos.js';
+import { Fthongos } from './fthongos.js';
 import { Agogi } from './agogi.js';
 
 import { block_list } from './demo.js';
@@ -14,7 +14,7 @@ const part_map = new Map();
  * @type {MusicContext}
  */
 const music_context = {
-	pitch: MartyriaFthongos.ni.note,
+	pitch: Fthongos.ni.note,
 	tempo: Agogi.metria.tempo,
 };
 
