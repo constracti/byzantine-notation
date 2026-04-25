@@ -41,6 +41,10 @@
 .bz-block.bz-active {
 	text-shadow: 0 0 0.5em yellow, 0 0 0.5em yellow, 0 0 0.5em yellow, 0 0 0.5em yellow;
 }
+.bz-block.bz-newline {
+	flex-basis: 100%;
+	margin-bottom: 0;
+}
 .bz-symbol {
 	/* byzantina posotita characters leave a space of 7px */
 	font-size: 2em;

@@ -3,6 +3,7 @@ import { SimpleBlock } from './block-simple.js';
 import { PosotitaBlock } from './block-posotita.js';
 import { MartyriaBlock } from './block-martyria.js';
 import { AgogiBlock } from './block-agogi.js';
+import { CustomBlock } from './block-custom.js';
 import { Posotita } from './posotita.js';
 import { SecondaryCharacter } from './secondary.js';
 import { Chronos } from './chronos.js';
@@ -12,12 +13,12 @@ import { MartyriaFthongos } from './martyria-fthongos.js';
 import { MartyrikoSimadi } from './martyriko-simadi.js';
 import { Agogi } from './agogi.js';
 
-// TODO organize in paragraphs
-
 /**
  * @type {AbstractBlock[]}
  */
-export const block_list = [
+export const block_list = [];
+
+block_list.push(...[
 	// Εκ νεότητός μου
 	new PosotitaBlock(Posotita.ison, [], 'Εκ'),
 	new PosotitaBlock(Posotita.ison, [], 'νε'),
@@ -58,6 +59,7 @@ export const block_list = [
 	new PosotitaBlock(Posotita.apostrofos_kentimata, [], 'του'),
 	new PosotitaBlock(Posotita.elafron, [Chronos.klasma], 'τον'),
 	new MartyriaBlock(MartyriaFthongos.ni, MartyrikoSimadi.delta, false),
+	CustomBlock.newline,
 	// Οι μισούντες Σιών
 	new PosotitaBlock(Posotita.oligon_kentima_dipla, [], 'Οι'),
 	new PosotitaBlock(Posotita.oligon, [], 'μι'),
@@ -108,6 +110,7 @@ export const block_list = [
 	new PosotitaBlock(Posotita.oligon_kentimata, [], 'σα'),
 	new PosotitaBlock(Posotita.elafron, [Chronos.klasma], 'νων'),
 	new MartyriaBlock(MartyriaFthongos.ni, MartyrikoSimadi.delta, false),
+	CustomBlock.newline,
 	// Δόξα, Και νυν
 	SimpleBlock.diastoli,
 	new AgogiBlock(Agogi.tacheia),
@@ -153,6 +156,7 @@ export const block_list = [
 	SimpleBlock.diastoli,
 	new PosotitaBlock(Posotita.apostrofos, [Chronos.klasma, SecondaryCharacter.rythmos_trisimos], 'μην'), // TODO rythmos on klasma
 	new MartyriaBlock(MartyriaFthongos.ni, MartyrikoSimadi.delta, false),
+	CustomBlock.newline,
 	// Αγίω Πνεύματι
 	new PosotitaBlock(Posotita.ison, [], 'Α'),
 	SimpleBlock.diastoli,
@@ -196,11 +200,13 @@ export const block_list = [
 	new PosotitaBlock(Posotita.oligon_kentimata, [], 'Λο'),
 	new PosotitaBlock(Posotita.elafron, [Chronos.klasma], 'γω'),
 	new MartyriaBlock(MartyriaFthongos.ni, MartyrikoSimadi.delta, false),
-];
+	CustomBlock.newline,
+]);
 
 block_list.push(...[
 	new PosotitaBlock(Posotita.oligon, [Chronos.klasma], null),
 	new MartyriaBlock(MartyriaFthongos.pa, MartyrikoSimadi.protos, false),
+	CustomBlock.newline,
 	new PosotitaBlock(Posotita.petasti, [], 'Κυ'),
 	new PosotitaBlock(Posotita.apostrofos, [], 'ρι'),
 	new PosotitaBlock(Posotita.ison, [], 'ε'),
@@ -336,4 +342,5 @@ block_list.push(...[
 	SimpleBlock.diastoli,
 	new PosotitaBlock(Posotita.ison, [Chronos.dipli, SecondaryCharacter.rythmos_tetrasimos], 'ε'),
 	new MartyriaBlock(MartyriaFthongos.pa, MartyrikoSimadi.protos, false),
+	CustomBlock.newline,
 ]);

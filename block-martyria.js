@@ -27,7 +27,7 @@ export class MartyriaBlock extends AbstractBlock {
 	 * @param {boolean} teleies
 	 */
 	constructor(fthongos, simadi, teleies) {
-		super('martyria');
+		super(AbstractBlock.type_martyria);
 		this.fthongos = fthongos;
 		this.simadi = simadi;
 		this.teleies = teleies;

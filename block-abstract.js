@@ -8,6 +8,11 @@ export class AbstractBlock {
 	 */
 	type;
 
+	static type_posotita = 'posotita';
+	static type_martyria = 'martyria';
+	static type_agogi = 'agogi';
+	static type_newline = 'newline';
+
 	/**
 	 * @param {?string} type
 	 */

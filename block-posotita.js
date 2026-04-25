@@ -54,7 +54,7 @@ export class PosotitaBlock extends AbstractBlock {
 	 * @param {?string} syllavi
 	 */
 	constructor(posotita, secondary_list, syllavi) {
-		super('posotita');
+		super(AbstractBlock.type_posotita);
 		this.posotita = posotita;
 		this.secondary_list = secondary_list;
 		secondary_list.forEach(secondary => {

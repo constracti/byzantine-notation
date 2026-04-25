@@ -13,7 +13,7 @@ export class AgogiBlock extends AbstractBlock {
 	 * @param {Agogi} agogi
 	 */
 	constructor(agogi) {
-		super('agogi');
+		super(AbstractBlock.type_agogi);
 		this.agogi = agogi;
 	}
 
