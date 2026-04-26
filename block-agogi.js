@@ -1,6 +1,14 @@
 import { AbstractBlock } from './block-abstract.js';
 import { Agogi } from './agogi.js';
 
+/**
+ * @typedef {import('./common.js').MusicContext} MusicContext
+ */
+
+/**
+ * @typedef {import('./common.js').Part} Part
+ */
+
 
 export class AgogiBlock extends AbstractBlock {
 

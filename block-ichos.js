@@ -2,6 +2,14 @@ import { AbstractBlock } from './block-abstract.js';
 import { Ichos } from './ichos.js';
 import { Fthongos } from './fthongos.js';
 
+/**
+ * @typedef {import('./common.js').MusicContext} MusicContext
+ */
+
+/**
+ * @typedef {import('./common.js').Part} Part
+ */
+
 
 export class IchosBlock extends AbstractBlock {
 
@@ -44,7 +52,8 @@ export class IchosBlock extends AbstractBlock {
 	 * @returns {?Part[]}
 	 */
 	get_parts(music_context, block_index) {
-		music_context.pitch = this.fthongos.note;
+		// TODO set context scale
+		music_context.pitch = this.fthongos.index; // TODO varys octave
 		return null;
 	}
 }

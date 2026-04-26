@@ -1,4 +1,10 @@
-import {} from './common.js';
+/**
+ * @typedef {import('./common.js').MusicContext} MusicContext
+ */
+
+/**
+ * @typedef {import('./common.js').Part} Part
+ */
 
 
 export class AbstractBlock {

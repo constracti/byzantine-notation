@@ -325,7 +325,7 @@ block_list.push(...[
 	new PosotitaBlock(Posotita.apostrofos, [], 'ε'),
 	new PosotitaBlock(Posotita.oligon_kentimata, [Gorgon.gorgon], 'ε'),
 	new PosotitaBlock(Posotita.apostrofos, [Chronos.klasma], 'ε'),
-	new MartyriaBlock(Fthongos.ga, MartyrikoSimadi.nana, false),
+	new MartyriaBlock(Fthongos.ga, MartyrikoSimadi.nana, false), // TODO diatoniki fthora ga
 	new PosotitaBlock(Posotita.apostrofos, [Gorgon.gorgon_kato], 'ει'),
 	SimpleBlock.diastoli,
 	new PosotitaBlock(Posotita.oligon_kentimata, [], 'σα'),

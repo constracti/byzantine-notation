@@ -11,7 +11,7 @@ export class Fthongos {
 	/**
 	 * @type {number} 0 for ni, 1 for pa, ..., 6 for zo
 	 */
-	note;
+	index;
 
 	/**
 	 * @type {Glyph}
@@ -33,13 +33,13 @@ export class Fthongos {
 
 	/**
 	 * @param {string} name
-	 * @param {number} note
+	 * @param {number} index
 	 * @param {Glyph} glyph_martyria
 	 * @param {Glyph} glyph_ichos
 	 */
-	constructor(name, note, glyph_martyria, glyph_ichos) {
+	constructor(name, index, glyph_martyria, glyph_ichos) {
 		this.name = name;
-		this.note = note;
+		this.index = index;
 		this.glyph_martyria = glyph_martyria;
 		this.glyph_ichos = glyph_ichos;
 	}

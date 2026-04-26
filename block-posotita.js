@@ -5,6 +5,14 @@ import { Chronos } from './chronos.js';
 import { Gorgon } from './gorgon.js';
 import { Alloiosi } from './alloiosi.js';
 
+/**
+ * @typedef {import('./common.js').MusicContext} MusicContext
+ */
+
+/**
+ * @typedef {import('./common.js').Part} Part
+ */
+
 
 export class PosotitaBlock extends AbstractBlock {
 
@@ -120,8 +128,7 @@ export class PosotitaBlock extends AbstractBlock {
 		this.posotita.move_list.forEach(move => {
 			music_context.pitch += move;
 			part_list.push({
-				pitch: music_context.pitch,
-				steps: 0,
+				steps: music_context.scale.get_pitch_steps(music_context.pitch, music_context.steps),
 				tempo: music_context.tempo,
 				beats: 1,
 				block: block_index,

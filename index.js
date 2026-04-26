@@ -1,8 +1,16 @@
-import { AbstractBlock } from './block-abstract.js';
 import { Fthongos } from './fthongos.js';
+import { Klimaka } from './klimaka.js';
 import { Agogi } from './agogi.js';
 
 import { block_list } from './demo.js';
+
+/**
+ * @typedef {import('./common.js').MusicContext} MusicContext
+ */
+
+/**
+ * @typedef {import('./common.js').Part} Part
+ */
 
 /**
  * map block index to part index
@@ -14,8 +22,10 @@ const part_map = new Map();
  * @type {MusicContext}
  */
 const music_context = {
-	pitch: Fthongos.ni.note,
+	pitch: Fthongos.ni.index,
 	tempo: Agogi.metria.tempo,
+	scale: Klimaka.diatoniki,
+	steps: Klimaka.diatoniki.steps,
 };
 
 /**
@@ -57,11 +67,6 @@ container_div.append(...block_list.map((block, block_index) => {
 	return block_div;
 }));
 
-const scale = [12, 10, 8, 12, 12, 10, 8];
-if (scale.reduce((acc, cur) => acc + cur, 0) !== 72)
-	throw new Error('scale sum is not 72');
-const partial = scale.map((cur, ind, arr) => arr.slice(0, ind).reduce((acc, cur) => acc + cur, 0));
-
 const audio_context = new AudioContext();
 
 /**
@@ -71,10 +76,8 @@ function play(index) {
 	if (index === part_list.length)
 		return;
 	const part = part_list[index];
-	const octave = Math.floor(part.pitch / 7);
-	const note = part.pitch - octave * 7;
 	const oscillator_node = new OscillatorNode(audio_context, {
-		frequency: 440 * Math.pow(2, octave + (partial[note] - partial[5] + part.steps) / 72),
+		frequency: 440 * Math.pow(2, part.steps / 72),
 		type: 'triangle', // TODO simulate musical instrument
 	});
 	const block_div = container_div.children[part.block];
