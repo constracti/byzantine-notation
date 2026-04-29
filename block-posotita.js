@@ -4,6 +4,7 @@ import { SecondaryCharacter } from './secondary.js';
 import { Chronos } from './chronos.js';
 import { Gorgon } from './gorgon.js';
 import { Alloiosi } from './alloiosi.js';
+import { Fthora } from './fthora.js';
 
 /**
  * @typedef {import('./common.js').MusicContext} MusicContext
@@ -47,6 +48,11 @@ export class PosotitaBlock extends AbstractBlock {
 	alloiosi = null;
 
 	/**
+	 * @type {?Fthora}
+	 */
+	fthora = null;
+
+	/**
 	 * @type {?SecondaryCharacter}
 	 */
 	rythmos = null;
@@ -78,6 +84,9 @@ export class PosotitaBlock extends AbstractBlock {
 					break;
 				case SecondaryCharacter.type_alloiosi:
 					this.alloiosi = secondary;
+					break;
+				case SecondaryCharacter.type_fthora:
+					this.fthora = secondary;
 					break;
 				case SecondaryCharacter.type_rythmos:
 					this.rythmos = secondary;
@@ -128,7 +137,7 @@ export class PosotitaBlock extends AbstractBlock {
 		this.posotita.move_list.forEach(move => {
 			music_context.pitch += move;
 			part_list.push({
-				steps: music_context.scale.get_pitch_steps(music_context.pitch, music_context.steps),
+				steps: music_context.base_steps + music_context.scale.get_steps_from_base(music_context.pitch - music_context.base_pitch),
 				tempo: music_context.tempo,
 				beats: 1,
 				block: block_index,
@@ -138,6 +147,8 @@ export class PosotitaBlock extends AbstractBlock {
 			if (part_list.length >= 1)
 				part_list[part_list.length - 1].steps += this.alloiosi.steps;
 		}
+		if (this.fthora !== null)
+			this.fthora.apply(music_context);
 		return part_list;
 	}
 

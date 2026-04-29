@@ -52,8 +52,8 @@ export class IchosBlock extends AbstractBlock {
 	 * @returns {?Part[]}
 	 */
 	get_parts(music_context, block_index) {
-		// TODO set context scale
 		music_context.pitch = this.fthongos.index; // TODO varys octave
+		// TODO set context scale, base pitch and base steps
 		return null;
 	}
 }

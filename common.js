@@ -6,7 +6,8 @@ import { Klimaka } from './klimaka.js';
  * @property {number} pitch note with octave
  * @property {number} tempo beats per minute
  * @property {Klimaka} scale
- * @property {number} steps scale base distance from tuner
+ * @property {number} base_pitch scale base note with octave
+ * @property {number} base_steps scale base distance from tuner
  */
 
 /**

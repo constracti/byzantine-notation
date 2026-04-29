@@ -29,6 +29,7 @@ export class SecondaryCharacter {
 	static type_kallopismos = 'kallopismos';
 	static type_rythmos = 'rythmos';
 	static type_alloiosi = 'alloiosi';
+	static type_fthora = 'fthora';
 
 	static psifiston = new SecondaryCharacter('psifiston', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, '/'), null);
 	static antikenoma = new SecondaryCharacter('antikenoma', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, 'm'), new Glyph(Glyph.font_byzantina, 'M'));
@@ -50,6 +51,9 @@ export class SecondaryCharacter {
 		this.glyph_thin = glyph_thin;
 	}
 
+	/**
+	 * @returns {boolean}
+	 */
 	is_red() {
 		return this.type === SecondaryCharacter.type_rythmos;
 	}

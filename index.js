@@ -1,4 +1,3 @@
-import { Fthongos } from './fthongos.js';
 import { Klimaka } from './klimaka.js';
 import { Agogi } from './agogi.js';
 
@@ -12,6 +11,9 @@ import { block_list } from './demo.js';
  * @typedef {import('./common.js').Part} Part
  */
 
+// TODO pitch class (fthongos with octave / klimaka)
+// TODO rename klimaka to genos
+
 /**
  * map block index to part index
  * @type {Map<number, number}
@@ -22,10 +24,11 @@ const part_map = new Map();
  * @type {MusicContext}
  */
 const music_context = {
-	pitch: Fthongos.ni.index,
+	pitch: Klimaka.diatoniki.base_pitch,
 	tempo: Agogi.metria.tempo,
 	scale: Klimaka.diatoniki,
-	steps: Klimaka.diatoniki.steps,
+	base_pitch: Klimaka.diatoniki.base_pitch,
+	base_steps: Klimaka.diatoniki.base_steps,
 };
 
 /**

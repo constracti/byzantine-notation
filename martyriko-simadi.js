@@ -17,6 +17,7 @@ export class MartyrikoSimadi {
 	static nana = new MartyrikoSimadi('nana', new Glyph(Glyph.font_byzantina, '#'));
 	static varys = new MartyrikoSimadi('varys', new Glyph(Glyph.font_byzantina, '^'));
 	static delta = new MartyrikoSimadi('delta', new Glyph(Glyph.font_byzantina, '&'));
+	static chromatiko_di = new MartyrikoSimadi('chromatiko-di', new Glyph(Glyph.font_byzantina, '$'));
 
 	/**
 	 * @param {string} name

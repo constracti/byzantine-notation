@@ -32,8 +32,10 @@ export class Chronos extends SecondaryCharacter {
 	 */
 	get_glyph(block) {
 		if (block.posotita.is_petasti() && this === Chronos.klasma)
-			return new Glyph(Glyph.font_byzantina, 'I'); // petasti kato
-		if (block.posotita === Posotita.ypsili_dexia && this === Chronos.klasma)
+			return new Glyph(Glyph.font_byzantina, 'I'); // klasma kato
+		if (block.posotita === Posotita.oligon_kentima && this === Chronos.klasma)
+			return new Glyph(Glyph.font_byzantina, 'I'); // klasma kato
+		if (block.posotita === Posotita.oligon_ypsili_dexia && this === Chronos.klasma)
 			return new Glyph(Glyph.font_byzantina, 'U'); // klasma aristera
 		return super.get_glyph(block);
 	}

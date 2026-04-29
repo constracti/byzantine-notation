@@ -9,20 +9,20 @@ export class Klimaka {
 	name;
 
 	/**
-	 * @type {Fthongos}
+	 * @type {number}
 	 */
-	base;
+	base_pitch;
 
 	/**
 	 * @type {number[]}
 	 */
-	interval_list;
+	#interval_list;
 
 	/**
-	 * base distance from tuner
+	 * default base distance from tuner
 	 * @type {number}
 	 */
-	steps;
+	base_steps;
 	
 	/**
 	 * @type {number[]}
@@ -34,22 +34,22 @@ export class Klimaka {
 	 */
 	#interval_sum;
 
-	static diatoniki = new Klimaka('diatoniki', Fthongos.ni, [12, 10, 8, 12, 12, 10, 8], -54);
-	static chromatiki_malaki = new Klimaka('chromatiki-malaki', Fthongos.di, [8, 14, 8, 8, 14, 8, 12], -12);
-	static chromatiki_skliri = new Klimaka('chromatiki-skliri', Fthongos.pa, [6, 20, 4, 12, 6, 20, 4], -42);
-	static enarmonia = new Klimaka('enarmonia', Fthongos.ga, [12, 12, 6, 12, 12, 12, 6], -24);
+	static diatoniki = new Klimaka('diatoniki', Fthongos.ni.index, [12, 10, 8, 12, 12, 10, 8], -54);
+	static chromatiki_malaki = new Klimaka('chromatiki-malaki', Fthongos.di.index, [8, 14, 8, 12], -12);
+	static chromatiki_skliri = new Klimaka('chromatiki-skliri', Fthongos.pa.index, [6, 20, 4, 12], -42);
+	static enarmonia = new Klimaka('enarmonia', Fthongos.ga.index, [12, 12, 6, 12, 12, 12, 6], -24);
 
 	/**
 	 * @param {string} name
-	 * @param {Fthongos} base
+	 * @param {number} base_pitch
 	 * @param {number[]} interval_list
-	 * @param {number} steps
+	 * @param {number} base_steps
 	 */
-	constructor(name, base, interval_list, steps) {
+	constructor(name, base_pitch, interval_list, base_steps) {
 		this.name = name;
-		this.base = base;
-		this.interval_list = interval_list;
-		this.steps = steps;
+		this.base_pitch = base_pitch;
+		this.#interval_list = interval_list;
+		this.base_steps = base_steps;
 		this.#distance_list = [0];
 		interval_list.forEach(interval => {
 			const distance = this.#distance_list[this.#distance_list.length - 1];
@@ -59,20 +59,22 @@ export class Klimaka {
 	}
 
 	/**
-	 * @param {number} pitch
-	 * @param {number} base_steps
+	 * @param {number} pitch_from_base
+	 * @returns {number}
 	 */
-	get_pitch_steps(pitch, base_steps) {
-		let pitch_difference = pitch - this.base.index;
-		let octave_count = 0;
-		while (pitch_difference < 0) {
-			pitch_difference += this.#distance_list.length;
-			octave_count--;
+	get_steps_from_base(pitch_from_base) {
+		const dividend = pitch_from_base;
+		const divisor = this.#distance_list.length;
+		let remainder = dividend;
+		let quotient = 0;
+		while (remainder < 0) {
+			remainder += divisor;
+			quotient--;
 		}
-		while (pitch_difference >= this.#distance_list.length) {
-			pitch_difference -= this.#distance_list.length;
-			octave_count++;
+		while (remainder >= divisor) {
+			remainder -= divisor;
+			quotient++;
 		}
-		return base_steps + this.#distance_list[pitch_difference] + octave_count * this.#interval_sum;
+		return this.#distance_list[remainder] + quotient * this.#interval_sum;
 	}
 }
