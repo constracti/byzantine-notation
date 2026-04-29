@@ -11,7 +11,7 @@ export class Ichos {
 	/**
 	 * @type {Glyph[]}
 	 */
-	glyph_list;
+	#glyph_list;
 
 	static #glyph_ichos = new Glyph(Glyph.font_ison, '`');
 	static #glyph_plagios = new Glyph(Glyph.font_ison, '~');
@@ -31,7 +31,7 @@ export class Ichos {
 	 */
 	constructor(name, glyph_list) {
 		this.name = name;
-		this.glyph_list = glyph_list;
+		this.#glyph_list = glyph_list;
 	}
 
 	/**
@@ -47,7 +47,7 @@ export class Ichos {
 		span.classList.add(Glyph.color_red);
 		span_list.push(span);
 		// rest
-		this.glyph_list.forEach(glyph => {
+		this.#glyph_list.forEach(glyph => {
 			const span = glyph.get_span();
 			span.classList.add(Glyph.color_red);
 			span_list.push(span);

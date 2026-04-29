@@ -1,64 +1,49 @@
-import { Glyph } from './glyph.js';
+import { Vathmida } from './vathmida.js';
 
 
 export class Fthongos {
 
 	/**
-	 * @type {string}
+	 * @type {Vathmida}
 	 */
-	name;
+	vathmida;
 
 	/**
-	 * @type {number} 0 for ni, 1 for pa, ..., 6 for zo
+	 * typically -1 for vareia, 0 for mesi, and +1 for oxeia
+	 * @type {number}
 	 */
-	index;
+	diapason;
 
 	/**
-	 * @type {Glyph}
+	 * @type {number}
 	 */
-	glyph_martyria;
+	pitch;
+
+	static ga_kato = new Fthongos(Vathmida.ga, -1);
+	static di_kato = new Fthongos(Vathmida.di, -1);
+	static ke_kato = new Fthongos(Vathmida.ke, -1);
+	static zo = new Fthongos(Vathmida.zo, 0);
+	static ni = new Fthongos(Vathmida.ni, 0);
+	static pa = new Fthongos(Vathmida.pa, 0);
+	static vou = new Fthongos(Vathmida.vou, 0);
+	static ga = new Fthongos(Vathmida.ga, 0);
+	static di = new Fthongos(Vathmida.di, 0);
+	static ke = new Fthongos(Vathmida.ke, 0);
+	static zo_ano = new Fthongos(Vathmida.zo, +1);
+	static ni_ano = new Fthongos(Vathmida.ni, +1);
+	static pa_ano = new Fthongos(Vathmida.pa, +1);
+	static vou_ano = new Fthongos(Vathmida.vou, +1);
+	static ga_ano = new Fthongos(Vathmida.ga, +1);
+	static di_ano = new Fthongos(Vathmida.di, +1);
+	static ke_ano = new Fthongos(Vathmida.ke, +1);
 
 	/**
-	 * @type {Glyph}
+	 * @param {Vathmida} vathmida
+	 * @param {number} diapason
 	 */
-	glyph_ichos;
-
-	static ni = new Fthongos('ni', 0, new Glyph(Glyph.font_byzantina, '7'), new Glyph(Glyph.font_ison, 'p'));
-	static pa = new Fthongos('pa', 1, new Glyph(Glyph.font_byzantina, '1'), new Glyph(Glyph.font_ison, '['));
-	static vou = new Fthongos('vou', 2, new Glyph(Glyph.font_byzantina, '2'), new Glyph(Glyph.font_ison, ']'));
-	static ga = new Fthongos('ga', 3, new Glyph(Glyph.font_byzantina, '3'), new Glyph(Glyph.font_ison, '\\'));
-	static di = new Fthongos('di', 4, new Glyph(Glyph.font_byzantina, '4'), new Glyph(Glyph.font_ison, 'P'));
-	static ke = new Fthongos('ke', 5, new Glyph(Glyph.font_byzantina, '5'), new Glyph(Glyph.font_ison, '{'));
-	static zo = new Fthongos('zo', 6, new Glyph(Glyph.font_byzantina, '6'), new Glyph(Glyph.font_ison, '}'));
-
-	/**
-	 * @param {string} name
-	 * @param {number} index
-	 * @param {Glyph} glyph_martyria
-	 * @param {Glyph} glyph_ichos
-	 */
-	constructor(name, index, glyph_martyria, glyph_ichos) {
-		this.name = name;
-		this.index = index;
-		this.glyph_martyria = glyph_martyria;
-		this.glyph_ichos = glyph_ichos;
-	}
-
-	/**
-	 * @returns {HTMLSpanElement}
-	 */
-	get_martyria_span() {
-		const span = this.glyph_martyria.get_span();
-		span.classList.add(Glyph.color_red);
-		return span;
-	}
-
-	/**
-	 * @returns {HTMLSpanElement}
-	 */
-	get_ichos_span() {
-		const span = this.glyph_ichos.get_span();
-		span.classList.add(Glyph.color_red);
-		return span;
+	constructor(vathmida, diapason) {
+		this.vathmida = vathmida;
+		this.diapason = diapason;
+		this.pitch = vathmida.pitch + 7 * diapason;
 	}
 }

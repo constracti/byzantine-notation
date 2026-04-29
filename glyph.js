@@ -3,12 +3,12 @@ export class Glyph {
 	/**
 	 * @type {string}
 	 */
-	font;
+	#font;
 
 	/**
 	 * @type {string}
 	 */
-	char;
+	#char;
 
 	static empty = new Glyph('', '');
 
@@ -25,8 +25,8 @@ export class Glyph {
 	 * @param {string} char
 	 */
 	constructor(font, char) {
-		this.font = font;
-		this.char = char;
+		this.#font = font;
+		this.#char = char;
 	}
 
 	/**
@@ -34,9 +34,9 @@ export class Glyph {
 	 */
 	get_span() {
 		const span = document.createElement('span');
-		if (this.font !== '')
-			span.classList.add(this.font);
-		span.innerHTML = this.char;
+		if (this.#font !== '')
+			span.classList.add(this.#font);
+		span.innerHTML = this.#char;
 		return span;
 	}
 }

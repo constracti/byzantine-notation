@@ -18,7 +18,7 @@ export class Posotita {
 	/**
 	 * @type {Glyph}
 	 */
-	glyph;
+	#glyph;
 
 	// isotita
 	static ison = new Posotita('ison', [0], new Glyph(Glyph.font_byzantina, 'a'));
@@ -34,6 +34,7 @@ export class Posotita {
 	static oligon_kentima = new Posotita('oligon-kentima', [+3], new Glyph(Glyph.font_byzantina, 'f'));
 	static petasti_kentima = new Posotita('petasti-kentima', [+3], new Glyph(Glyph.font_byzantina, 'F'));
 	static oligon_ypsili_dexia = new Posotita('oligon-ypsili-dexia', [+4], new Glyph(Glyph.font_byzantina, 'g'));
+	static petasti_ypsili_dexia = new Posotita('petasti-ypsili-dexia', [+4], new Glyph(Glyph.font_byzantina, 'G'));
 	static oligon_ypsili_aristera = new Posotita('oligon-ypsili-aristera', [+5], new Glyph(Glyph.font_loipa, 's'));
 	// katavasi
 	static apostrofos = new Posotita('apostrofos', [-1], new Glyph(Glyph.font_byzantina, 'j'));
@@ -58,7 +59,7 @@ export class Posotita {
 	constructor(name, move_list, glyph) {
 		this.name = name;
 		this.move_list = move_list;
-		this.glyph = glyph;
+		this.#glyph = glyph;
 	}
 
 	/**
@@ -66,14 +67,14 @@ export class Posotita {
 	 * @returns {HTMLSpanElement}
 	 */
 	get_span(block) {
-		return this.get_glyph(block).get_span();
+		return this.#get_glyph(block).get_span();
 	}
 
 	/**
 	 * @param {PosotitaBlock} block
 	 * @returns {Glyph}
 	 */
-	get_glyph(block) {
+	#get_glyph(block) {
 		if (this === Posotita.oligon_kentimata && block.gorgon === Gorgon.gorgon)
 			return new Glyph(Glyph.font_byzantina, 'V'); // oligon kentimata gorgon
 		if (this === Posotita.yporroi && block.gorgon === Gorgon.gorgon)
@@ -82,7 +83,7 @@ export class Posotita {
 			return new Glyph(Glyph.font_loipa, 'e'); // yporroi digorgon
 		if (this === Posotita.yporroi && block.gorgon === Gorgon.trigorgon)
 			return new Glyph(Glyph.font_loipa, 'r'); // yporroi trigorgon
-		return this.glyph;
+		return this.#glyph;
 	}
 
 	/**
@@ -108,6 +109,7 @@ export class Posotita {
 			case Posotita.petasti:
 			case Posotita.petasti_oligon:
 			case Posotita.petasti_kentima:
+			case Posotita.petasti_ypsili_dexia:
 			case Posotita.petasti_apostrofos:
 				return true;
 			default:

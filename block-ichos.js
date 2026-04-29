@@ -1,6 +1,6 @@
 import { AbstractBlock } from './block-abstract.js';
 import { Ichos } from './ichos.js';
-import { Fthongos } from './fthongos.js';
+import { Vathmida } from './vathmida.js';
 
 /**
  * @typedef {import('./common.js').MusicContext} MusicContext
@@ -16,21 +16,21 @@ export class IchosBlock extends AbstractBlock {
 	/**
 	 * @type {Ichos}
 	 */
-	ichos;
+	#ichos;
 
 	/**
-	 * @type {Fthongos}
+	 * @type {Vathmida}
 	 */
-	fthongos;
+	#vathmida;
 
 	/**
 	 * @param {Ichos} ichos
-	 * @param {Fthongos} fthongos
+	 * @param {Vathmida} vathmida
 	 */
-	constructor(ichos, fthongos) {
+	constructor(ichos, vathmida) {
 		super(AbstractBlock.type_ichos);
-		this.ichos = ichos;
-		this.fthongos = fthongos;
+		this.#ichos = ichos;
+		this.#vathmida = vathmida;
 	}
 
 	/**
@@ -40,8 +40,8 @@ export class IchosBlock extends AbstractBlock {
 		const block_div = super.get_div();
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
-		symbol_div.append(...this.ichos.get_span_list());
-		symbol_div.append(this.fthongos.get_ichos_span());
+		symbol_div.append(...this.#ichos.get_span_list());
+		symbol_div.append(this.#vathmida.get_ichos_span());
 		block_div.append(symbol_div);
 		return block_div;
 	}
@@ -52,8 +52,8 @@ export class IchosBlock extends AbstractBlock {
 	 * @returns {?Part[]}
 	 */
 	get_parts(music_context, block_index) {
-		music_context.pitch = this.fthongos.index; // TODO varys octave
-		// TODO set context scale, base pitch and base steps
+		music_context.pitch = this.#vathmida.pitch;
+		// TODO set context klimaka, base pitch and base steps
 		return null;
 	}
 }

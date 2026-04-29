@@ -25,7 +25,7 @@ export class PosotitaBlock extends AbstractBlock {
 	/**
 	 * @type {SecondaryCharacter[]}
 	 */
-	secondary_list;
+	#secondary_list;
 
 	/**
 	 * @type {?Chronos}
@@ -70,7 +70,7 @@ export class PosotitaBlock extends AbstractBlock {
 	constructor(posotita, secondary_list, syllavi) {
 		super(AbstractBlock.type_posotita);
 		this.posotita = posotita;
-		this.secondary_list = secondary_list;
+		this.#secondary_list = secondary_list;
 		secondary_list.forEach(secondary => {
 			switch (secondary.type) {
 				case SecondaryCharacter.type_chronos:
@@ -104,7 +104,7 @@ export class PosotitaBlock extends AbstractBlock {
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
 		symbol_div.append(this.posotita.get_span(this));
-		this.secondary_list.forEach(secondary => {
+		this.#secondary_list.forEach(secondary => {
 			symbol_div.append(secondary.get_span(this));
 		});
 		block_div.append(symbol_div);
@@ -137,7 +137,7 @@ export class PosotitaBlock extends AbstractBlock {
 		this.posotita.move_list.forEach(move => {
 			music_context.pitch += move;
 			part_list.push({
-				steps: music_context.base_steps + music_context.scale.get_steps_from_base(music_context.pitch - music_context.base_pitch),
+				steps: music_context.base_steps + music_context.klimaka.get_steps_from_base(music_context.pitch - music_context.base_pitch),
 				tempo: music_context.tempo,
 				beats: 1,
 				block: block_index,

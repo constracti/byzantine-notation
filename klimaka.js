@@ -9,9 +9,9 @@ export class Klimaka {
 	name;
 
 	/**
-	 * @type {number}
+	 * @type {Fthongos}
 	 */
-	base_pitch;
+	fthongos;
 
 	/**
 	 * @type {number[]}
@@ -34,20 +34,20 @@ export class Klimaka {
 	 */
 	#interval_sum;
 
-	static diatoniki = new Klimaka('diatoniki', Fthongos.ni.index, [12, 10, 8, 12, 12, 10, 8], -54);
-	static chromatiki_malaki = new Klimaka('chromatiki-malaki', Fthongos.di.index, [8, 14, 8, 12], -12);
-	static chromatiki_skliri = new Klimaka('chromatiki-skliri', Fthongos.pa.index, [6, 20, 4, 12], -42);
-	static enarmonia = new Klimaka('enarmonia', Fthongos.ga.index, [12, 12, 6, 12, 12, 12, 6], -24);
+	static diatoniki = new Klimaka('diatoniki', Fthongos.ni, [12, 10, 8, 12, 12, 10, 8], -54);
+	static chromatiki_malaki = new Klimaka('chromatiki-malaki', Fthongos.di, [8, 14, 8, 12], -12);
+	static chromatiki_skliri = new Klimaka('chromatiki-skliri', Fthongos.pa, [6, 20, 4, 12], -42);
+	static enarmonia = new Klimaka('enarmonia', Fthongos.ga, [12, 12, 6, 12, 12, 12, 6], -24);
 
 	/**
 	 * @param {string} name
-	 * @param {number} base_pitch
+	 * @param {Fthongos} fthongos
 	 * @param {number[]} interval_list
 	 * @param {number} base_steps
 	 */
-	constructor(name, base_pitch, interval_list, base_steps) {
+	constructor(name, fthongos, interval_list, base_steps) {
 		this.name = name;
-		this.base_pitch = base_pitch;
+		this.fthongos = fthongos;
 		this.#interval_list = interval_list;
 		this.base_steps = base_steps;
 		this.#distance_list = [0];

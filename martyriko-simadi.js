@@ -11,7 +11,7 @@ export class MartyrikoSimadi {
 	/**
 	 * @type {Glyph}
 	 */
-	glyph;
+	#glyph;
 
 	static protos = new MartyrikoSimadi('protos', new Glyph(Glyph.font_byzantina, '!'));
 	static nana = new MartyrikoSimadi('nana', new Glyph(Glyph.font_byzantina, '#'));
@@ -25,14 +25,14 @@ export class MartyrikoSimadi {
 	 */
 	constructor(name, glyph) {
 		this.name = name;
-		this.glyph = glyph;
+		this.#glyph = glyph;
 	}
 
 	/**
 	 * @returns {HTMLSpanElement}
 	 */
 	get_span() {
-		const span = this.glyph.get_span();
+		const span = this.#glyph.get_span();
 		span.classList.add(Glyph.color_red);
 		return span;
 	}

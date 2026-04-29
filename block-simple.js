@@ -12,12 +12,12 @@ export class SimpleBlock extends AbstractBlock {
 	/**
 	 * @type {Glyph}
 	 */
-	glyph;
+	#glyph;
 
 	/**
 	 * @type {?string}
 	 */
-	color;
+	#color;
 
 	static vareia = new SimpleBlock('vareia', new Glyph(Glyph.font_byzantina, '\\'), null);
 	static diastoli = new SimpleBlock('diastoli', new Glyph(Glyph.font_byzantina, 'o'), null);
@@ -31,8 +31,8 @@ export class SimpleBlock extends AbstractBlock {
 	constructor(name, glyph, color) {
 		super(null);
 		this.name = name;
-		this.glyph = glyph;
-		this.color = color;
+		this.#glyph = glyph;
+		this.#color = color;
 	}
 
 	/**
@@ -42,9 +42,9 @@ export class SimpleBlock extends AbstractBlock {
 		const block_div = super.get_div();
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
-		const span = this.glyph.get_span();
-		if (this.color !== null)
-			span.classList.add(this.color);
+		const span = this.#glyph.get_span();
+		if (this.#color !== null)
+			span.classList.add(this.#color);
 		symbol_div.append(span);
 		block_div.append(symbol_div);
 		return block_div;

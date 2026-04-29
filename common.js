@@ -3,11 +3,11 @@ import { Klimaka } from './klimaka.js';
 /**
  * @typedef MusicContext TODO chroes
  * @type {object}
- * @property {number} pitch note with octave
+ * @property {number} pitch fthongos pitch
  * @property {number} tempo beats per minute
- * @property {Klimaka} scale
- * @property {number} base_pitch scale base note with octave
- * @property {number} base_steps scale base distance from tuner
+ * @property {Klimaka} klimaka
+ * @property {number} base_pitch klimaka base fthongos pitch
+ * @property {number} base_steps klimaka base distance from tuner
  */
 
 /**

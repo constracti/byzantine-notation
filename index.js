@@ -11,7 +11,6 @@ import { block_list } from './demo.js';
  * @typedef {import('./common.js').Part} Part
  */
 
-// TODO pitch class (fthongos with octave / klimaka)
 // TODO rename klimaka to genos
 
 /**
@@ -24,10 +23,10 @@ const part_map = new Map();
  * @type {MusicContext}
  */
 const music_context = {
-	pitch: Klimaka.diatoniki.base_pitch,
+	pitch: Klimaka.diatoniki.fthongos.pitch,
 	tempo: Agogi.metria.tempo,
-	scale: Klimaka.diatoniki,
-	base_pitch: Klimaka.diatoniki.base_pitch,
+	klimaka: Klimaka.diatoniki,
+	base_pitch: Klimaka.diatoniki.fthongos.pitch,
 	base_steps: Klimaka.diatoniki.base_steps,
 };
 
