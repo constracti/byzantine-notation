@@ -1,5 +1,8 @@
 import { AbstractBlock } from './block-abstract.js';
-import { Agogi } from './agogi.js';
+
+/**
+ * @typedef {import('./agogi.js').Agogi} Agogi
+ */
 
 /**
  * @typedef {import('./common.js').MusicContext} MusicContext

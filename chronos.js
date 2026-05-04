@@ -1,4 +1,5 @@
 import { Glyph } from './glyph.js';
+import { AbstractBlock } from './block-abstract.js';
 import { PosotitaBlock } from './block-posotita.js';
 import { Posotita } from './posotita.js';
 import { SecondaryCharacter } from './secondary.js';
@@ -27,16 +28,26 @@ export class Chronos extends SecondaryCharacter {
 	}
 
 	/**
-	 * @param {PosotitaBlock} block
+	 * @param {AbstractBlock} block
 	 * @returns {Glyph}
 	 */
 	get_glyph(block) {
-		if (block.posotita.is_petasti() && this === Chronos.klasma)
-			return new Glyph(Glyph.font_byzantina, 'I'); // klasma kato
-		if (block.posotita === Posotita.oligon_kentima && this === Chronos.klasma)
-			return new Glyph(Glyph.font_byzantina, 'I'); // klasma kato
-		if (block.posotita === Posotita.oligon_ypsili_dexia && this === Chronos.klasma)
-			return new Glyph(Glyph.font_byzantina, 'U'); // klasma aristera
+		switch (block.type) {
+			case AbstractBlock.type_posotita:
+				/**
+				 * @type {PosotitaBlock}
+				 */
+				const posotita_block = block;
+				if (posotita_block.posotita.is_petasti() && this === Chronos.klasma)
+					return new Glyph(Glyph.font_byzantina, 'I'); // klasma kato
+				if (posotita_block.posotita === Posotita.oligon_kentima && this === Chronos.klasma)
+					return new Glyph(Glyph.font_byzantina, 'I'); // klasma kato
+				if (posotita_block.posotita === Posotita.oligon_ypsili_dexia && this === Chronos.klasma)
+					return new Glyph(Glyph.font_byzantina, 'U'); // klasma aristera
+				if (posotita_block.posotita === Posotita.oligon_apostrofos && this === Chronos.klasma)
+					return new Glyph(Glyph.font_byzantina, 'I'); // klasma kato
+				break;
+		}
 		return super.get_glyph(block);
 	}
 }

@@ -1,8 +1,8 @@
 import { Glyph } from './glyph.js';
-import { PosotitaBlock } from './block-posotita.js';
 import { SecondaryCharacter } from './secondary.js';
-import { Klimaka } from './klimaka.js';
+import { Genos } from './genos.js';
 import { Fthongos } from './fthongos.js';
+import { Klimaka } from './klimaka.js';
 
 /**
  * @typedef {import('./common.js').MusicContext} MusicContext
@@ -12,7 +12,7 @@ import { Fthongos } from './fthongos.js';
 export class Fthora extends SecondaryCharacter {
 
 	/**
-	 * @type {Klimaka}
+	 * @type {Genos}
 	 */
 	#genos;
 
@@ -21,13 +21,16 @@ export class Fthora extends SecondaryCharacter {
 	 */
 	#fthongos;
 
-	static diatoniki_di = new Fthora('diatoniki-di', Klimaka.diatoniki, Fthongos.di, new Glyph(Glyph.font_fthores, 'j'), new Glyph(Glyph.font_fthores, 'J'));
-	static chromatiki_skliri_pa = new Fthora('chromatiki-skliri-pa', Klimaka.chromatiki_skliri, Fthongos.pa, new Glyph(Glyph.font_fthores, '1'), new Glyph(Glyph.font_fthores, '!'));
-	static chromatiki_skliri_di = new Fthora('chromatiki-skliri-di', Klimaka.chromatiki_skliri, Fthongos.di, new Glyph(Glyph.font_fthores, '4'), new Glyph(Glyph.font_fthores, '$'));
+	static diatoniki_ni = new Fthora('diatoniki-ni', Genos.diatoniko, Fthongos.ni, new Glyph(Glyph.font_fthores, 'd'), new Glyph(Glyph.font_fthores, 'D'));
+	static diatoniki_pa = new Fthora('diatoniki-pa', Genos.diatoniko, Fthongos.pa, new Glyph(Glyph.font_fthores, 'f'), new Glyph(Glyph.font_fthores, 'F'));
+	static diatoniki_di = new Fthora('diatoniki-di', Genos.diatoniko, Fthongos.di, new Glyph(Glyph.font_fthores, 'j'), new Glyph(Glyph.font_fthores, 'J'));
+	static chromatiki_malaki_di = new Fthora('chromatiki-malaki-di', Genos.chromatiko_malako, Fthongos.di, new Glyph(Glyph.font_fthores, '2'), new Glyph(Glyph.font_fthores, '@'));
+	static chromatiki_skliri_pa = new Fthora('chromatiki-skliri-pa', Genos.chromatiko_skliro, Fthongos.pa, new Glyph(Glyph.font_fthores, '1'), new Glyph(Glyph.font_fthores, '!'));
+	static chromatiki_skliri_di = new Fthora('chromatiki-skliri-di', Genos.chromatiko_skliro, Fthongos.di, new Glyph(Glyph.font_fthores, '4'), new Glyph(Glyph.font_fthores, '$'));
 
 	/**
 	 * @param {string} name
-	 * @param {Klimaka} genos
+	 * @param {Genos} genos
 	 * @param {Fthongos} fthongos
 	 * @param {Glyph} glyph
 	 * @param {?Glyph} glyph_thin
@@ -49,9 +52,9 @@ export class Fthora extends SecondaryCharacter {
 	 * @param {MusicContext} music_context
 	 */
 	apply(music_context) {
-		const note_steps = music_context.base_steps + music_context.klimaka.get_steps_from_base(music_context.pitch - music_context.base_pitch);
-		music_context.base_pitch = music_context.pitch - (this.#fthongos.pitch - this.#genos.fthongos.pitch);
-		music_context.base_steps = note_steps - this.#genos.get_steps_from_base(this.#fthongos.pitch - this.#genos.fthongos.pitch);
-		music_context.klimaka = this.#genos;
+		const steps = music_context.klimaka.get_steps(music_context.pitch);
+		const base_pitch = music_context.pitch - (this.#fthongos.pitch - this.#genos.base_fthongos.pitch);
+		const base_steps = steps - this.#genos.get_steps_from_base(this.#fthongos.pitch - this.#genos.base_fthongos.pitch);
+		music_context.klimaka = new Klimaka(this.#genos, base_pitch, base_steps);
 	}
 }

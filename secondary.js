@@ -1,5 +1,9 @@
 import { Glyph } from './glyph.js';
-import { PosotitaBlock } from './block-posotita.js';
+import { AbstractBlock } from './block-abstract.js';
+
+/**
+ * @typedef {import('./block-posotita.js').PosotitaBlock} PosotitaBlock
+ */
 
 
 export class SecondaryCharacter {
@@ -59,7 +63,7 @@ export class SecondaryCharacter {
 	}
 
 	/**
-	 * @param {PosotitaBlock} block
+	 * @param {AbstractBlock} block
 	 * @returns {HTMLSpanElement}
 	 */
 	get_span(block) {
@@ -70,12 +74,24 @@ export class SecondaryCharacter {
 	}
 
 	/**
-	 * @param {PosotitaBlock} block
+	 * @param {AbstractBlock} block
 	 * @returns {Glyph}
 	 */
 	get_glyph(block) {
-		if (block.posotita.is_thin() && this.glyph_thin !== null)
-			return this.glyph_thin;
+		switch (block.type) {
+			case AbstractBlock.type_posotita:
+				/**
+				 * @type {PosotitaBlock}
+				 */
+				const posotita_block = block;
+				if (posotita_block.posotita.is_thin() && this.glyph_thin !== null)
+					return this.glyph_thin;
+				break;
+			case AbstractBlock.type_ichos: // TODO fthora position
+				if (this.glyph_thin !== null)
+					return this.glyph_thin;
+				break;
+		}
 		return this.glyph;
 	}
 }

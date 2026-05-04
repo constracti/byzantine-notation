@@ -1,6 +1,9 @@
 import { Glyph } from './glyph.js';
-import { PosotitaBlock } from './block-posotita.js';
 import { Gorgon } from './gorgon.js';
+
+/**
+ * @typedef {import('./block-posotita.js').PosotitaBlock} PosotitaBlock
+ */
 
 
 export class Posotita {
@@ -38,6 +41,7 @@ export class Posotita {
 	static oligon_ypsili_aristera = new Posotita('oligon-ypsili-aristera', [+5], new Glyph(Glyph.font_loipa, 's'));
 	// katavasi
 	static apostrofos = new Posotita('apostrofos', [-1], new Glyph(Glyph.font_byzantina, 'j'));
+	static oligon_apostrofos = new Posotita('oligon-apostrofos', [-1], new Glyph(Glyph.font_loipa, ')'));
 	static petasti_apostrofos = new Posotita('petasti-apostrofos', [-1], new Glyph(Glyph.font_byzantina, 'J'));
 	static elafron = new Posotita('elafron', [-2], new Glyph(Glyph.font_byzantina, 'k'));
 	static elafron_apostrofos = new Posotita('elafron-apostrofos', [-3], new Glyph(Glyph.font_byzantina, 'l'));

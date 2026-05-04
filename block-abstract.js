@@ -20,6 +20,8 @@ export class AbstractBlock {
 	static type_agogi = 'agogi';
 	static type_newline = 'newline';
 
+	static newline = new AbstractBlock(AbstractBlock.type_newline);
+
 	/**
 	 * @param {?string} type
 	 */
@@ -33,6 +35,8 @@ export class AbstractBlock {
 	get_div() {
 		const block_div = document.createElement('div');
 		block_div.classList.add('bz-block');
+		if (this === AbstractBlock.newline)
+			block_div.classList.add('bz-newline');
 		return block_div;
 	}
 

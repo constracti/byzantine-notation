@@ -1,7 +1,13 @@
 import { Glyph } from './glyph.js';
 import { AbstractBlock } from './block-abstract.js';
-import { Fthongos } from './fthongos.js';
-import { MartyrikoSimadi } from './martyriko-simadi.js';
+
+/**
+ * @typedef {import('./fthongos.js').Fthongos} Fthongos
+ */
+
+/**
+ * @typedef {import('./martyriko-simadi.js').MartyrikoSimadi} MartyrikoSimadi
+ */
 
 
 export class MartyriaBlock extends AbstractBlock {

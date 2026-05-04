@@ -1,10 +1,22 @@
 import { AbstractBlock } from './block-abstract.js';
 import { Posotita } from './posotita.js';
 import { SecondaryCharacter } from './secondary.js';
-import { Chronos } from './chronos.js';
-import { Gorgon } from './gorgon.js';
-import { Alloiosi } from './alloiosi.js';
-import { Fthora } from './fthora.js';
+
+/**
+ * @typedef {import('./chronos.js').Chronos} Chronos
+ */
+
+/**
+ * @typedef {import('./gorgon.js').Gorgon} Gorgon
+ */
+
+/**
+ * @typedef {import('./alloiosi.js').Alloiosi} Alloiosi
+ */
+
+/**
+ * @typedef {import('./fthora.js').Fthora} Fthora
+ */
 
 /**
  * @typedef {import('./common.js').MusicContext} MusicContext
@@ -137,7 +149,7 @@ export class PosotitaBlock extends AbstractBlock {
 		this.posotita.move_list.forEach(move => {
 			music_context.pitch += move;
 			part_list.push({
-				steps: music_context.base_steps + music_context.klimaka.get_steps_from_base(music_context.pitch - music_context.base_pitch),
+				steps: music_context.klimaka.get_steps(music_context.pitch),
 				tempo: music_context.tempo,
 				beats: 1,
 				block: block_index,
@@ -168,7 +180,7 @@ export class PosotitaBlock extends AbstractBlock {
 			time_list.push({index: this.posotita.move_list.length - 1, beats: this.chronos.beats});
 		}
 		if (this.gorgon !== null) {
-			if (this.posotita === Posotita.yporroi) {
+			if (this.posotita === Posotita.yporroi || this.posotita === Posotita.kentimata_oligon) {
 				this.gorgon.tuple.forEach((value, index) => {
 					time_list.push({index: index - 1, beats: value - 1});
 				})

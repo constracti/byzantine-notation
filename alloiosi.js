@@ -1,7 +1,11 @@
 import { Glyph } from './glyph.js';
-import { PosotitaBlock } from './block-posotita.js';
+import { AbstractBlock } from './block-abstract.js';
 import { Posotita } from './posotita.js';
 import { SecondaryCharacter } from './secondary.js';
+
+/**
+ * @typedef {import('./block-posotita.js').PosotitaBlock} PosotitaBlock
+ */
 
 
 export class Alloiosi extends SecondaryCharacter {
@@ -34,12 +38,20 @@ export class Alloiosi extends SecondaryCharacter {
 	}
 
 	/**
-	 * @param {PosotitaBlock} block
+	 * @param {AbstractBlock} block
 	 * @returns {Glyph}
 	 */
 	get_glyph(block) {
-		if (block.posotita === Posotita.oligon_kentimata)
-			return this.glyph_thin ?? this.glyph;
+		switch (block.type) {
+			case AbstractBlock.type_posotita:
+				/**
+				 * @type {PosotitaBlock}
+				 */
+				const posotita_block = block;
+				if (posotita_block.posotita === Posotita.oligon_kentimata)
+					return this.glyph_thin ?? this.glyph;
+				break;
+		}
 		return super.get_glyph(block);
 	}
 }

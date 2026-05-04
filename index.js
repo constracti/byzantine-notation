@@ -11,8 +11,6 @@ import { block_list } from './demo.js';
  * @typedef {import('./common.js').Part} Part
  */
 
-// TODO rename klimaka to genos
-
 /**
  * map block index to part index
  * @type {Map<number, number}
@@ -23,11 +21,9 @@ const part_map = new Map();
  * @type {MusicContext}
  */
 const music_context = {
-	pitch: Klimaka.diatoniki.fthongos.pitch,
+	pitch: 0,
 	tempo: Agogi.metria.tempo,
-	klimaka: Klimaka.diatoniki,
-	base_pitch: Klimaka.diatoniki.fthongos.pitch,
-	base_steps: Klimaka.diatoniki.base_steps,
+	klimaka: Klimaka.get_default(),
 };
 
 /**

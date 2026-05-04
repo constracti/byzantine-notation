@@ -1,7 +1,11 @@
 import { Glyph } from './glyph.js';
-import { PosotitaBlock } from './block-posotita.js';
+import { AbstractBlock } from './block-abstract.js';
 import { Posotita } from './posotita.js';
 import { SecondaryCharacter } from './secondary.js';
+
+/**
+ * @typedef {import('./block-posotita.js').PosotitaBlock} PosotitaBlock
+ */
 
 
 export class Gorgon extends SecondaryCharacter {
@@ -28,23 +32,33 @@ export class Gorgon extends SecondaryCharacter {
 	}
 
 	/**
-	 * @param {PosotitaBlock} block
+	 * @param {AbstractBlock} block
 	 * @returns {Glyph}
 	 */
 	get_glyph(block) {
-		if (block.posotita === Posotita.oligon_kentimata && this === Gorgon.gorgon)
-			return Glyph.empty;
-		if (block.posotita === Posotita.yporroi && this === Gorgon.gorgon)
-			return Glyph.empty;
-		if (block.posotita === Posotita.yporroi && this === Gorgon.digorgon)
-			return Glyph.empty;
-		if (block.posotita === Posotita.yporroi && this === Gorgon.trigorgon)
-			return Glyph.empty;
-		if (block.posotita === Posotita.ison_kentimata)
-			return this.glyph_thin ?? this.glyph;
-		if (block.posotita === Posotita.apostrofos_kentimata)
-			return this.glyph_thin ?? this.glyph;
-		// TODO maybe auto select gorgon kato
+		switch (block.type) {
+			case AbstractBlock.type_posotita:
+				/**
+				 * @type {PosotitaBlock}
+				 */
+				const posotita_block = block;
+				if (posotita_block.posotita === Posotita.oligon_kentimata && this === Gorgon.gorgon)
+					return Glyph.empty;
+				if (posotita_block.posotita === Posotita.yporroi && this === Gorgon.gorgon)
+					return Glyph.empty;
+				if (posotita_block.posotita === Posotita.yporroi && this === Gorgon.digorgon)
+					return Glyph.empty;
+				if (posotita_block.posotita === Posotita.yporroi && this === Gorgon.trigorgon)
+					return Glyph.empty;
+				if (posotita_block.posotita === Posotita.ison_kentimata)
+					return this.glyph_thin ?? this.glyph;
+				if (posotita_block.posotita === Posotita.apostrofos_kentimata)
+					return this.glyph_thin ?? this.glyph;
+				if (posotita_block.posotita === Posotita.elafron_kentimata)
+					return this.glyph_thin ?? this.glyph;
+				// TODO maybe auto select gorgon kato
+				break;
+		}
 		return super.get_glyph(block);
 	}
 }

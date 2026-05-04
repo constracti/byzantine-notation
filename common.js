@@ -1,13 +1,13 @@
-import { Klimaka } from './klimaka.js';
+/**
+ * @typedef {import('./klimaka.js').Klimaka} Klimaka
+ */
 
 /**
- * @typedef MusicContext TODO chroes
+ * @typedef MusicContext
  * @type {object}
  * @property {number} pitch fthongos pitch
  * @property {number} tempo beats per minute
  * @property {Klimaka} klimaka
- * @property {number} base_pitch klimaka base fthongos pitch
- * @property {number} base_steps klimaka base distance from tuner
  */
 
 /**
