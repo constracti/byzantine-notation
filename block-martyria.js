@@ -23,20 +23,13 @@ export class MartyriaBlock extends AbstractBlock {
 	#simadi;
 
 	/**
-	 * @type {boolean}
-	 */
-	#teleies;
-
-	/**
 	 * @param {Fthongos} fthongos
 	 * @param {MartyrikoSimadi} simadi
-	 * @param {boolean} teleies
 	 */
-	constructor(fthongos, simadi, teleies) {
+	constructor(fthongos, simadi) {
 		super(AbstractBlock.type_martyria);
 		this.#fthongos = fthongos;
 		this.#simadi = simadi;
-		this.#teleies = teleies;
 	}
 
 	/**
@@ -48,7 +41,7 @@ export class MartyriaBlock extends AbstractBlock {
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
 		symbol_div.append(this.#fthongos.vathmida.get_martyria_span());
-		if (this.#teleies)
+		if (this.#simadi.teleies)
 			symbol_div.append(MartyriaBlock.#get_teleies_span());
 		symbol_div.append(this.#simadi.get_span());
 		for (let diapason = 1; diapason <= this.#fthongos.diapason; diapason++)
