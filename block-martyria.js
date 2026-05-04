@@ -9,6 +9,10 @@ import { AbstractBlock } from './block-abstract.js';
  * @typedef {import('./martyriko-simadi.js').MartyrikoSimadi} MartyrikoSimadi
  */
 
+/**
+ * @typedef {import('./fthora.js').Fthora} Fthora
+ */
+
 
 export class MartyriaBlock extends AbstractBlock {
 
@@ -23,13 +27,22 @@ export class MartyriaBlock extends AbstractBlock {
 	#simadi;
 
 	/**
+	 * @type {?Fthora}
+	 */
+	#fthora = null;
+
+	/**
 	 * @param {Fthongos} fthongos
 	 * @param {MartyrikoSimadi} simadi
+	 * @param {Fthora[]} args 
 	 */
-	constructor(fthongos, simadi) {
+	constructor(fthongos, simadi, ...args) {
 		super(AbstractBlock.type_martyria);
 		this.#fthongos = fthongos;
 		this.#simadi = simadi;
+		args.forEach(arg => {
+			this.#fthora = arg;
+		});
 	}
 
 	/**
@@ -41,9 +54,11 @@ export class MartyriaBlock extends AbstractBlock {
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
 		symbol_div.append(this.#fthongos.vathmida.get_martyria_span());
+		symbol_div.append(this.#simadi.get_span());
 		if (this.#simadi.teleies)
 			symbol_div.append(MartyriaBlock.#get_teleies_span());
-		symbol_div.append(this.#simadi.get_span());
+		if (this.#fthora !== null)
+			symbol_div.append(this.#fthora.get_span(this));
 		for (let diapason = 1; diapason <= this.#fthongos.diapason; diapason++)
 			symbol_div.append(MartyriaBlock.#get_tonos_span());
 		block_div.append(symbol_div);
@@ -68,5 +83,16 @@ export class MartyriaBlock extends AbstractBlock {
 		const span = glyph.get_span();
 		span.classList.add(Glyph.color_red);
 		return span;
+	}
+
+	/**
+	 * @param {MusicContext} music_context
+	 * @param {number} block_index
+	 * @returns {?Part[]}
+	 */
+	get_parts(music_context, block_index) {
+		if (this.#fthora !== null)
+			this.#fthora.apply(music_context);
+		return null;
 	}
 }

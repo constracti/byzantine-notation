@@ -18,6 +18,8 @@ export class Alloiosi extends SecondaryCharacter {
 	static yfesi_apli = new Alloiosi('yfesi_apli', -2, new Glyph(Glyph.font_byzantina, 't'), new Glyph(Glyph.font_byzantina, 'y'));
 	static yfesi_monogrammi = new Alloiosi('yfesi_monogrammi', -4, new Glyph(Glyph.font_byzantina, 'T'), new Glyph(Glyph.font_byzantina, 'Y'));
 
+	static diesi_apli = new Alloiosi('diesi-apli', +2, new Glyph(Glyph.font_fthores, 'b'), new Glyph(Glyph.font_fthores, 'n'));
+
 	/**
 	 * 
 	 * @param {string} name

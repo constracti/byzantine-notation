@@ -17,6 +17,7 @@ export class Gorgon extends SecondaryCharacter {
 
 	static gorgon = new Gorgon('gorgon', [1/2, 1/2], new Glyph(Glyph.font_byzantina, 'e'), new Glyph(Glyph.font_byzantina, 'r'));
 	static gorgon_kato = new Gorgon('gorgon-kato', [1/2, 1/2], new Glyph(Glyph.font_byzantina, 'E'), new Glyph(Glyph.font_byzantina, 'R'));
+	static gorgon_parestigmeno = new Gorgon('gorgon-parestigmeno', [1/3, 2/3], new Glyph(Glyph.font_loipa, '1'), new Glyph(Glyph.font_loipa, '!'));
 	static digorgon = new Gorgon('digorgon', [1/3, 1/3, 1/3], new Glyph(Glyph.font_loipa, '2'), new Glyph(Glyph.font_loipa, '@'));
 	static trigorgon = new Gorgon('digorgon', [1/4, 1/4, 1/4, 1/4], new Glyph(Glyph.font_loipa, '6'), new Glyph(Glyph.font_loipa, '^'));
 

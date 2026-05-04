@@ -24,6 +24,7 @@ export class Fthora extends SecondaryCharacter {
 	static diatoniki_ni = new Fthora('diatoniki-ni', Genos.diatoniko, Fthongos.ni, new Glyph(Glyph.font_fthores, 'd'), new Glyph(Glyph.font_fthores, 'D'));
 	static diatoniki_pa = new Fthora('diatoniki-pa', Genos.diatoniko, Fthongos.pa, new Glyph(Glyph.font_fthores, 'f'), new Glyph(Glyph.font_fthores, 'F'));
 	static diatoniki_di = new Fthora('diatoniki-di', Genos.diatoniko, Fthongos.di, new Glyph(Glyph.font_fthores, 'j'), new Glyph(Glyph.font_fthores, 'J'));
+	static diatoniki_ke = new Fthora('diatoniki-ke', Genos.diatoniko, Fthongos.ke, new Glyph(Glyph.font_fthores, 'k'), new Glyph(Glyph.font_fthores, 'K'));
 	static chromatiki_malaki_di = new Fthora('chromatiki-malaki-di', Genos.chromatiko_malako, Fthongos.di, new Glyph(Glyph.font_fthores, '2'), new Glyph(Glyph.font_fthores, '@'));
 	static chromatiki_skliri_pa = new Fthora('chromatiki-skliri-pa', Genos.chromatiko_skliro, Fthongos.pa, new Glyph(Glyph.font_fthores, '1'), new Glyph(Glyph.font_fthores, '!'));
 	static chromatiki_skliri_di = new Fthora('chromatiki-skliri-di', Genos.chromatiko_skliro, Fthongos.di, new Glyph(Glyph.font_fthores, '4'), new Glyph(Glyph.font_fthores, '$'));

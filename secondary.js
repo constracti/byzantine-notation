@@ -1,5 +1,7 @@
 import { Glyph } from './glyph.js';
 import { AbstractBlock } from './block-abstract.js';
+import { Posotita } from './posotita.js';
+import { Chronos } from './chronos.js';
 
 /**
  * @typedef {import('./block-posotita.js').PosotitaBlock} PosotitaBlock
@@ -39,6 +41,7 @@ export class SecondaryCharacter {
 	static antikenoma = new SecondaryCharacter('antikenoma', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, 'm'), new Glyph(Glyph.font_byzantina, 'M'));
 	static omalon_mono = new SecondaryCharacter('omalon-mono', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, '<'), null);
 	static omalon_diplo = new SecondaryCharacter('omalon-diplo', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, ','), null);
+	static syndesmos = new SecondaryCharacter('omalon-mono', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_loipa, '}'), null);
 	static rythmos_trisimos = new SecondaryCharacter('rythmos-trisimos', SecondaryCharacter.type_rythmos, new Glyph(Glyph.font_fthores, '6'), new Glyph(Glyph.font_fthores, '^'));
 	static rythmos_tetrasimos = new SecondaryCharacter('rythmos-tetrasimos', SecondaryCharacter.type_rythmos, new Glyph(Glyph.font_fthores, '7'), new Glyph(Glyph.font_fthores, '&'));
 
@@ -86,8 +89,18 @@ export class SecondaryCharacter {
 				const posotita_block = block;
 				if (posotita_block.posotita.is_thin() && this.glyph_thin !== null)
 					return this.glyph_thin;
+				if (posotita_block.posotita === Posotita.oligon_kentima_kato && this === SecondaryCharacter.antikenoma)
+					return Glyph.empty;
+				if (posotita_block.posotita === Posotita.kentimata_oligon && this === Chronos.apli)
+					return Glyph.empty;
+				if (posotita_block.posotita === Posotita.kentimata_oligon && this === SecondaryCharacter.antikenoma)
+					return Glyph.empty;
 				break;
 			case AbstractBlock.type_ichos: // TODO fthora position
+				if (this.glyph_thin !== null)
+					return this.glyph_thin;
+				break;
+			case AbstractBlock.type_martyria:
 				if (this.glyph_thin !== null)
 					return this.glyph_thin;
 				break;
