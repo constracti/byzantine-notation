@@ -49,12 +49,14 @@ export class MartyriaBlock extends AbstractBlock {
 	 * @returns {HTMLDivElement}
 	 */
 	get_div() {
-		// TODO ypatoeideis fthongoi
 		const block_div = super.get_div();
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
-		symbol_div.append(this.#fthongos.vathmida.get_martyria_span());
-		symbol_div.append(this.#simadi.get_span());
+		symbol_div.append(this.#fthongos.get_martyria_span());
+		if (this.#fthongos.diapason >= 0)
+			symbol_div.append(this.#simadi.get_normal_span());
+		else
+			symbol_div.append(this.#simadi.get_flipped_span());
 		if (this.#simadi.teleies)
 			symbol_div.append(MartyriaBlock.#get_teleies_span());
 		if (this.#fthora !== null)
