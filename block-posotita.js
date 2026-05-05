@@ -1,5 +1,6 @@
 import { AbstractBlock } from './block-abstract.js';
 import { Posotita } from './posotita.js';
+import { Chroa } from './chroa.js';
 import { SecondaryCharacter } from './secondary.js';
 
 /**
@@ -19,7 +20,7 @@ import { SecondaryCharacter } from './secondary.js';
  */
 
 /**
- * @typedef {import('./common.js').MusicContext} MusicContext
+ * @typedef {import('./common.js').MusicContext} MusicContext // TODO type is not resolved
  */
 
 /**
@@ -60,6 +61,11 @@ export class PosotitaBlock extends AbstractBlock {
 	fthora = null;
 
 	/**
+	 * @type {?Chroa}
+	 */
+	chroa = null;
+
+	/**
 	 * @type {?SecondaryCharacter}
 	 */
 	rythmos = null;
@@ -96,6 +102,9 @@ export class PosotitaBlock extends AbstractBlock {
 					case SecondaryCharacter.type_fthora:
 						this.fthora = arg;
 						break;
+					case SecondaryCharacter.type_chroa:
+						this.chroa = arg;
+						break;
 					case SecondaryCharacter.type_rythmos:
 						this.rythmos = arg;
 						break;
@@ -112,7 +121,7 @@ export class PosotitaBlock extends AbstractBlock {
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
 		symbol_div.append(this.posotita.get_span(this));
-		[this.chronos, this.gorgon, this.kallopismos, this.alloiosi, this.fthora, this.rythmos].forEach(secondary => {
+		[this.chronos, this.gorgon, this.kallopismos, this.alloiosi, this.fthora, this.chroa, this.rythmos].forEach(secondary => {
 			if (secondary === null)
 				return;
 			symbol_div.append(secondary.get_span(this));
@@ -159,6 +168,8 @@ export class PosotitaBlock extends AbstractBlock {
 		}
 		if (this.fthora !== null)
 			this.fthora.apply(music_context);
+		if (this.chroa !== null)
+			this.chroa.apply(music_context);
 		return part_list;
 	}
 

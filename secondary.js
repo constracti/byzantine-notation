@@ -33,9 +33,10 @@ export class SecondaryCharacter {
 	static type_chronos = 'chronos';
 	static type_gorgon = 'gorgon';
 	static type_kallopismos = 'kallopismos';
-	static type_rythmos = 'rythmos';
 	static type_alloiosi = 'alloiosi';
 	static type_fthora = 'fthora';
+	static type_chroa = 'chroa';
+	static type_rythmos = 'rythmos';
 
 	static psifiston = new SecondaryCharacter('psifiston', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, '/'), null);
 	static antikenoma = new SecondaryCharacter('antikenoma', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, 'm'), new Glyph(Glyph.font_byzantina, 'M'));

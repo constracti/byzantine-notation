@@ -22,6 +22,7 @@ export class Fthora extends SecondaryCharacter {
 	#fthongos;
 
 	static diatoniki_ni = new Fthora('diatoniki-ni', Genos.diatoniko, Fthongos.ni, new Glyph(Glyph.font_fthores, 'd'), new Glyph(Glyph.font_fthores, 'D'));
+	static diatoniki_vou = new Fthora('diatoniki-vou', Genos.diatoniko, Fthongos.vou, new Glyph(Glyph.font_fthores, 'g'), new Glyph(Glyph.font_fthores, 'G'));
 	static diatoniki_pa = new Fthora('diatoniki-pa', Genos.diatoniko, Fthongos.pa, new Glyph(Glyph.font_fthores, 'f'), new Glyph(Glyph.font_fthores, 'F'));
 	static diatoniki_ga = new Fthora('diatoniki-ga', Genos.diatoniko, Fthongos.ga, new Glyph(Glyph.font_fthores, 'h'), new Glyph(Glyph.font_fthores, 'H'));
 	static diatoniki_di = new Fthora('diatoniki-di', Genos.diatoniko, Fthongos.di, new Glyph(Glyph.font_fthores, 'j'), new Glyph(Glyph.font_fthores, 'J'));

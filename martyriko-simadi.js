@@ -35,6 +35,8 @@ export class MartyrikoSimadi {
 	static #flipped_skliro = new Glyph(Glyph.font_fthores, 'X');
 	static #normal_defteros = new Glyph(Glyph.font_byzantina, '%');
 	static #flipped_defteros = new Glyph(Glyph.font_fthores, 'x');
+	static #normal_zygos = new Glyph(Glyph.font_fthores, 'I');
+	static #flipped_zygos = new Glyph(Glyph.font_fthores, '(');
 
 	static alfa = new MartyrikoSimadi('alfa', MartyrikoSimadi.#normal_alfa, MartyrikoSimadi.#flipped_alfa, false);
 	static alfa_teleies = new MartyrikoSimadi('alfa-teleies', MartyrikoSimadi.#normal_alfa, MartyrikoSimadi.#flipped_alfa, true);
@@ -46,6 +48,7 @@ export class MartyrikoSimadi {
 	static skliro = new MartyrikoSimadi('skliro', MartyrikoSimadi.#normal_skliro, MartyrikoSimadi.#flipped_skliro, false);
 	static defteros = new MartyrikoSimadi('defteros', MartyrikoSimadi.#normal_defteros, MartyrikoSimadi.#flipped_defteros, false);
 	static defteros_teleies = new MartyrikoSimadi('defteros-teleies', MartyrikoSimadi.#normal_defteros, MartyrikoSimadi.#flipped_defteros, true);
+	static zygos = new MartyrikoSimadi('zygos', MartyrikoSimadi.#normal_zygos, MartyrikoSimadi.#flipped_zygos, false); // TODO fix both glyphs
 
 	/**
 	 * @param {string} name

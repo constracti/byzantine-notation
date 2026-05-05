@@ -41,6 +41,7 @@ export class Posotita {
 	static oligon_ypsili_dexia = new Posotita('oligon-ypsili-dexia', [+4], new Glyph(Glyph.font_byzantina, 'g'));
 	static petasti_ypsili_dexia = new Posotita('petasti-ypsili-dexia', [+4], new Glyph(Glyph.font_byzantina, 'G'));
 	static oligon_ypsili_aristera = new Posotita('oligon-ypsili-aristera', [+5], new Glyph(Glyph.font_loipa, 's'));
+	static petasti_kentima_ypsili_kentro = new Posotita('petasti-kentima-ypsili-kentro', [+7], new Glyph(Glyph.font_loipa, 'F'));
 	// katavasi
 	static apostrofos = new Posotita('apostrofos', [-1], new Glyph(Glyph.font_byzantina, 'j'));
 	static oligon_apostrofos = new Posotita('oligon-apostrofos', [-1], new Glyph(Glyph.font_loipa, ')'));
@@ -122,6 +123,7 @@ export class Posotita {
 			case Posotita.petasti_oligon:
 			case Posotita.petasti_kentima:
 			case Posotita.petasti_ypsili_dexia:
+			case Posotita.petasti_kentima_ypsili_kentro:
 			case Posotita.petasti_apostrofos:
 			case Posotita.petasti_elafron:
 				return true;
