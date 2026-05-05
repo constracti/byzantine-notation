@@ -35,11 +35,6 @@ export class PosotitaBlock extends AbstractBlock {
 	posotita;
 
 	/**
-	 * @type {SecondaryCharacter[]}
-	 */
-	#secondary_list;
-
-	/**
 	 * @type {?Chronos}
 	 */
 	chronos = null;
@@ -76,36 +71,37 @@ export class PosotitaBlock extends AbstractBlock {
 
 	/**
 	 * @param {Posotita} posotita
-	 * @param {SecondaryCharacter[]} secondary_list
-	 * @param {?string} syllavi
+	 * @param {(SecondaryCharacter|string)[]} args
 	 */
-	constructor(posotita, secondary_list, syllavi) {
+	constructor(posotita, ...args) {
 		super(AbstractBlock.type_posotita);
 		this.posotita = posotita;
-		this.#secondary_list = secondary_list;
-		secondary_list.forEach(secondary => {
-			switch (secondary.type) {
-				case SecondaryCharacter.type_chronos:
-					this.chronos = secondary;
-					break;
-				case SecondaryCharacter.type_gorgon:
-					this.gorgon = secondary;
-					break;
-				case SecondaryCharacter.type_kallopismos:
-					this.kallopismos = secondary;
-					break;
-				case SecondaryCharacter.type_alloiosi:
-					this.alloiosi = secondary;
-					break;
-				case SecondaryCharacter.type_fthora:
-					this.fthora = secondary;
-					break;
-				case SecondaryCharacter.type_rythmos:
-					this.rythmos = secondary;
-					break;
+		args.forEach(arg => {
+			if (typeof(arg) === 'string') {
+				this.syllavi = arg;
+			} else {
+				switch (arg.type) {
+					case SecondaryCharacter.type_chronos:
+						this.chronos = arg;
+						break;
+					case SecondaryCharacter.type_gorgon:
+						this.gorgon = arg;
+						break;
+					case SecondaryCharacter.type_kallopismos:
+						this.kallopismos = arg;
+						break;
+					case SecondaryCharacter.type_alloiosi:
+						this.alloiosi = arg;
+						break;
+					case SecondaryCharacter.type_fthora:
+						this.fthora = arg;
+						break;
+					case SecondaryCharacter.type_rythmos:
+						this.rythmos = arg;
+						break;
+				}
 			}
 		});
-		this.syllavi = syllavi;
 	}
 
 	/**
@@ -116,7 +112,9 @@ export class PosotitaBlock extends AbstractBlock {
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
 		symbol_div.append(this.posotita.get_span(this));
-		this.#secondary_list.forEach(secondary => {
+		[this.chronos, this.gorgon, this.kallopismos, this.alloiosi, this.fthora, this.rythmos].forEach(secondary => {
+			if (secondary === null)
+				return;
 			symbol_div.append(secondary.get_span(this));
 		});
 		block_div.append(symbol_div);

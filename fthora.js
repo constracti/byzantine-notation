@@ -23,6 +23,7 @@ export class Fthora extends SecondaryCharacter {
 
 	static diatoniki_ni = new Fthora('diatoniki-ni', Genos.diatoniko, Fthongos.ni, new Glyph(Glyph.font_fthores, 'd'), new Glyph(Glyph.font_fthores, 'D'));
 	static diatoniki_pa = new Fthora('diatoniki-pa', Genos.diatoniko, Fthongos.pa, new Glyph(Glyph.font_fthores, 'f'), new Glyph(Glyph.font_fthores, 'F'));
+	static diatoniki_ga = new Fthora('diatoniki-ga', Genos.diatoniko, Fthongos.ga, new Glyph(Glyph.font_fthores, 'h'), new Glyph(Glyph.font_fthores, 'H'));
 	static diatoniki_di = new Fthora('diatoniki-di', Genos.diatoniko, Fthongos.di, new Glyph(Glyph.font_fthores, 'j'), new Glyph(Glyph.font_fthores, 'J'));
 	static diatoniki_ke = new Fthora('diatoniki-ke', Genos.diatoniko, Fthongos.ke, new Glyph(Glyph.font_fthores, 'k'), new Glyph(Glyph.font_fthores, 'K'));
 	static chromatiki_malaki_di = new Fthora('chromatiki-malaki-di', Genos.chromatiko_malako, Fthongos.di, new Glyph(Glyph.font_fthores, '2'), new Glyph(Glyph.font_fthores, '@'));
@@ -34,7 +35,7 @@ export class Fthora extends SecondaryCharacter {
 	 * @param {Genos} genos
 	 * @param {Fthongos} fthongos
 	 * @param {Glyph} glyph
-	 * @param {?Glyph} glyph_thin
+	 * @param {Glyph} glyph_thin
 	 */
 	constructor(name, genos, fthongos, glyph, glyph_thin) {
 		super(name, SecondaryCharacter.type_fthora, glyph, glyph_thin);

@@ -20,7 +20,7 @@ export class Chronos extends SecondaryCharacter {
 	 * @param {string} name
 	 * @param {number} beats
 	 * @param {Glyph} glyph
-	 * @param {?Glyph} glyph_thin
+	 * @param {Glyph} glyph_thin
 	 */
 	constructor(name, beats, glyph, glyph_thin) {
 		super(name, SecondaryCharacter.type_chronos, glyph, glyph_thin);

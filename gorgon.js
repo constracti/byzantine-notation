@@ -25,7 +25,7 @@ export class Gorgon extends SecondaryCharacter {
 	 * @param {string} name
 	 * @param {number[]} tuple
 	 * @param {Glyph} glyph
-	 * @param {?Glyph} glyph_thin
+	 * @param {Glyph} glyph_thin
 	 */
 	constructor(name, tuple, glyph, glyph_thin) {
 		super(name, SecondaryCharacter.type_gorgon, glyph, glyph_thin);

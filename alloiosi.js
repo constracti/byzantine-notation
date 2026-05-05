@@ -25,7 +25,7 @@ export class Alloiosi extends SecondaryCharacter {
 	 * @param {string} name
 	 * @param {number} steps
 	 * @param {Glyph} glyph
-	 * @param {?Glyph} glyph_thin
+	 * @param {Glyph} glyph_thin
 	 */
 	constructor(name, steps, glyph, glyph_thin) {
 		super(name, SecondaryCharacter.type_alloiosi, glyph, glyph_thin);
