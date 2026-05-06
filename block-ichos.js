@@ -2,23 +2,11 @@ import { AbstractBlock } from './block-abstract.js';
 import { Klimaka } from './klimaka.js';
 
 /**
- * @typedef {import('./vathmida.js').Vathmida} Vathmida
- */
-
-/**
- * @typedef {import('./fthora.js').Fthora} Fthora
- */
-
-/**
- * @typedef {import('./ichos.js').Ichos} Ichos
- */
-
-/**
- * @typedef {import('./common.js').MusicContext} MusicContext
- */
-
-/**
- * @typedef {import('./common.js').Part} Part
+ * @import {Vathmida} from './vathmida.js'
+ * @import {Fthora} from './fthora.js'
+ * @import {Ichos} from './ichos.js'
+ * @import {MusicContext} from './common.js'
+ * @import {Part} from './common.js'
  */
 
 
@@ -68,12 +56,12 @@ export class IchosBlock extends AbstractBlock {
 	/**
 	 * @param {MusicContext} music_context
 	 * @param {number} block_index
-	 * @returns {?Part[]}
+	 * @returns {Part[]}
 	 */
 	get_parts(music_context, block_index) {
 		music_context.pitch = this.#vathmida.pitch;
 		music_context.klimaka = Klimaka.get_default();
 		this.#fthora.apply(music_context);
-		return null;
+		return [];
 	}
 }

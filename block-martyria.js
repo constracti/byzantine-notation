@@ -2,15 +2,11 @@ import { Glyph } from './glyph.js';
 import { AbstractBlock } from './block-abstract.js';
 
 /**
- * @typedef {import('./fthongos.js').Fthongos} Fthongos
- */
-
-/**
- * @typedef {import('./martyriko-simadi.js').MartyrikoSimadi} MartyrikoSimadi
- */
-
-/**
- * @typedef {import('./fthora.js').Fthora} Fthora
+ * @import {Fthongos} from './fthongos.js'
+ * @import {MartyrikoSimadi} from './martyriko-simadi.js'
+ * @import {Fthora} from './fthora.js'
+ * @import {MusicContext} from './common.js'
+ * @import {Part} from './common.js'
  */
 
 
@@ -90,11 +86,11 @@ export class MartyriaBlock extends AbstractBlock {
 	/**
 	 * @param {MusicContext} music_context
 	 * @param {number} block_index
-	 * @returns {?Part[]}
+	 * @returns {Part[]}
 	 */
 	get_parts(music_context, block_index) {
 		if (this.#fthora !== null)
 			this.#fthora.apply(music_context);
-		return null;
+		return [];
 	}
 }

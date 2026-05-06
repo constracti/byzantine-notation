@@ -1,15 +1,9 @@
 import { AbstractBlock } from './block-abstract.js';
 
 /**
- * @typedef {import('./agogi.js').Agogi} Agogi
- */
-
-/**
- * @typedef {import('./common.js').MusicContext} MusicContext
- */
-
-/**
- * @typedef {import('./common.js').Part} Part
+ * @import {Agogi} from './agogi.js'
+ * @import {MusicContext} from './common.js'
+ * @import {Part} from './common.js'
  */
 
 
@@ -43,10 +37,10 @@ export class AgogiBlock extends AbstractBlock {
 	/**
 	 * @param {MusicContext} music_context
 	 * @param {number} block_index
-	 * @returns {?Part[]}
+	 * @returns {Part[]}
 	 */
 	get_parts(music_context, block_index) {
 		music_context.tempo = this.#agogi.tempo;
-		return null;
+		return [];
 	}
 }

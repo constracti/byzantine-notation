@@ -4,27 +4,13 @@ import { Chroa } from './chroa.js';
 import { SecondaryCharacter } from './secondary.js';
 
 /**
- * @typedef {import('./chronos.js').Chronos} Chronos
- */
-
-/**
- * @typedef {import('./gorgon.js').Gorgon} Gorgon
- */
-
-/**
- * @typedef {import('./alloiosi.js').Alloiosi} Alloiosi
- */
-
-/**
- * @typedef {import('./fthora.js').Fthora} Fthora
- */
-
-/**
- * @typedef {import('./common.js').MusicContext} MusicContext // TODO type is not resolved
- */
-
-/**
- * @typedef {import('./common.js').Part} Part
+ * @import {Chronos} from './chronos.js'
+ * @import {Gorgon} from './gorgon.js'
+ * @import {Alloiosi} from './alloiosi.js'
+ * @import {Fthora} from './fthora.js'
+ * @import {Chroa} from './chroa.js'
+ * @import {MusicContext} from './common.js'
+ * @import {Part} from './common.js'
  */
 
 
@@ -146,7 +132,7 @@ export class PosotitaBlock extends AbstractBlock {
 	/**
 	 * @param {MusicContext} music_context
 	 * @param {number} block_index
-	 * @returns {?Part[]}
+	 * @returns {Part[]}
 	 */
 	get_parts(music_context, block_index) {
 		/**

@@ -5,7 +5,7 @@ import { Fthongos } from './fthongos.js';
 import { Klimaka } from './klimaka.js';
 
 /**
- * @typedef {import('./common.js').MusicContext} MusicContext
+ * @import {MusicContext} from './common.js'
  */
 
 

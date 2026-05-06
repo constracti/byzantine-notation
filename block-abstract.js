@@ -1,9 +1,6 @@
 /**
- * @typedef {import('./common.js').MusicContext} MusicContext
- */
-
-/**
- * @typedef {import('./common.js').Part} Part
+ * @import {MusicContext} from './common.js'
+ * @import {Part} from './common.js'
  */
 
 
@@ -43,10 +40,10 @@ export class AbstractBlock {
 	/**
 	 * @param {MusicContext} music_context
 	 * @param {number} block_index
-	 * @returns {?Part[]}
+	 * @returns {Part[]}
 	 */
 	get_parts(music_context, block_index) {
-		return null;
+		return [];
 	}
 
 	/**

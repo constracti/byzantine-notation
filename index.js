@@ -4,11 +4,8 @@ import { Agogi } from './agogi.js';
 import { block_list } from './demo.js';
 
 /**
- * @typedef {import('./common.js').MusicContext} MusicContext
- */
-
-/**
- * @typedef {import('./common.js').Part} Part
+ * @import {MusicContext} from './common.js'
+ * @import {Part} from './common.js'
  */
 
 /**
@@ -33,9 +30,8 @@ const part_list = [];
 // initially, ignore beats
 block_list.forEach((block, block_index) => {
 	const part_list_of_block = block.get_parts(music_context, block_index);
-	if (part_list_of_block === null)
-		return;
-	part_map.set(block_index, part_list.length);
+	if (part_list_of_block.length > 0)
+		part_map.set(block_index, part_list.length);
 	part_list.push(...part_list_of_block);
 });
 // finally, apply beats

@@ -2,7 +2,7 @@ import { Glyph } from './glyph.js';
 import { SecondaryCharacter } from './secondary.js';
 
 /**
- * @typedef {import('./common.js').MusicContext} MusicContext
+ * @import {MusicContext} from './common.js'
  */
 
 

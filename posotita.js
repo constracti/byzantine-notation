@@ -4,7 +4,7 @@ import { Gorgon } from './gorgon.js';
 import { SecondaryCharacter } from './secondary.js';
 
 /**
- * @typedef {import('./block-posotita.js').PosotitaBlock} PosotitaBlock
+ * @import {PosotitaBlock} from './block-posotita.js'
  */
 
 
