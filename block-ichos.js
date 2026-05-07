@@ -48,7 +48,7 @@ export class IchosBlock extends AbstractBlock {
 		symbol_div.classList.add('bz-symbol');
 		symbol_div.append(...this.#ichos.get_span_list());
 		symbol_div.append(this.#vathmida.get_ichos_span());
-		symbol_div.append(this.#fthora.get_span(this));
+		symbol_div.append(this.#fthora.get_ichos_span());
 		block_div.append(symbol_div);
 		return block_div;
 	}

@@ -21,6 +21,16 @@ export class Fthora extends SecondaryCharacter {
 	 */
 	#fthongos;
 
+	/**
+	 * @type {Glyph}
+	 */
+	#glyph_normal;
+
+	/**
+	 * @type {Glyph}
+	 */
+	#glyph_narrow;
+
 	static diatoniki_ni = new Fthora('diatoniki-ni', Genos.diatoniko, Fthongos.ni, new Glyph(Glyph.font_fthores, 'd'), new Glyph(Glyph.font_fthores, 'D'));
 	static diatoniki_vou = new Fthora('diatoniki-vou', Genos.diatoniko, Fthongos.vou, new Glyph(Glyph.font_fthores, 'g'), new Glyph(Glyph.font_fthores, 'G'));
 	static diatoniki_pa = new Fthora('diatoniki-pa', Genos.diatoniko, Fthongos.pa, new Glyph(Glyph.font_fthores, 'f'), new Glyph(Glyph.font_fthores, 'F'));
@@ -35,13 +45,15 @@ export class Fthora extends SecondaryCharacter {
 	 * @param {string} name
 	 * @param {Genos} genos
 	 * @param {Fthongos} fthongos
-	 * @param {Glyph} glyph
-	 * @param {Glyph} glyph_thin
+	 * @param {Glyph} glyph_normal
+	 * @param {Glyph} glyph_narrow
 	 */
-	constructor(name, genos, fthongos, glyph, glyph_thin) {
-		super(name, SecondaryCharacter.type_fthora, glyph, glyph_thin);
+	constructor(name, genos, fthongos, glyph_normal, glyph_narrow) {
+		super(name, SecondaryCharacter.type_fthora, glyph_normal, glyph_narrow);
 		this.#genos = genos;
 		this.#fthongos = fthongos;
+		this.#glyph_normal = glyph_normal;
+		this.#glyph_narrow = glyph_narrow;
 	}
 
 	/**
@@ -49,6 +61,24 @@ export class Fthora extends SecondaryCharacter {
 	 */
 	is_red() {
 		return true;
+	}
+
+	/**
+	 * @returns {HTMLSpanElement}
+	 */
+	get_martyria_span() {
+		const span = this.#glyph_narrow.get_span();
+		span.classList.add(Glyph.color_red);
+		return span;
+	}
+
+	/**
+	 * @returns {HTMLSpanElement}
+	 */
+	get_ichos_span() {
+		const span = this.#glyph_narrow.get_span(); // TODO fix position
+		span.classList.add(Glyph.color_red);
+		return span;
 	}
 
 	/**

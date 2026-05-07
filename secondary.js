@@ -1,11 +1,5 @@
 import { Glyph } from './glyph.js';
-import { AbstractBlock } from './block-abstract.js';
 import { Posotita } from './posotita.js';
-import { Chronos } from './chronos.js';
-
-/**
- * @import {PosotitaBlock} from './block-posotita.js'
- */
 
 
 export class SecondaryCharacter {
@@ -28,7 +22,7 @@ export class SecondaryCharacter {
 	/**
 	 * @type {?Glyph}
 	 */
-	glyph_thin;
+	glyph_thin; // TODO should null throw an error?
 
 	static type_chronos = 'chronos';
 	static type_gorgon = 'gorgon';
@@ -67,45 +61,27 @@ export class SecondaryCharacter {
 	}
 
 	/**
-	 * @param {AbstractBlock} block
+	 * @param {Posotita} posotita
 	 * @returns {HTMLSpanElement}
 	 */
-	get_span(block) {
-		const span = this.get_glyph(block).get_span();
+	get_span(posotita) {
+		const span = this.get_glyph(posotita).get_span();
 		if (this.is_red())
 			span.classList.add(Glyph.color_red);
 		return span;
 	}
 
 	/**
-	 * @param {AbstractBlock} block
+	 * @param {Posotita} posotita
 	 * @returns {Glyph}
 	 */
-	get_glyph(block) {
-		switch (block.type) {
-			case AbstractBlock.type_posotita:
-				/**
-				 * @type {PosotitaBlock}
-				 */
-				const posotita_block = block;
-				if (posotita_block.posotita.is_thin() && this.glyph_thin !== null)
-					return this.glyph_thin;
-				if (posotita_block.posotita === Posotita.oligon_kentima_kato && this === SecondaryCharacter.antikenoma)
-					return Glyph.empty;
-				if (posotita_block.posotita === Posotita.kentimata_oligon && this === Chronos.apli)
-					return Glyph.empty;
-				if (posotita_block.posotita === Posotita.kentimata_oligon && this === SecondaryCharacter.antikenoma)
-					return Glyph.empty;
-				break;
-			case AbstractBlock.type_ichos: // TODO fthora position
-				if (this.glyph_thin !== null)
-					return this.glyph_thin;
-				break;
-			case AbstractBlock.type_martyria:
-				if (this.glyph_thin !== null)
-					return this.glyph_thin;
-				break;
-		}
+	get_glyph(posotita) {
+		if (posotita === Posotita.oligon_kentima_kato && this === SecondaryCharacter.antikenoma)
+			return Glyph.empty;
+		if (posotita === Posotita.kentimata_oligon && this === SecondaryCharacter.antikenoma)
+			return Glyph.empty;
+		if (posotita.is_thin() && this.glyph_thin !== null)
+			return this.glyph_thin;
 		return this.glyph;
 	}
 }

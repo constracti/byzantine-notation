@@ -16,12 +16,12 @@ export class Agogi {
 	/**
 	 * @type {Glyph}
 	 */
-	#primary_glyph;
+	#glyph_block;
 
 	/**
 	 * @type {Glyph}
 	 */
-	#secondary_glyph;
+	#glyph_martyria;
 
 	static metria = new Agogi('metria', 120, new Glyph(Glyph.font_chronos, 'k'), new Glyph(Glyph.font_chronos, 'K'));
 	static tacheia = new Agogi('tacheia', 180, new Glyph(Glyph.font_chronos, 'l'), new Glyph(Glyph.font_chronos, 'L'));
@@ -29,21 +29,21 @@ export class Agogi {
 	/**
 	 * @param {string} name
 	 * @param {number} tempo
-	 * @param {Glyph} primary_glyph
-	 * @param {Glyph} secondary_glyph
+	 * @param {Glyph} glyph_block
+	 * @param {Glyph} glyph_martyria
 	 */
-	constructor(name, tempo, primary_glyph, secondary_glyph) {
+	constructor(name, tempo, glyph_block, glyph_martyria) {
 		this.name = name;
 		this.tempo = tempo;
-		this.#primary_glyph = primary_glyph;
-		this.#secondary_glyph = secondary_glyph;
+		this.#glyph_block = glyph_block;
+		this.#glyph_martyria = glyph_martyria;
 	}
 
 	/**
 	 * @returns {HTMLSpanElement}
 	 */
-	get_primary_span() {
-		const span = this.#primary_glyph.get_span();
+	get_block_span() {
+		const span = this.#glyph_block.get_span();
 		span.classList.add(Glyph.color_red);
 		return span;
 	}
@@ -51,8 +51,8 @@ export class Agogi {
 	/**
 	 * @returns {HTMLSpanElement}
 	 */
-	get_secondary_span() {
-		const span = this.#secondary_glyph.get_span();
+	get_martyria_span() {
+		const span = this.#glyph_martyria.get_span();
 		span.classList.add(Glyph.color_red);
 		return span;
 	}

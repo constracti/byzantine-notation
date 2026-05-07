@@ -56,7 +56,7 @@ export class MartyriaBlock extends AbstractBlock {
 		if (this.#simadi.teleies)
 			symbol_div.append(MartyriaBlock.#get_teleies_span());
 		if (this.#fthora !== null)
-			symbol_div.append(this.#fthora.get_span(this));
+			symbol_div.append(this.#fthora.get_martyria_span());
 		for (let diapason = 1; diapason <= this.#fthongos.diapason; diapason++)
 			symbol_div.append(MartyriaBlock.#get_tonos_span());
 		block_div.append(symbol_div);

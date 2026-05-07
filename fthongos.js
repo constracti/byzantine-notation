@@ -7,7 +7,7 @@ export class Fthongos {
 	/**
 	 * @type {Vathmida}
 	 */
-	vathmida;
+	#vathmida;
 
 	/**
 	 * typically -1 for vareia, 0 for mesi, and +1 for oxeia
@@ -60,7 +60,7 @@ export class Fthongos {
 	 * @param {Glyph} glyph_martyria
 	 */
 	constructor(vathmida, diapason, glyph_martyria) {
-		this.vathmida = vathmida;
+		this.#vathmida = vathmida;
 		this.diapason = diapason;
 		this.#glyph_martyria = glyph_martyria;
 		this.pitch = vathmida.pitch + 7 * diapason;

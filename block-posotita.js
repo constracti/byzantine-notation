@@ -1,6 +1,5 @@
 import { AbstractBlock } from './block-abstract.js';
 import { Posotita } from './posotita.js';
-import { Chroa } from './chroa.js';
 import { SecondaryCharacter } from './secondary.js';
 
 /**
@@ -77,7 +76,7 @@ export class PosotitaBlock extends AbstractBlock {
 						this.chronos = arg;
 						break;
 					case SecondaryCharacter.type_gorgon:
-						this.gorgon = arg;
+						this.gorgon = arg; // TODO multiple per block
 						break;
 					case SecondaryCharacter.type_kallopismos:
 						this.kallopismos = arg;
@@ -110,7 +109,7 @@ export class PosotitaBlock extends AbstractBlock {
 		[this.chronos, this.gorgon, this.kallopismos, this.alloiosi, this.fthora, this.chroa, this.rythmos].forEach(secondary => {
 			if (secondary === null)
 				return;
-			symbol_div.append(secondary.get_span(this));
+			symbol_div.append(secondary.get_span(this.posotita));
 		});
 		block_div.append(symbol_div);
 		if (this.syllavi !== null)

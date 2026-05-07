@@ -9,14 +9,24 @@ import { SecondaryCharacter } from './secondary.js';
 export class Chroa extends SecondaryCharacter {
 
 	/**
-	 * @type {number[]} partial sums of intervals from reference fthongos
+	 * @type {number[]}
 	 */
-	#lower;
+	#lower_distance_list;
 
 	/**
-	 * @type {number[]} partial sums of intervals from reference fthongos
+	 * @type {number[]}
 	 */
-	#upper;
+	#upper_distance_list;
+
+	/**
+	 * @type {Glyph}
+	 */
+	#glyph_normal;
+
+	/**
+	 * @type {Glyph}
+	 */
+	#glyph_narrow;
 
 	static zygos = new Chroa('zygos', [4, 16, 4], [], new Glyph(Glyph.font_fthores, '9'), new Glyph(Glyph.font_fthores, '('));
 	static spathi = new Chroa('spathi', [4], [4], new Glyph(Glyph.font_fthores, '`'), new Glyph(Glyph.font_fthores, '~'));
@@ -24,27 +34,31 @@ export class Chroa extends SecondaryCharacter {
 
 	/**
 	 * @param {string} name
-	 * @param {number[]} lower
-	 * @param {number[]} upper
-	 * @param {Glyph} glyph
-	 * @param {Glyph} glyph_thin
+	 * @param {number[]} lower_interval_list
+	 * @param {number[]} upper_interval_list
+	 * @param {Glyph} glyph_normal
+	 * @param {Glyph} glyph_narrow
 	 */
-	constructor(name, lower, upper, glyph, glyph_thin) {
-		super(name, SecondaryCharacter.type_chroa, glyph, glyph_thin);
-		this.#lower = [];
-		lower.forEach(interval => {
-			if (this.#lower.length > 0)
-				this.#lower.push(this.#lower[this.#lower.length - 1] + interval);
+	constructor(name, lower_interval_list, upper_interval_list, glyph_normal, glyph_narrow) {
+		super(name, SecondaryCharacter.type_chroa, glyph_normal, glyph_narrow);
+		this.#lower_distance_list = [];
+		lower_interval_list.forEach(interval => {
+			const length = this.#lower_distance_list.length;
+			if (length > 0)
+				this.#lower_distance_list.push(this.#lower_distance_list[length - 1] + interval);
 			else
-				this.#lower.push(interval);
+				this.#lower_distance_list.push(interval);
 		});
-		this.#upper = [];
-		upper.forEach(interval => {
-			if (this.#upper.length > 0)
-				this.#upper.push(this.#upper[this.#upper.length - 1] + interval);
+		this.#upper_distance_list = [];
+		upper_interval_list.forEach(interval => {
+			const length = this.#upper_distance_list.length;
+			if (length > 0)
+				this.#upper_distance_list.push(this.#upper_distance_list[length - 1] + interval);
 			else
-				this.#upper.push(interval);
+				this.#upper_distance_list.push(interval);
 		});
+		this.#glyph_normal = glyph_normal;
+		this.#glyph_narrow = glyph_narrow;
 	}
 
 	/**
@@ -58,13 +72,13 @@ export class Chroa extends SecondaryCharacter {
 	 * @param {MusicContext} music_context
 	 */
 	apply(music_context) {
-		const home_pitch = music_context.pitch;
-		const home_steps = music_context.klimaka.get_steps(home_pitch);
-		this.#lower.forEach((steps, index) => {
-			music_context.klimaka.set_steps(home_pitch - index - 1, home_steps - steps);
+		const pitch = music_context.pitch;
+		const steps = music_context.klimaka.get_steps(pitch);
+		this.#lower_distance_list.forEach((distance, index) => {
+			music_context.klimaka.set_steps(pitch - index - 1, steps - distance);
 		});
-		this.#upper.forEach((steps, index) => {
-			music_context.klimaka.set_steps(home_pitch + index + 1, home_steps + steps);
+		this.#upper_distance_list.forEach((distance, index) => {
+			music_context.klimaka.set_steps(pitch + index + 1, steps + distance);
 		});
 	}
 }

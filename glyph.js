@@ -10,7 +10,7 @@ export class Glyph {
 	 */
 	#char;
 
-	static empty = new Glyph('', '');
+	static empty = new Glyph('', ''); // TODO should empty throw an error?
 
 	static color_red = 'bz-red';
 

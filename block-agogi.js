@@ -29,7 +29,7 @@ export class AgogiBlock extends AbstractBlock {
 		const block_div = super.get_div();
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
-		symbol_div.append(this.#agogi.get_primary_span());
+		symbol_div.append(this.#agogi.get_block_span());
 		block_div.append(symbol_div);
 		return block_div;
 	}
