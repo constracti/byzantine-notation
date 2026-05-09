@@ -62,10 +62,10 @@ export class Chroa extends SecondaryCharacter {
 	}
 
 	/**
-	 * @returns {boolean}
+	 * @returns {?string}
 	 */
-	is_red() {
-		return true;
+	get_color() {
+		return Glyph.color_red;
 	}
 	
 	/**

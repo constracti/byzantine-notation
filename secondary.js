@@ -55,10 +55,12 @@ export class SecondaryCharacter {
 	}
 
 	/**
-	 * @returns {boolean}
+	 * @returns {?string}
 	 */
-	is_red() {
-		return this.type === SecondaryCharacter.type_rythmos;
+	get_color() {
+		if (this.type === SecondaryCharacter.type_rythmos)
+			return Glyph.color_red;
+		return null;
 	}
 
 	/**
@@ -67,8 +69,9 @@ export class SecondaryCharacter {
 	 */
 	get_span(posotita) {
 		const span = this.get_glyph(posotita).get_span();
-		if (this.is_red())
-			span.classList.add(Glyph.color_red);
+		const color = this.get_color();
+		if (color !== null)
+			span.classList.add(color);
 		return span;
 	}
 

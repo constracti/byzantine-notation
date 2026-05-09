@@ -44,4 +44,11 @@ export class Isokratima extends SecondaryCharacter {
 		this.#glyph_normal = glyph_normal;
 		this.#glyph_narrow = glyph_narrow;
 	}
+
+	/**
+	 * @returns {?string}
+	 */
+	get_color() {
+		return Glyph.color_blue;
+	}
 }

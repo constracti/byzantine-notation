@@ -13,6 +13,7 @@ export class Glyph {
 	static empty = new Glyph('', ''); // TODO should empty throw an error?
 
 	static color_red = 'bz-red';
+	static color_blue = 'bz-blue';
 
 	static font_byzantina = 'bz-byzantina';
 	static font_loipa = 'bz-loipa'; // TODO top margin

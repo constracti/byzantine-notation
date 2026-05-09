@@ -57,10 +57,10 @@ export class Fthora extends SecondaryCharacter {
 	}
 
 	/**
-	 * @returns {boolean}
+	 * @returns {?string}
 	 */
-	is_red() {
-		return true;
+	get_color() {
+		return Glyph.color_red;
 	}
 
 	/**
