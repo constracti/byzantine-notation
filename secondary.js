@@ -30,6 +30,7 @@ export class SecondaryCharacter {
 	static type_alloiosi = 'alloiosi';
 	static type_fthora = 'fthora';
 	static type_chroa = 'chroa';
+	static type_isokratima = 'ison';
 	static type_rythmos = 'rythmos';
 
 	static psifiston = new SecondaryCharacter('psifiston', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, '/'), null);

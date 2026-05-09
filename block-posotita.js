@@ -8,6 +8,7 @@ import { SecondaryCharacter } from './secondary.js';
  * @import {Alloiosi} from './alloiosi.js'
  * @import {Fthora} from './fthora.js'
  * @import {Chroa} from './chroa.js'
+ * @import {Isokratima} from './isokratima.js'
  * @import {MusicContext} from './common.js'
  * @import {Part} from './common.js'
  */
@@ -51,6 +52,11 @@ export class PosotitaBlock extends AbstractBlock {
 	chroa = null;
 
 	/**
+	 * @type {?Isokratima}
+	 */
+	isokratima = null;
+
+	/**
 	 * @type {?SecondaryCharacter}
 	 */
 	rythmos = null;
@@ -90,6 +96,9 @@ export class PosotitaBlock extends AbstractBlock {
 					case SecondaryCharacter.type_chroa:
 						this.chroa = arg;
 						break;
+					case SecondaryCharacter.type_isokratima:
+						this.isokratima = arg;
+						break;
 					case SecondaryCharacter.type_rythmos:
 						this.rythmos = arg;
 						break;
@@ -106,7 +115,7 @@ export class PosotitaBlock extends AbstractBlock {
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
 		symbol_div.append(this.posotita.get_span(this));
-		[this.chronos, this.gorgon, this.kallopismos, this.alloiosi, this.fthora, this.chroa, this.rythmos].forEach(secondary => {
+		[this.chronos, this.gorgon, this.kallopismos, this.alloiosi, this.fthora, this.chroa, this.isokratima, this.rythmos].forEach(secondary => {
 			if (secondary === null)
 				return;
 			symbol_div.append(secondary.get_span(this.posotita));
@@ -138,10 +147,20 @@ export class PosotitaBlock extends AbstractBlock {
 		 * @type {Part[]}
 		 */
 		const part_list = [];
-		this.posotita.move_list.forEach(move => {
-			music_context.pitch += move;
+		this.posotita.move_list.forEach((move, move_index) => {
+			music_context.melos_pitch += move;
+			if (this.isokratima !== null) {
+				if (this.posotita === Posotita.syneches_elafron && move_index === 1)
+					music_context.ison_fthongos = this.isokratima.fthongos;
+				else if (this.posotita === Posotita.kentimata_oligon && move_index === 1)
+					music_context.ison_fthongos = this.isokratima.fthongos;
+				else if (move_index === 0)
+					music_context.ison_fthongos = this.isokratima.fthongos;
+				// TODO other exceptions, maybe yporroi
+			}
 			part_list.push({
-				steps: music_context.klimaka.get_steps(music_context.pitch),
+				melos_steps: music_context.klimaka.get_steps(music_context.melos_pitch),
+				ison_steps: music_context.ison_fthongos !== null ? music_context.klimaka.get_steps(music_context.ison_fthongos.pitch) : null,
 				tempo: music_context.tempo,
 				beats: 1,
 				block: block_index,
@@ -149,7 +168,7 @@ export class PosotitaBlock extends AbstractBlock {
 		});
 		if (this.alloiosi !== null) {
 			if (part_list.length >= 1)
-				part_list[part_list.length - 1].steps += this.alloiosi.steps;
+				part_list[part_list.length - 1].melos_steps += this.alloiosi.steps;
 		}
 		if (this.fthora !== null)
 			this.fthora.apply(music_context);

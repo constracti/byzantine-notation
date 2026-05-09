@@ -59,7 +59,8 @@ export class IchosBlock extends AbstractBlock {
 	 * @returns {Part[]}
 	 */
 	get_parts(music_context, block_index) {
-		music_context.pitch = this.#vathmida.pitch;
+		music_context.melos_pitch = this.#vathmida.pitch;
+		music_context.ison_fthongos = null;
 		music_context.klimaka = Klimaka.get_default();
 		this.#fthora.apply(music_context);
 		return [];

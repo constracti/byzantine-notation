@@ -18,7 +18,8 @@ const part_map = new Map();
  * @type {MusicContext}
  */
 const music_context = {
-	pitch: 0,
+	melos_pitch: 0,
+	ison_fthongos: null,
 	tempo: Agogi.metria.tempo,
 	klimaka: Klimaka.get_default(),
 };
@@ -70,17 +71,24 @@ function play(index) {
 	if (index === part_list.length)
 		return;
 	const part = part_list[index];
-	const oscillator_node = new OscillatorNode(audio_context, {
-		frequency: 440 * Math.pow(2, part.steps / 72),
+	const melos_node = new OscillatorNode(audio_context, {
+		frequency: 440 * Math.pow(2, part.melos_steps / 72),
 		type: 'triangle', // TODO simulate musical instrument
+	});
+	const ison_node = new OscillatorNode(audio_context, {
+		frequency: 440 * Math.pow(2, (part.ison_steps ?? part.melos_steps) / 72),
+		type: 'sine',
 	});
 	const block_div = container_div.children[part.block];
 	block_div.classList.add('bz-active');
-	oscillator_node.connect(audio_context.destination);
-	oscillator_node.start();
+	melos_node.connect(audio_context.destination);
+	ison_node.connect(audio_context.destination);
+	melos_node.start();
+	ison_node.start();
 	setTimeout(() => {
 		block_div.classList.remove('bz-active');
-		oscillator_node.stop();
+		melos_node.stop();
+		ison_node.stop();
 		play(index + 1);
 	}, 60 / part.tempo * part.beats * 1000);
 }

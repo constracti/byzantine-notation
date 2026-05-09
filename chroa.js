@@ -72,7 +72,7 @@ export class Chroa extends SecondaryCharacter {
 	 * @param {MusicContext} music_context
 	 */
 	apply(music_context) {
-		const pitch = music_context.pitch;
+		const pitch = music_context.melos_pitch;
 		const steps = music_context.klimaka.get_steps(pitch);
 		this.#lower_distance_list.forEach((distance, index) => {
 			music_context.klimaka.set_steps(pitch - index - 1, steps - distance);

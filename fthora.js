@@ -85,8 +85,8 @@ export class Fthora extends SecondaryCharacter {
 	 * @param {MusicContext} music_context
 	 */
 	apply(music_context) {
-		const steps = music_context.klimaka.get_steps(music_context.pitch);
-		const base_pitch = music_context.pitch - (this.#fthongos.pitch - this.#genos.base_fthongos.pitch);
+		const steps = music_context.klimaka.get_steps(music_context.melos_pitch);
+		const base_pitch = music_context.melos_pitch - (this.#fthongos.pitch - this.#genos.base_fthongos.pitch);
 		const base_steps = steps - this.#genos.get_steps_from_base(this.#fthongos.pitch - this.#genos.base_fthongos.pitch);
 		music_context.klimaka = new Klimaka(this.#genos, base_pitch, base_steps);
 	}
