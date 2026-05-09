@@ -1,10 +1,11 @@
 import { Glyph } from './glyph.js';
+import { Fthora } from './fthora.js';
+import { Agogi } from './agogi.js';
 import { AbstractBlock } from './block-abstract.js';
 
 /**
  * @import {Fthongos} from './fthongos.js'
  * @import {MartyrikoSimadi} from './martyriko-simadi.js'
- * @import {Fthora} from './fthora.js'
  * @import {MusicContext} from './common.js'
  * @import {Part} from './common.js'
  */
@@ -28,16 +29,24 @@ export class MartyriaBlock extends AbstractBlock {
 	#fthora = null;
 
 	/**
+	 * @type {?Agogi}
+	 */
+	#agogi = null;
+
+	/**
 	 * @param {Fthongos} fthongos
 	 * @param {MartyrikoSimadi} simadi
-	 * @param {Fthora[]} args 
+	 * @param {(Fthora|Agogi)[]} args
 	 */
 	constructor(fthongos, simadi, ...args) {
 		super(AbstractBlock.type_martyria);
 		this.#fthongos = fthongos;
 		this.#simadi = simadi;
 		args.forEach(arg => {
-			this.#fthora = arg;
+			if (arg instanceof Fthora)
+				this.#fthora = arg;
+			if (arg instanceof Agogi)
+				this.#agogi = arg;
 		});
 	}
 
@@ -57,6 +66,8 @@ export class MartyriaBlock extends AbstractBlock {
 			symbol_div.append(MartyriaBlock.#get_teleies_span());
 		if (this.#fthora !== null)
 			symbol_div.append(this.#fthora.get_martyria_span());
+		if (this.#agogi !== null)
+			symbol_div.append(this.#agogi.get_martyria_span());
 		for (let diapason = 1; diapason <= this.#fthongos.diapason; diapason++)
 			symbol_div.append(MartyriaBlock.#get_tonos_span());
 		block_div.append(symbol_div);
@@ -91,6 +102,8 @@ export class MartyriaBlock extends AbstractBlock {
 	get_parts(music_context, block_index) {
 		if (this.#fthora !== null)
 			this.#fthora.apply(music_context);
+		if (this.#agogi !== null)
+			music_context.tempo = this.#agogi.tempo;
 		return [];
 	}
 }
