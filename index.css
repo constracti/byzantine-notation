@@ -49,6 +49,12 @@
 	/* byzantina posotita characters leave a space of 7px */
 	font-size: 2em;
 }
+.bz-symbol:has(.bz-loipa) {
+	margin-top: -3px;
+}
+.bz-symbol:has(.bz-ison) {
+	margin-top: -10px;
+}
 .bz-text {
 	font-family: GFSDidot;
 	font-size: 1.5em;

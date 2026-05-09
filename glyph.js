@@ -16,9 +16,9 @@ export class Glyph {
 	static color_blue = 'bz-blue';
 
 	static font_byzantina = 'bz-byzantina';
-	static font_loipa = 'bz-loipa'; // TODO top margin
+	static font_loipa = 'bz-loipa';
 	static font_fthores = 'bz-fthores';
-	static font_ison = 'bz-ison'; // TODO margin
+	static font_ison = 'bz-ison';
 	static font_chronos = 'bz-chronos';
 
 	/**
