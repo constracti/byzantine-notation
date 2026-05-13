@@ -27,13 +27,15 @@
 #container-div {
 	display: flex;
 	flex-wrap: wrap;
+	/* justify-content: space-between; */
 	/* background-color: white; */
 }
 .bz-block {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	margin-bottom: 2em;
+	align-items: center; /* center align symbol and text */
+	font-size: 24pt;
+	margin-bottom: 1em;
 }
 .bz-block.bz-pointer {
 	cursor: pointer;
@@ -42,22 +44,19 @@
 	text-shadow: 0 0 0.5em yellow, 0 0 0.5em yellow, 0 0 0.5em yellow, 0 0 0.5em yellow;
 }
 .bz-block.bz-newline {
-	flex-basis: 100%;
+	flex-basis: 100%; /* occupy whole line */
 	margin-bottom: 0;
 }
 .bz-symbol {
-	/* byzantina posotita characters leave a space of 7px */
-	font-size: 2em;
+	display: flex;
+	margin-bottom: -0.8em; /* bring text closer to symbol */
 }
-.bz-symbol:has(.bz-loipa) {
-	margin-top: -3px;
-}
-.bz-symbol:has(.bz-ison) {
-	margin-top: -10px;
+.bz-symbol-main {
+	position: relative;
 }
 .bz-text {
 	font-family: GFSDidot;
-	font-size: 1.5em;
+	font-size: 16pt;
 	margin: 0 0.1em;
 }
 
@@ -75,6 +74,11 @@
 }
 .bz-chronos {
 	font-family: BZXronos;
+}
+
+/* fix loipa height */
+.bz-symbol-main:has(.bz-posotita.bz-loipa) {
+	margin-top: -0.1em;
 }
 
 .bz-red {

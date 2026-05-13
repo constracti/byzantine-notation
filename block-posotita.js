@@ -1,5 +1,6 @@
 import { AbstractBlock } from './block-abstract.js';
 import { Posotita } from './posotita.js';
+import { SecondaryLayer } from './secondary-layer.js';
 import { SecondaryCharacter } from './secondary.js';
 
 /**
@@ -19,92 +20,52 @@ export class PosotitaBlock extends AbstractBlock {
 	/**
 	 * @type {Posotita}
 	 */
-	posotita;
+	#posotita;
 
 	/**
-	 * @type {?Chronos}
+	 * @type {SecondaryLayer[]}
 	 */
-	chronos = null;
-
-	/**
-	 * @type {?Gorgon}
-	 */
-	gorgon = null;
-
-	/**
-	 * @type {?SecondaryCharacter}
-	 */
-	kallopismos = null;
-
-	/**
-	 * @type {?Alloiosi}
-	 */
-	alloiosi = null;
-
-	/**
-	 * @type {?Fthora}
-	 */
-	fthora = null;
-
-	/**
-	 * @type {?Chroa}
-	 */
-	chroa = null;
-
-	/**
-	 * @type {?Isokratima}
-	 */
-	isokratima = null;
-
-	/**
-	 * @type {?SecondaryCharacter}
-	 */
-	rythmos = null;
+	#secondary_list = [];
 
 	/**
 	 * @type {?string}
 	 */
-	syllavi;
+	#syllavi;
 
 	/**
 	 * @param {Posotita} posotita
-	 * @param {(SecondaryCharacter|string)[]} args
+	 * @param {SecondaryLayer[]} secondary_list
+	 * @param {?string} syllavi
 	 */
-	constructor(posotita, ...args) {
+	constructor(posotita, secondary_list, syllavi) {
 		super(AbstractBlock.type_posotita);
-		this.posotita = posotita;
+		this.#posotita = posotita;
+		this.#secondary_list = secondary_list;
+		this.#syllavi = syllavi;
+	}
+
+	/**
+	 * @param {Posotita} posotita
+	 * @param {...(SecondaryCharacter|string)} args
+	 * @returns {PosotitaBlock}
+	 */
+	static build(posotita, ...args) {
+		/**
+		 * @type {SecondaryLayer[]}
+		 */
+		const secondary_list = [];
+		/**
+		 * @type {?string}
+		 */
+		let syllavi = null;
 		args.forEach(arg => {
 			if (typeof(arg) === 'string') {
-				this.syllavi = arg;
+				syllavi = arg;
 			} else {
-				switch (arg.type) {
-					case SecondaryCharacter.type_chronos:
-						this.chronos = arg;
-						break;
-					case SecondaryCharacter.type_gorgon:
-						this.gorgon = arg; // TODO multiple per block
-						break;
-					case SecondaryCharacter.type_kallopismos:
-						this.kallopismos = arg;
-						break;
-					case SecondaryCharacter.type_alloiosi:
-						this.alloiosi = arg;
-						break;
-					case SecondaryCharacter.type_fthora:
-						this.fthora = arg;
-						break;
-					case SecondaryCharacter.type_chroa:
-						this.chroa = arg;
-						break;
-					case SecondaryCharacter.type_isokratima:
-						this.isokratima = arg;
-						break;
-					case SecondaryCharacter.type_rythmos:
-						this.rythmos = arg;
-						break;
-				}
+				secondary_list.push(new SecondaryLayer(arg, arg.get_default_target(posotita), 0, 0));
 			}
 		});
+		return new PosotitaBlock(posotita, secondary_list, syllavi);
 	}
 
 	/**
@@ -114,15 +75,39 @@ export class PosotitaBlock extends AbstractBlock {
 		const block_div = super.get_div();
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
-		symbol_div.append(this.posotita.get_span(this));
-		[this.chronos, this.gorgon, this.kallopismos, this.alloiosi, this.fthora, this.chroa, this.isokratima, this.rythmos].forEach(secondary => {
-			if (secondary === null)
-				return;
-			symbol_div.append(secondary.get_span(this.posotita));
+		const symbol_prev_div = document.createElement('div');
+		symbol_prev_div.classList.add('bz-symbol-prev');
+		let prev_margin = this.#posotita.get_prev_margin();
+		this.#secondary_list.forEach(secondary => {
+			const span = secondary.get_prev_span();
+			if (span !== null)
+				symbol_prev_div.append(span);
+			prev_margin += secondary.get_prev_margin();
 		});
+		const symbol_main_div = document.createElement('div');
+		symbol_main_div.classList.add('bz-symbol-main');
+		symbol_main_div.append(this.#posotita.get_main_span());
+		this.#secondary_list.forEach(secondary => {
+			const span = secondary.get_main_span(this.#posotita);
+			if (span !== null)
+				symbol_main_div.append(span);
+		});
+		const symbol_next_div = document.createElement('div');
+		symbol_next_div.classList.add('bz-symbol-next');
+		const next_span = this.#posotita.get_next_span();
+		if (next_span !== null)
+			symbol_next_div.append(next_span);
+		symbol_div.append(symbol_prev_div, symbol_main_div, symbol_next_div);
 		block_div.append(symbol_div);
-		if (this.syllavi !== null)
-			block_div.append(PosotitaBlock.#get_syllavi_span(this.syllavi));
+		if (this.#syllavi !== null) {
+			const text_row_div = document.createElement('div');
+			text_row_div.style.marginLeft = `${prev_margin.toFixed(2)}em`;
+			const text_span = document.createElement('span');
+			text_span.classList.add('bz-text');
+			text_span.textContent = this.#syllavi;
+			text_row_div.append(text_span);
+			block_div.append(text_row_div);
+		}
 		return block_div;
 	}
 
@@ -147,33 +132,42 @@ export class PosotitaBlock extends AbstractBlock {
 		 * @type {Part[]}
 		 */
 		const part_list = [];
-		this.posotita.move_list.forEach((move, move_index) => {
+		this.#posotita.move_list.forEach((move, move_index) => {
 			music_context.melos_pitch += move;
-			if (this.isokratima !== null) {
-				if (this.posotita === Posotita.syneches_elafron && move_index === 1)
-					music_context.ison_fthongos = this.isokratima.fthongos;
-				else if (this.posotita === Posotita.kentimata_oligon && move_index === 1)
-					music_context.ison_fthongos = this.isokratima.fthongos;
-				else if (move_index === 0)
-					music_context.ison_fthongos = this.isokratima.fthongos;
-				// TODO other exceptions, maybe yporroi
-			}
+			let alloiosi_steps = 0;
+			this.#secondary_list.forEach(secondary => {
+				if (secondary.get_target() !== move_index)
+					return;
+				const character = secondary.get_character();
+				switch (character.type) {
+					case SecondaryCharacter.type_alloiosi:
+						/**
+						 * @type {Alloiosi}
+						 */
+						const alloiosi = character;
+						alloiosi_steps += alloiosi.get_steps();
+						break;
+					case SecondaryCharacter.type_isokratima:
+						/**
+						 * @type {Isokratima}
+						 */
+						const isokratima = character;
+						music_context.ison_fthongos = isokratima.get_fthongos();
+						break;
+				}
+			});
 			part_list.push({
-				melos_steps: music_context.klimaka.get_steps(music_context.melos_pitch),
+				melos_steps: music_context.klimaka.get_steps(music_context.melos_pitch) + alloiosi_steps,
 				ison_steps: music_context.ison_fthongos !== null ? music_context.klimaka.get_steps(music_context.ison_fthongos.pitch) : null,
 				tempo: music_context.tempo,
 				beats: 1,
 				block: block_index,
 			});
 		});
-		if (this.alloiosi !== null) {
-			if (part_list.length >= 1)
-				part_list[part_list.length - 1].melos_steps += this.alloiosi.steps;
-		}
-		if (this.fthora !== null)
-			this.fthora.apply(music_context);
-		if (this.chroa !== null)
-			this.chroa.apply(music_context);
+		// if (this.fthora !== null)
+		// 	this.fthora.apply(music_context);
+		// if (this.chroa !== null)
+		// 	this.chroa.apply(music_context);
 		return part_list;
 	}
 
@@ -185,24 +179,31 @@ export class PosotitaBlock extends AbstractBlock {
 		 * @type {[{index: number, beats: number}]}
 		 */
 		const time_list = [];
-		if (this.posotita === Posotita.syneches_elafron) {
+		if (this.#posotita === Posotita.syneches_elafron) {
 			time_list.push({index: -1, beats: 1/2 - 1});
 			time_list.push({index: 0, beats: 1/2 - 1});
 		}
-		if (this.chronos !== null) {
-			time_list.push({index: this.posotita.move_list.length - 1, beats: this.chronos.beats});
-		}
-		if (this.gorgon !== null) {
-			if (this.posotita === Posotita.yporroi || this.posotita === Posotita.kentimata_oligon) {
-				this.gorgon.tuple.forEach((value, index) => {
-					time_list.push({index: index - 1, beats: value - 1});
-				})
-			} else {
-				this.gorgon.tuple.forEach((value, index) => {
-					time_list.push({index: this.posotita.move_list.length - 1 + index - 1, beats: value - 1});
-				})
+		this.#secondary_list.forEach(secondary => {
+			const character = secondary.get_character();
+			switch (character.type) {
+				case SecondaryCharacter.type_chronos:
+					/**
+					 * @type {Chronos}
+					 */
+					const chronos = character;
+					time_list.push({index: secondary.get_target(), beats: chronos.beats});
+					break;
+				case SecondaryCharacter.type_gorgon:
+					/**
+					 * @type {Gorgon}
+					 */
+					const gorgon = character;
+					gorgon.tuple.forEach((value, index) => {
+						time_list.push({index: secondary.get_target() + index - 1, beats: value - 1});
+					});
+					break;
 			}
-		}
+		});
 		return time_list;
 	}
 }

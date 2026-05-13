@@ -18,29 +18,18 @@ export class Chroa extends SecondaryCharacter {
 	 */
 	#upper_distance_list;
 
-	/**
-	 * @type {Glyph}
-	 */
-	#glyph_normal;
-
-	/**
-	 * @type {Glyph}
-	 */
-	#glyph_narrow;
-
-	static zygos = new Chroa('zygos', [4, 16, 4], [], new Glyph(Glyph.font_fthores, '9'), new Glyph(Glyph.font_fthores, '('));
-	static spathi = new Chroa('spathi', [4], [4], new Glyph(Glyph.font_fthores, '`'), new Glyph(Glyph.font_fthores, '~'));
-	static kliton = new Chroa('kliton', [4, 12], [], new Glyph(Glyph.font_fthores, '-'), new Glyph(Glyph.font_fthores, '_'));
+	static zygos = new Chroa('zygos', [4, 16, 4], [], new Glyph(Glyph.font_fthores, '9'));
+	static spathi = new Chroa('spathi', [4], [4], new Glyph(Glyph.font_fthores, '`'));
+	static kliton = new Chroa('kliton', [4, 12], [], new Glyph(Glyph.font_fthores, '-'));
 
 	/**
 	 * @param {string} name
 	 * @param {number[]} lower_interval_list
 	 * @param {number[]} upper_interval_list
-	 * @param {Glyph} glyph_normal
-	 * @param {Glyph} glyph_narrow
+	 * @param {Glyph} glyph
 	 */
-	constructor(name, lower_interval_list, upper_interval_list, glyph_normal, glyph_narrow) {
-		super(name, SecondaryCharacter.type_chroa, glyph_normal, glyph_narrow);
+	constructor(name, lower_interval_list, upper_interval_list, glyph) {
+		super(name, SecondaryCharacter.type_chroa, glyph);
 		this.#lower_distance_list = [];
 		lower_interval_list.forEach(interval => {
 			const length = this.#lower_distance_list.length;
@@ -57,8 +46,6 @@ export class Chroa extends SecondaryCharacter {
 			else
 				this.#upper_distance_list.push(interval);
 		});
-		this.#glyph_normal = glyph_normal;
-		this.#glyph_narrow = glyph_narrow;
 	}
 
 	/**

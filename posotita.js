@@ -1,7 +1,4 @@
 import { Glyph } from './glyph.js';
-import { Chronos } from './chronos.js';
-import { Gorgon } from './gorgon.js';
-import { SecondaryCharacter } from './secondary.js';
 
 /**
  * @import {PosotitaBlock} from './block-posotita.js'
@@ -34,7 +31,7 @@ export class Posotita {
 	static petasti = new Posotita('petasti', [+1], new Glyph(Glyph.font_byzantina, 'S'));
 	static kentimata = new Posotita('kentimata', [+1], new Glyph(Glyph.font_byzantina, 'x'));
 	static oligon_kentima_kato = new Posotita('oligon-kentima-kato', [+2], new Glyph(Glyph.font_byzantina, 'd'));
-	static oligon_kentima_dipla = new Posotita('oligon-kentima-dipla', [+2], new Glyph(Glyph.font_byzantina, 'sC')); // TODO align secondary on oligon
+	static oligon_kentima_dipla = new Posotita('oligon-kentima-dipla', [+2], new Glyph(Glyph.font_byzantina, 's'));
 	static petasti_oligon = new Posotita('petasti-oligon', [+2], new Glyph(Glyph.font_byzantina, 'D'));
 	static oligon_kentima = new Posotita('oligon-kentima', [+3], new Glyph(Glyph.font_byzantina, 'f'));
 	static petasti_kentima = new Posotita('petasti-kentima', [+3], new Glyph(Glyph.font_byzantina, 'F'));
@@ -55,10 +52,10 @@ export class Posotita {
 	static kentimata_oligon = new Posotita('kentimata-oligon', [+1, +1], new Glyph(Glyph.font_byzantina, 'c'));
 	static syneches_elafron = new Posotita('syneches-elafron', [-1, -1], new Glyph(Glyph.font_byzantina, 'h'));
 	static yporroi = new Posotita('yporroi', [-1, -1], new Glyph(Glyph.font_byzantina, '\''));
-	// TODO center text below syneches elafron
 	static ison_kentimata = new Posotita('ison-kentimata', [0, +1], new Glyph(Glyph.font_byzantina, '_'));
 	static apostrofos_kentimata = new Posotita('apostrofos-kentimata', [-1, +1], new Glyph(Glyph.font_byzantina, '-'));
 	static elafron_kentimata = new Posotita('elafron-kentimata', [-2, +1], new Glyph(Glyph.font_loipa, 'p'));
+	static apostrofos_yporroi = new Posotita('apostrofos-yporroi', [-1, -1, -1], new Glyph(Glyph.font_byzantina, 'j\''));
 
 	/**
 	 * @param {string} name
@@ -72,45 +69,30 @@ export class Posotita {
 	}
 
 	/**
-	 * @param {PosotitaBlock} block
+	 * @returns {number}
+	 */
+	get_prev_margin() {
+		if (this === Posotita.syneches_elafron)
+			return 0.6;
+		return 0;
+	}
+
+	/**
 	 * @returns {HTMLSpanElement}
 	 */
-	get_span(block) {
-		return this.#get_glyph(block).get_span();
+	get_main_span() {
+		const span = this.#glyph.get_span();
+		span.classList.add('bz-posotita');
+		return span;
 	}
 
 	/**
-	 * @param {PosotitaBlock} block
-	 * @returns {Glyph}
+	 * @returns {?HTMLSpanElement}
 	 */
-	#get_glyph(block) {
-		if (this === Posotita.oligon_kentima_kato && block.kallopismos === SecondaryCharacter.antikenoma)
-			return new Glyph(Glyph.font_loipa, '?'); // oligon kentima kato antikenoma
-		if (this === Posotita.oligon_kentimata && block.gorgon === Gorgon.gorgon)
-			return new Glyph(Glyph.font_byzantina, 'V'); // oligon kentimata gorgon
-		if (this === Posotita.kentimata_oligon && block.chronos === Chronos.apli && block.kallopismos === SecondaryCharacter.antikenoma)
-			return new Glyph(Glyph.font_byzantina, 'z'); // kentimata oligon apli antikenoma
-		if (this === Posotita.yporroi && block.gorgon === Gorgon.gorgon)
-			return new Glyph(Glyph.font_byzantina, ':'); // yporroi gorgon
-		if (this === Posotita.yporroi && block.gorgon === Gorgon.digorgon)
-			return new Glyph(Glyph.font_loipa, 'e'); // yporroi digorgon
-		if (this === Posotita.yporroi && block.gorgon === Gorgon.trigorgon)
-			return new Glyph(Glyph.font_loipa, 'r'); // yporroi trigorgon
-		return this.#glyph;
-	}
-
-	/**
-	 * @returns {boolean}
-	 */
-	is_thin() {
-		switch (this) {
-			case Posotita.kentimata:
-			case Posotita.apostrofos:
-			case Posotita.yporroi:
-				return true;
-			default:
-				return false;
-		}
+	get_next_span() {
+		if (this === Posotita.oligon_kentima_dipla)
+			return new Glyph(Glyph.font_byzantina, 'C').get_span();
+		return null;
 	}
 
 	/**

@@ -10,49 +10,56 @@ export class Chronos extends SecondaryCharacter {
 	 */
 	beats;
 
-	/**
-	 * @type {Glyph}
-	 */
-	#glyph_normal;
-
-	/**
-	 * @type {Glyph}
-	 */
-	#glyph_narrow;
-
-	static klasma = new Chronos('klasma', 1, new Glyph(Glyph.font_byzantina, 'u'), new Glyph(Glyph.font_byzantina, 'i'));
-	static apli = new Chronos('apli', 1, new Glyph(Glyph.font_byzantina, '8'), new Glyph(Glyph.font_byzantina, '*'));
-	static dipli = new Chronos('dipli', 2, new Glyph(Glyph.font_byzantina, '9'), new Glyph(Glyph.font_byzantina, '('));
-	static tripli = new Chronos('tripli', 3, new Glyph(Glyph.font_byzantina, '0'), new Glyph(Glyph.font_byzantina, ')'));
+	static klasma = new Chronos('klasma', 1, new Glyph(Glyph.font_byzantina, 'u'));
+	static apli = new Chronos('apli', 1, new Glyph(Glyph.font_byzantina, '8'));
+	static dipli = new Chronos('dipli', 2, new Glyph(Glyph.font_byzantina, '9'));
+	static tripli = new Chronos('tripli', 3, new Glyph(Glyph.font_byzantina, '0'));
 
 	/**
 	 * @param {string} name
 	 * @param {number} beats
-	 * @param {Glyph} glyph_normal
-	 * @param {Glyph} glyph_narrow
+	 * @param {Glyph} glyph
 	 */
-	constructor(name, beats, glyph_normal, glyph_narrow) {
-		super(name, SecondaryCharacter.type_chronos, glyph_normal, glyph_narrow);
+	constructor(name, beats, glyph) {
+		super(name, SecondaryCharacter.type_chronos, glyph);
 		this.beats = beats;
-		this.#glyph_normal = glyph_normal;
-		this.#glyph_narrow = glyph_narrow;
 	}
 
 	/**
 	 * @param {Posotita} posotita
-	 * @returns {Glyph}
+	 * @returns {number}
 	 */
-	get_glyph(posotita) {
-		if (posotita.is_petasti() && this === Chronos.klasma)
-			return new Glyph(Glyph.font_byzantina, 'I'); // klasma kato
-		if (posotita === Posotita.oligon_kentima && this === Chronos.klasma)
-			return new Glyph(Glyph.font_byzantina, 'I'); // klasma kato
-		if (posotita === Posotita.oligon_ypsili_dexia && this === Chronos.klasma)
-			return new Glyph(Glyph.font_byzantina, 'U'); // klasma aristera
-		if (posotita === Posotita.oligon_apostrofos && this === Chronos.klasma)
-			return new Glyph(Glyph.font_byzantina, 'I'); // klasma kato
-		if (posotita === Posotita.kentimata_oligon && this === Chronos.apli)
-			return Glyph.empty;
-		return super.get_glyph(posotita);
+	get_default_target(posotita) {
+		if (posotita === Posotita.syneches_elafron)
+			return 1;
+		return super.get_default_target(posotita);
+	}
+
+	/**
+	 * @param {Posotita} posotita
+	 * @param {number} horizontal_offset
+	 * @param {number} vertical_offset
+	 * @returns {?HTMLSpanElement}
+	 */
+	get_main_span(posotita, horizontal_offset, vertical_offset) {
+		if (this === Chronos.klasma) {
+			if (posotita.is_petasti()) {
+				vertical_offset += 0.6;
+				horizontal_offset -= 0.05;
+			}
+			if (posotita === Posotita.apostrofos) {
+				horizontal_offset += 0.4;
+			}
+			if (posotita === Posotita.oligon_ypsili_dexia) {
+				horizontal_offset -= 0.2;
+			}
+		}
+		if (this === Chronos.apli) {
+			if (posotita === Posotita.apostrofos) {
+				horizontal_offset += 0.5;
+			}
+		}
+		const span = super.get_main_span(posotita, horizontal_offset, vertical_offset);
+		return span;
 	}
 }

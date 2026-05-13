@@ -2,6 +2,8 @@ import { Glyph } from './glyph.js';
 import { AbstractBlock } from './block-abstract.js';
 
 
+// TODO merge simple block to abstract
+
 export class SimpleBlock extends AbstractBlock {
 
 	/**
@@ -19,7 +21,6 @@ export class SimpleBlock extends AbstractBlock {
 	 */
 	#color;
 
-	static vareia = new SimpleBlock('vareia', new Glyph(Glyph.font_byzantina, '\\'), null); // TODO stick with next
 	static diastoli = new SimpleBlock('diastoli', new Glyph(Glyph.font_byzantina, 'o'), null);
 	static stavros = new SimpleBlock('stavros', new Glyph(Glyph.font_fthores, '\''), Glyph.color_red);
 

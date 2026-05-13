@@ -8,38 +8,34 @@ export class Alloiosi extends SecondaryCharacter {
 	/**
 	 * @type {number}
 	 */
-	steps;
+	#steps;
 
-	/**
-	 * @type {Glyph}
-	 */
-	#glyph_normal;
+	static yfesi_apli = new Alloiosi('yfesi_apli', -2, new Glyph(Glyph.font_byzantina, 't'));
+	static yfesi_monogrammi = new Alloiosi('yfesi-monogrammi', -4, new Glyph(Glyph.font_byzantina, 'T'));
+	static yfesi_digrammi = new Alloiosi('yfesi-digrammi', -6, new Glyph(Glyph.font_fthores, 't'));
+	static yfesi_trigrammi = new Alloiosi('yfesi-trigrammi', -8, new Glyph(Glyph.font_fthores, 'T'));
 
-	/**
-	 * @type {Glyph}
-	 */
-	#glyph_narrow;
-
-	static yfesi_apli = new Alloiosi('yfesi_apli', -2, new Glyph(Glyph.font_byzantina, 't'), new Glyph(Glyph.font_byzantina, 'y'));
-	static yfesi_monogrammi = new Alloiosi('yfesi-monogrammi', -4, new Glyph(Glyph.font_byzantina, 'T'), new Glyph(Glyph.font_byzantina, 'Y'));
-	static yfesi_digrammi = new Alloiosi('yfesi-digrammi', -6, new Glyph(Glyph.font_fthores, 't'), new Glyph(Glyph.font_fthores, 'y'));
-
-	static diesi_apli = new Alloiosi('diesi-apli', +2, new Glyph(Glyph.font_fthores, 'b'), new Glyph(Glyph.font_fthores, 'n'));
-	static diesi_monogrammi = new Alloiosi('diesi-monogrammi', +4, new Glyph(Glyph.font_byzantina, 'b'), new Glyph(Glyph.font_byzantina, 'n'));
-	static diesi_digrammi = new Alloiosi('diesi-digrammi', +6, new Glyph(Glyph.font_byzantina, 'B'), new Glyph(Glyph.font_byzantina, 'N'));
+	static diesi_apli = new Alloiosi('diesi-apli', +2, new Glyph(Glyph.font_fthores, 'b'));
+	static diesi_monogrammi = new Alloiosi('diesi-monogrammi', +4, new Glyph(Glyph.font_byzantina, 'b'));
+	static diesi_digrammi = new Alloiosi('diesi-digrammi', +6, new Glyph(Glyph.font_byzantina, 'B'));
+	static diesi_trigrammi = new Alloiosi('diesi-trigrammi', +8, new Glyph(Glyph.font_fthores, 'B'));
 
 	/**
 	 * 
 	 * @param {string} name
 	 * @param {number} steps
-	 * @param {Glyph} glyph_normal
-	 * @param {Glyph} glyph_narrow
+	 * @param {Glyph} glyph
 	 */
-	constructor(name, steps, glyph_normal, glyph_narrow) {
-		super(name, SecondaryCharacter.type_alloiosi, glyph_normal, glyph_narrow);
-		this.steps = steps;
-		this.#glyph_normal = glyph_normal;
-		this.#glyph_narrow = glyph_narrow;
+	constructor(name, steps, glyph) {
+		super(name, SecondaryCharacter.type_alloiosi, glyph);
+		this.#steps = steps;
+	}
+
+	/**
+	 * @returns {number}
+	 */
+	get_steps() {
+		return this.#steps;
 	}
 
 	/**
@@ -51,11 +47,26 @@ export class Alloiosi extends SecondaryCharacter {
 
 	/**
 	 * @param {Posotita} posotita
-	 * @returns {Glyph}
+	 * @returns {number}
 	 */
-	get_glyph(posotita) {
-		if (posotita === Posotita.oligon_kentimata && this === Alloiosi.yfesi_apli)
-			return this.#glyph_narrow;
-		return super.get_glyph(posotita);
+	get_default_target(posotita) {
+		if (posotita === Posotita.oligon_kentimata)
+			return 1;
+		return super.get_default_target(posotita);
+	}
+
+	/**
+	 * @param {Posotita} posotita
+	 * @param {number} horizontal_offset
+	 * @param {number} vertical_offset
+	 * @returns {?HTMLSpanElement}
+	 */
+	get_main_span(posotita, horizontal_offset, vertical_offset) {
+		if (posotita === Posotita.oligon_kentimata) {
+			horizontal_offset += 0.3;
+			vertical_offset -= 0.2;
+		}
+		const span = super.get_main_span(posotita, horizontal_offset, vertical_offset);
+		return span;
 	}
 }
