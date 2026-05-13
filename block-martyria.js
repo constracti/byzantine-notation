@@ -1,10 +1,11 @@
 import { Glyph } from './glyph.js';
-import { Fthora } from './fthora.js';
-import { Agogi } from './agogi.js';
 import { AbstractBlock } from './block-abstract.js';
+import { SecondaryLayer } from './secondary-layer.js';
+import { SecondaryCharacter } from './secondary.js';
 
 /**
  * @import {Fthongos} from './fthongos.js'
+ * @import {Fthora} from './fthora.js'
  * @import {MartyrikoSimadi} from './martyriko-simadi.js'
  * @import {MusicContext} from './common.js'
  * @import {Part} from './common.js'
@@ -19,35 +20,36 @@ export class MartyriaBlock extends AbstractBlock {
 	#fthongos;
 
 	/**
-	 * @type {MartyrikoSimadi}
+	 * @type {SecondaryLayer[]}
 	 */
-	#simadi;
+	#secondary_list;
 
 	/**
-	 * @type {?Fthora}
+	 * @param {Fthongos} fthongos
+	 * @param {SecondaryLayer[]} secondary_list
 	 */
-	#fthora = null;
-
-	/**
-	 * @type {?Agogi}
-	 */
-	#agogi = null;
+	constructor(fthongos, secondary_list) {
+		super(AbstractBlock.type_martyria);
+		this.#fthongos = fthongos;
+		this.#secondary_list = secondary_list;
+	}
 
 	/**
 	 * @param {Fthongos} fthongos
 	 * @param {MartyrikoSimadi} simadi
-	 * @param {(Fthora|Agogi)[]} args
+	 * @param  {...SecondaryCharacter} args
+	 * @returns {MartyriaBlock}
 	 */
-	constructor(fthongos, simadi, ...args) {
-		super(AbstractBlock.type_martyria);
-		this.#fthongos = fthongos;
-		this.#simadi = simadi;
+	static build(fthongos, simadi, ...args) {
+		/**
+		 * @type {SecondaryLayer[]}
+		 */
+		const secondary_list = [];
+		secondary_list.push(new SecondaryLayer(simadi, 0, 0, 0));
 		args.forEach(arg => {
-			if (arg instanceof Fthora)
-				this.#fthora = arg;
-			if (arg instanceof Agogi)
-				this.#agogi = arg;
+			secondary_list.push(new SecondaryLayer(arg, 0, 0, 0));
 		});
+		return new MartyriaBlock(fthongos, secondary_list);
 	}
 
 	/**
@@ -57,19 +59,27 @@ export class MartyriaBlock extends AbstractBlock {
 		const block_div = super.get_div();
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
-		symbol_div.append(this.#fthongos.get_martyria_span());
-		if (this.#fthongos.diapason >= 0)
-			symbol_div.append(this.#simadi.get_normal_span());
-		else
-			symbol_div.append(this.#simadi.get_flipped_span());
-		if (this.#simadi.teleies)
-			symbol_div.append(MartyriaBlock.#get_teleies_span());
-		if (this.#fthora !== null)
-			symbol_div.append(this.#fthora.get_martyria_span());
-		if (this.#agogi !== null)
-			symbol_div.append(this.#agogi.get_martyria_span());
-		for (let diapason = 1; diapason <= this.#fthongos.diapason; diapason++)
-			symbol_div.append(MartyriaBlock.#get_tonos_span());
+		const symbol_main_div = document.createElement('div');
+		symbol_main_div.classList.add('bz-symbol-main')
+		symbol_main_div.append(this.#fthongos.get_martyria_span());
+		this.#secondary_list.forEach(secondary => {
+			const span = secondary.get_main_span(this.#fthongos);
+			if (span !== null)
+				symbol_main_div.append(span);
+		});
+		symbol_div.append(symbol_main_div);
+		// if (this.#fthongos.diapason >= 0)
+		// 	symbol_div.append(this.#simadi.get_normal_span());
+		// else
+		// 	symbol_div.append(this.#simadi.get_flipped_span());
+		// if (this.#simadi.teleies)
+		// 	symbol_div.append(MartyriaBlock.#get_teleies_span());
+		// if (this.#fthora !== null)
+		// 	symbol_div.append(this.#fthora.get_martyria_span());
+		// if (this.#agogi !== null)
+		// 	symbol_div.append(this.#agogi.get_martyria_span());
+		// for (let diapason = 1; diapason <= this.#fthongos.diapason; diapason++)
+		// 	symbol_div.append(MartyriaBlock.#get_tonos_span());
 		block_div.append(symbol_div);
 		return block_div;
 	}
@@ -100,10 +110,18 @@ export class MartyriaBlock extends AbstractBlock {
 	 * @returns {Part[]}
 	 */
 	get_parts(music_context, block_index) {
-		if (this.#fthora !== null)
-			this.#fthora.apply(music_context);
-		if (this.#agogi !== null)
-			music_context.tempo = this.#agogi.tempo;
+		this.#secondary_list.forEach(secondary => {
+			const character = secondary.get_character();
+			if (character.type === SecondaryCharacter.type_fthora) {
+				/**
+				 * @type {Fthora}
+				 */
+				const fthora = character;
+				fthora.apply(music_context);
+			}
+		});
+		// if (this.#agogi !== null)
+		// 	music_context.tempo = this.#agogi.tempo;
 		return [];
 	}
 }

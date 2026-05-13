@@ -47,52 +47,52 @@ export class Gorgon extends SecondaryCharacter {
 	}
 
 	/**
-	 * @param {Posotita} posotita
+	 * @param {*} primary
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_main_span(posotita, horizontal_offset, vertical_offset) {
+	get_main_span(primary, horizontal_offset, vertical_offset) {
 		if (this === Gorgon.gorgon) {
-			if (posotita === Posotita.apostrofos) {
+			if (primary === Posotita.apostrofos) {
 				horizontal_offset += 0.3;
 			}
-			if (posotita === Posotita.apostrofos_kentimata) {
+			if (primary === Posotita.apostrofos_kentimata) {
 				horizontal_offset += 0.2;
 				vertical_offset -= 0.2;
 			}
-			if (posotita === Posotita.apostrofos_yporroi) {
+			if (primary === Posotita.apostrofos_yporroi) {
 				horizontal_offset += 0.6;
 			}
-			if (posotita === Posotita.ison_kentimata) {
+			if (primary === Posotita.ison_kentimata) {
 				horizontal_offset += 0.2;
 				vertical_offset -= 0.2;
 			}
-			if (posotita === Posotita.oligon_kentimata) {
+			if (primary === Posotita.oligon_kentimata) {
 				vertical_offset -= 0.2;
 			}
-			if (posotita === Posotita.yporroi) {
+			if (primary === Posotita.yporroi) {
 				horizontal_offset += 0.6;
 			}
 		}
 		if (this === Gorgon.gorgon_kato) {
-			if (posotita === Posotita.apostrofos) {
+			if (primary === Posotita.apostrofos) {
 				horizontal_offset += 0.3;
 			}
 		}
 		if (this === Gorgon.digorgon) {
-			if (posotita === Posotita.yporroi) {
+			if (primary === Posotita.yporroi) {
 				horizontal_offset += 0.6;
 				vertical_offset += 0.1;
 			}
 		}
 		if (this === Gorgon.trigorgon) {
-			if (posotita === Posotita.yporroi) {
+			if (primary === Posotita.yporroi) {
 				horizontal_offset += 0.6;
 				vertical_offset += 0.1;
 			}
 		}
-		const span = super.get_main_span(posotita, horizontal_offset, vertical_offset);
+		const span = super.get_main_span(primary, horizontal_offset, vertical_offset);
 		return span;
 	}
 }

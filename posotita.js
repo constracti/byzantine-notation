@@ -1,9 +1,5 @@
 import { Glyph } from './glyph.js';
 
-/**
- * @import {PosotitaBlock} from './block-posotita.js'
- */
-
 
 export class Posotita {
 

@@ -25,7 +25,7 @@ export class PosotitaBlock extends AbstractBlock {
 	/**
 	 * @type {SecondaryLayer[]}
 	 */
-	#secondary_list = [];
+	#secondary_list;
 
 	/**
 	 * @type {?string}

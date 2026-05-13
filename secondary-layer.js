@@ -1,5 +1,4 @@
 /**
- * @import {Posotita} from './posotita.js'
  * @import {SecondaryCharacter} from './secondary.js'
  */
 
@@ -68,10 +67,10 @@ export class SecondaryLayer {
 	}
 
 	/**
-	 * @param {Posotita} posotita
+	 * @param {*} primary
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_main_span(posotita) {
-		return this.#character.get_main_span(posotita, this.#horizontal_offset, this.#vertical_offset);
+	get_main_span(primary) {
+		return this.#character.get_main_span(primary, this.#horizontal_offset, this.#vertical_offset);
 	}
 }

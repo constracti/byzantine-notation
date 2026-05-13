@@ -1,83 +1,40 @@
 import { Glyph } from './glyph.js';
+import { SecondaryCharacter } from './secondary.js';
 
 
-export class MartyrikoSimadi {
-
-	/**
-	 * @type {string}
-	 */
-	name; // TODO martyriko simadi names
-
-	/**
-	 * @type {Glyph}
-	 */
-	#glyph_normal;
-
-	/**
-	 * @type {Glyph}
-	 */
-	#glyph_flipped;
+export class MartyrikoSimadi extends SecondaryCharacter {
 
 	/**
 	 * @type {boolean}
 	 */
 	teleies;
 
-	static #normal_alfa = new Glyph(Glyph.font_byzantina, '!');
-	static #flipped_alfa = new Glyph(Glyph.font_fthores, 'S');
-	static #normal_lambda = new Glyph(Glyph.font_byzantina, '@');
-	static #normal_nana = new Glyph(Glyph.font_byzantina, '#');
-	static #flipped_nana = new Glyph(Glyph.font_fthores, 'Z');
-	static #normal_varys = new Glyph(Glyph.font_byzantina, '^');
-	static #normal_delta = new Glyph(Glyph.font_byzantina, '&');
-	static #flipped_delta = new Glyph(Glyph.font_fthores, 'A');
-	static #normal_skliro = new Glyph(Glyph.font_byzantina, '$');
-	static #flipped_skliro = new Glyph(Glyph.font_fthores, 'X');
-	static #normal_defteros = new Glyph(Glyph.font_byzantina, '%');
-	static #flipped_defteros = new Glyph(Glyph.font_fthores, 'x');
-	static #normal_zygos = new Glyph(Glyph.font_fthores, 'I');
-	static #flipped_zygos = new Glyph(Glyph.font_fthores, '(');
-
-	static alfa = new MartyrikoSimadi('alfa', MartyrikoSimadi.#normal_alfa, MartyrikoSimadi.#flipped_alfa, false);
-	static alfa_teleies = new MartyrikoSimadi('alfa-teleies', MartyrikoSimadi.#normal_alfa, MartyrikoSimadi.#flipped_alfa, true);
-	static lambda = new MartyrikoSimadi('lambda', MartyrikoSimadi.#normal_lambda, Glyph.empty, false);
-	static nana = new MartyrikoSimadi('nana', MartyrikoSimadi.#normal_nana, MartyrikoSimadi.#flipped_nana, false);
-	static varys = new MartyrikoSimadi('varys', MartyrikoSimadi.#normal_varys, Glyph.empty, false);
-	static delta = new MartyrikoSimadi('delta', MartyrikoSimadi.#normal_delta, MartyrikoSimadi.#flipped_delta, false);
-	static delta_teleies = new MartyrikoSimadi('delta-teleies', MartyrikoSimadi.#normal_delta, MartyrikoSimadi.#flipped_delta, true);
-	static skliro = new MartyrikoSimadi('skliro', MartyrikoSimadi.#normal_skliro, MartyrikoSimadi.#flipped_skliro, false);
-	static defteros = new MartyrikoSimadi('defteros', MartyrikoSimadi.#normal_defteros, MartyrikoSimadi.#flipped_defteros, false);
-	static defteros_teleies = new MartyrikoSimadi('defteros-teleies', MartyrikoSimadi.#normal_defteros, MartyrikoSimadi.#flipped_defteros, true);
-	static zygos = new MartyrikoSimadi('zygos', MartyrikoSimadi.#normal_zygos, MartyrikoSimadi.#flipped_zygos, false); // TODO fix both glyphs
+	static alfa = new MartyrikoSimadi('alfa', new Glyph(Glyph.font_byzantina, '!'), false);
+	static alfa_teleies = new MartyrikoSimadi('alfa-teleies', new Glyph(Glyph.font_byzantina, '!'), true);
+	static lambda = new MartyrikoSimadi('lambda', new Glyph(Glyph.font_byzantina, '@'), false);
+	static nana = new MartyrikoSimadi('nana', new Glyph(Glyph.font_byzantina, '#'), false);
+	static varys = new MartyrikoSimadi('varys', new Glyph(Glyph.font_byzantina, '^'), false);
+	static delta = new MartyrikoSimadi('delta', new Glyph(Glyph.font_byzantina, '&'), false);
+	static delta_teleies = new MartyrikoSimadi('delta-teleies', new Glyph(Glyph.font_byzantina, '&'), true);
+	static skliro = new MartyrikoSimadi('skliro', new Glyph(Glyph.font_byzantina, '$'), false);
+	static defteros = new MartyrikoSimadi('defteros', new Glyph(Glyph.font_byzantina, '%'), false);
+	static defteros_teleies = new MartyrikoSimadi('defteros-teleies', new Glyph(Glyph.font_byzantina, '%'), true);
+	static zygos = new MartyrikoSimadi('zygos', new Glyph(Glyph.font_fthores, 'I'), false); // TODO fix both glyphs
 
 	/**
 	 * @param {string} name
-	 * @param {Glyph} glyph_normal
-	 * @param {Glyph} glyph_flipped
+	 * @param {Glyph} glyph
 	 * @param {boolean} teleies
 	 */
-	constructor(name, glyph_normal, glyph_flipped, teleies) {
-		this.name = name;
-		this.#glyph_normal = glyph_normal;
-		this.#glyph_flipped = glyph_flipped;
+	constructor(name, glyph, teleies) {
+		super(name, SecondaryCharacter.type_simadi, glyph) // TODO martyriko simadi names
 		this.teleies = teleies;
 	}
 
 	/**
-	 * @returns {HTMLSpanElement}
+	 * @returns {?string}
 	 */
-	get_normal_span() {
-		const span = this.#glyph_normal.get_span();
-		span.classList.add(Glyph.color_red);
-		return span;
-	}
-
-	/**
-	 * @returns {HTMLSpanElement}
-	 */
-	get_flipped_span() {
-		const span = this.#glyph_flipped.get_span();
-		span.classList.add(Glyph.color_red);
-		return span;
+	get_color() {
+		return Glyph.color_red;
 	}
 }

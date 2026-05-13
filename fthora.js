@@ -51,12 +51,16 @@ export class Fthora extends SecondaryCharacter {
 	}
 
 	/**
-	 * @returns {HTMLSpanElement}
+	 * @param {*} primary
+	 * @param {number} horizontal_offset
+	 * @param {number} vertical_offset
+	 * @returns {?HTMLSpanElement}
 	 */
-	get_martyria_span() {
-		const span = this.glyph.get_span();
-		span.classList.add(Glyph.color_red);
-		return span;
+	get_main_span(primary, horizontal_offset, vertical_offset) {
+		if (primary instanceof Fthongos) {
+			horizontal_offset += 0.6;
+		}
+		return super.get_main_span(primary, horizontal_offset, vertical_offset);
 	}
 
 	/**

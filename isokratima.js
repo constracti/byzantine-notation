@@ -49,18 +49,18 @@ export class Isokratima extends SecondaryCharacter {
 	}
 
 	/**
-	 * @param {Posotita} posotita
+	 * @param {*} primary
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_main_span(posotita, horizontal_offset, vertical_offset) {
-		if (posotita === Posotita.apostrofos) {
+	get_main_span(primary, horizontal_offset, vertical_offset) {
+		if (primary === Posotita.apostrofos) {
 			horizontal_offset += 0.5;
 		}
-		if (posotita === Posotita.oligon_ypsili_aristera) {
+		if (primary === Posotita.oligon_ypsili_aristera) {
 			horizontal_offset += 0.3;
 		}
-		return super.get_main_span(posotita, horizontal_offset, vertical_offset + 0.1);
+		return super.get_main_span(primary, horizontal_offset, vertical_offset + 0.1);
 	}
 }

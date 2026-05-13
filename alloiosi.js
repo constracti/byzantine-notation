@@ -56,17 +56,17 @@ export class Alloiosi extends SecondaryCharacter {
 	}
 
 	/**
-	 * @param {Posotita} posotita
+	 * @param {*} primary
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_main_span(posotita, horizontal_offset, vertical_offset) {
-		if (posotita === Posotita.oligon_kentimata) {
+	get_main_span(primary, horizontal_offset, vertical_offset) {
+		if (primary === Posotita.oligon_kentimata) {
 			horizontal_offset += 0.3;
 			vertical_offset -= 0.2;
 		}
-		const span = super.get_main_span(posotita, horizontal_offset, vertical_offset);
+		const span = super.get_main_span(primary, horizontal_offset, vertical_offset);
 		return span;
 	}
 }

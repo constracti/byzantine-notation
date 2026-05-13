@@ -36,30 +36,30 @@ export class Chronos extends SecondaryCharacter {
 	}
 
 	/**
-	 * @param {Posotita} posotita
+	 * @param {*} primary
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_main_span(posotita, horizontal_offset, vertical_offset) {
+	get_main_span(primary, horizontal_offset, vertical_offset) {
 		if (this === Chronos.klasma) {
-			if (posotita.is_petasti()) {
+			if (primary instanceof Posotita && primary.is_petasti()) {
 				vertical_offset += 0.6;
 				horizontal_offset -= 0.05;
 			}
-			if (posotita === Posotita.apostrofos) {
+			if (primary === Posotita.apostrofos) {
 				horizontal_offset += 0.4;
 			}
-			if (posotita === Posotita.oligon_ypsili_dexia) {
+			if (primary === Posotita.oligon_ypsili_dexia) {
 				horizontal_offset -= 0.2;
 			}
 		}
 		if (this === Chronos.apli) {
-			if (posotita === Posotita.apostrofos) {
+			if (primary === Posotita.apostrofos) {
 				horizontal_offset += 0.5;
 			}
 		}
-		const span = super.get_main_span(posotita, horizontal_offset, vertical_offset);
+		const span = super.get_main_span(primary, horizontal_offset, vertical_offset);
 		return span;
 	}
 }

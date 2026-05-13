@@ -27,6 +27,7 @@ export class SecondaryCharacter {
 	static type_chroa = 'chroa';
 	static type_isokratima = 'ison';
 	static type_rythmos = 'rythmos';
+	static type_simadi = 'simadi';
 
 	static vareia = new SecondaryCharacter('vareia', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, '\\'));
 	static psifiston = new SecondaryCharacter('psifiston', SecondaryCharacter.type_kallopismos, new Glyph(Glyph.font_byzantina, '/'));
@@ -84,16 +85,16 @@ export class SecondaryCharacter {
 	}
 
 	/**
-	 * @param {Posotita} posotita
+	 * @param {*} primary
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_main_span(posotita, horizontal_offset, vertical_offset) {
+	get_main_span(primary, horizontal_offset, vertical_offset) {
 		if (this === SecondaryCharacter.vareia)
 			return null;
 		if (this === SecondaryCharacter.antikenoma) {
-			if (posotita === Posotita.apostrofos) {
+			if (primary === Posotita.apostrofos) {
 				horizontal_offset += 0.4;
 			}
 		}
@@ -101,7 +102,7 @@ export class SecondaryCharacter {
 			horizontal_offset -= 0.2;
 		}
 		if (this.type === SecondaryCharacter.type_rythmos) {
-			if (posotita === Posotita.petasti_oligon) {
+			if (primary === Posotita.petasti_oligon) {
 				vertical_offset -= 0.2;
 			}
 		}
