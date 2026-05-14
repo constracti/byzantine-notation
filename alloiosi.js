@@ -1,9 +1,9 @@
 import { Glyph } from './glyph.js';
 import { Posotita } from './posotita.js';
-import { SecondaryCharacter } from './secondary.js';
+import { Character } from './character.js';
 
 
-export class Alloiosi extends SecondaryCharacter {
+export class Alloiosi extends Character {
 
 	/**
 	 * @type {number}
@@ -27,7 +27,7 @@ export class Alloiosi extends SecondaryCharacter {
 	 * @param {Glyph} glyph
 	 */
 	constructor(name, steps, glyph) {
-		super(name, SecondaryCharacter.type_alloiosi, glyph);
+		super(name, Character.type_alloiosi, glyph);
 		this.#steps = steps;
 	}
 
@@ -56,17 +56,20 @@ export class Alloiosi extends SecondaryCharacter {
 	}
 
 	/**
-	 * @param {*} primary
+	 * @param {Posotita} posotita
+	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_main_span(primary, horizontal_offset, vertical_offset) {
-		if (primary === Posotita.oligon_kentimata) {
+	get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset) {
+		if (posotita === Posotita.apostrofos) {
+			horizontal_offset += 0.3;
+		}
+		if (posotita === Posotita.oligon_kentimata) {
 			horizontal_offset += 0.3;
 			vertical_offset -= 0.2;
 		}
-		const span = super.get_main_span(primary, horizontal_offset, vertical_offset);
-		return span;
+		return super.get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset);
 	}
 }

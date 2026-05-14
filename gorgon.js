@@ -1,9 +1,9 @@
 import { Glyph } from './glyph.js';
 import { Posotita } from './posotita.js';
-import { SecondaryCharacter } from './secondary.js';
+import { Character } from './character.js';
 
 
-export class Gorgon extends SecondaryCharacter {
+export class Gorgon extends Character {
 
 	/**
 	 * @type {number[]}
@@ -26,7 +26,7 @@ export class Gorgon extends SecondaryCharacter {
 	 * @param {Glyph} glyph
 	 */
 	constructor(name, tuple, glyph) {
-		super(name, SecondaryCharacter.type_gorgon, glyph);
+		super(name, Character.type_gorgon, glyph);
 		this.tuple = tuple;
 	}
 
@@ -47,52 +47,52 @@ export class Gorgon extends SecondaryCharacter {
 	}
 
 	/**
-	 * @param {*} primary
+	 * @param {Posotita} posotita
+	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_main_span(primary, horizontal_offset, vertical_offset) {
+	get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset) {
 		if (this === Gorgon.gorgon) {
-			if (primary === Posotita.apostrofos) {
+			if (posotita === Posotita.apostrofos) {
 				horizontal_offset += 0.3;
 			}
-			if (primary === Posotita.apostrofos_kentimata) {
+			if (posotita === Posotita.apostrofos_kentimata) {
 				horizontal_offset += 0.2;
 				vertical_offset -= 0.2;
 			}
-			if (primary === Posotita.apostrofos_yporroi) {
+			if (posotita === Posotita.apostrofos_yporroi) {
 				horizontal_offset += 0.6;
 			}
-			if (primary === Posotita.ison_kentimata) {
+			if (posotita === Posotita.ison_kentimata) {
 				horizontal_offset += 0.2;
 				vertical_offset -= 0.2;
 			}
-			if (primary === Posotita.oligon_kentimata) {
+			if (posotita === Posotita.oligon_kentimata) {
 				vertical_offset -= 0.2;
 			}
-			if (primary === Posotita.yporroi) {
+			if (posotita === Posotita.yporroi) {
 				horizontal_offset += 0.6;
 			}
 		}
 		if (this === Gorgon.gorgon_kato) {
-			if (primary === Posotita.apostrofos) {
+			if (posotita === Posotita.apostrofos) {
 				horizontal_offset += 0.3;
 			}
 		}
 		if (this === Gorgon.digorgon) {
-			if (primary === Posotita.yporroi) {
+			if (posotita === Posotita.yporroi) {
 				horizontal_offset += 0.6;
 				vertical_offset += 0.1;
 			}
 		}
 		if (this === Gorgon.trigorgon) {
-			if (primary === Posotita.yporroi) {
+			if (posotita === Posotita.yporroi) {
 				horizontal_offset += 0.6;
 				vertical_offset += 0.1;
 			}
 		}
-		const span = super.get_main_span(primary, horizontal_offset, vertical_offset);
-		return span;
+		return super.get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset);
 	}
 }

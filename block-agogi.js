@@ -40,7 +40,7 @@ export class AgogiBlock extends AbstractBlock {
 	 * @returns {Part[]}
 	 */
 	get_parts(music_context, block_index) {
-		music_context.tempo = this.#agogi.tempo;
+		music_context.tempo = this.#agogi.get_tempo();
 		return [];
 	}
 }

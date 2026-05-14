@@ -1,10 +1,10 @@
 import { Glyph } from './glyph.js';
 import { Fthongos } from './fthongos.js';
 import { Posotita } from './posotita.js';
-import { SecondaryCharacter } from './secondary.js';
+import { Character } from './character.js';
 
 
-export class Isokratima extends SecondaryCharacter {
+export class Isokratima extends Character {
 
 	/**
 	 * @type {?Fthongos}
@@ -30,7 +30,7 @@ export class Isokratima extends SecondaryCharacter {
 	 * @param {Glyph} glyph
 	 */
 	constructor(name, fthongos, glyph) {
-		super(name, SecondaryCharacter.type_isokratima, glyph);
+		super(name, Character.type_isokratima, glyph);
 		this.#fthongos = fthongos;
 	}
 
@@ -49,18 +49,19 @@ export class Isokratima extends SecondaryCharacter {
 	}
 
 	/**
-	 * @param {*} primary
+	 * @param {Posotita} posotita
+	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_main_span(primary, horizontal_offset, vertical_offset) {
-		if (primary === Posotita.apostrofos) {
+	get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset) {
+		if (posotita === Posotita.apostrofos) {
 			horizontal_offset += 0.5;
 		}
-		if (primary === Posotita.oligon_ypsili_aristera) {
+		if (posotita === Posotita.oligon_ypsili_aristera) {
 			horizontal_offset += 0.3;
 		}
-		return super.get_main_span(primary, horizontal_offset, vertical_offset + 0.1);
+		return super.get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset + 0.1);
 	}
 }

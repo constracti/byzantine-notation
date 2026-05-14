@@ -1,8 +1,8 @@
 import { Glyph } from './glyph.js';
-import { SecondaryCharacter } from './secondary.js';
+import { Character } from './character.js';
 
 
-export class MartyrikoSimadi extends SecondaryCharacter {
+export class MartyrikoSimadi extends Character {
 
 	/**
 	 * @type {boolean}
@@ -27,7 +27,7 @@ export class MartyrikoSimadi extends SecondaryCharacter {
 	 * @param {boolean} teleies
 	 */
 	constructor(name, glyph, teleies) {
-		super(name, SecondaryCharacter.type_simadi, glyph) // TODO martyriko simadi names
+		super(name, Character.type_simadi, glyph) // TODO martyriko simadi names
 		this.teleies = teleies;
 	}
 

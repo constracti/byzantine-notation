@@ -1,12 +1,12 @@
 import { Glyph } from './glyph.js';
-import { SecondaryCharacter } from './secondary.js';
+import { Character } from './character.js';
 
 /**
  * @import {MusicContext} from './common.js'
  */
 
 
-export class Chroa extends SecondaryCharacter {
+export class Chroa extends Character {
 
 	/**
 	 * @type {number[]}
@@ -29,7 +29,7 @@ export class Chroa extends SecondaryCharacter {
 	 * @param {Glyph} glyph
 	 */
 	constructor(name, lower_interval_list, upper_interval_list, glyph) {
-		super(name, SecondaryCharacter.type_chroa, glyph);
+		super(name, Character.type_chroa, glyph);
 		this.#lower_distance_list = [];
 		lower_interval_list.forEach(interval => {
 			const length = this.#lower_distance_list.length;

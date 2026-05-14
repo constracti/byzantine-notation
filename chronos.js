@@ -1,9 +1,9 @@
 import { Glyph } from './glyph.js';
 import { Posotita } from './posotita.js';
-import { SecondaryCharacter } from './secondary.js';
+import { Character } from './character.js';
 
 
-export class Chronos extends SecondaryCharacter {
+export class Chronos extends Character {
 
 	/**
 	 * @type {number}
@@ -21,7 +21,7 @@ export class Chronos extends SecondaryCharacter {
 	 * @param {Glyph} glyph
 	 */
 	constructor(name, beats, glyph) {
-		super(name, SecondaryCharacter.type_chronos, glyph);
+		super(name, Character.type_chronos, glyph);
 		this.beats = beats;
 	}
 
@@ -36,30 +36,30 @@ export class Chronos extends SecondaryCharacter {
 	}
 
 	/**
-	 * @param {*} primary
+	 * @param {Posotita} posotita
+	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_main_span(primary, horizontal_offset, vertical_offset) {
+	get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset) {
 		if (this === Chronos.klasma) {
-			if (primary instanceof Posotita && primary.is_petasti()) {
+			if (posotita.is_petasti()) {
 				vertical_offset += 0.6;
 				horizontal_offset -= 0.05;
 			}
-			if (primary === Posotita.apostrofos) {
+			if (posotita === Posotita.apostrofos) {
 				horizontal_offset += 0.4;
 			}
-			if (primary === Posotita.oligon_ypsili_dexia) {
+			if (posotita === Posotita.oligon_ypsili_dexia) {
 				horizontal_offset -= 0.2;
 			}
 		}
 		if (this === Chronos.apli) {
-			if (primary === Posotita.apostrofos) {
+			if (posotita === Posotita.apostrofos) {
 				horizontal_offset += 0.5;
 			}
 		}
-		const span = super.get_main_span(primary, horizontal_offset, vertical_offset);
-		return span;
+		return super.get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset);
 	}
 }

@@ -69,7 +69,7 @@ export class Posotita {
 	 */
 	get_prev_margin() {
 		if (this === Posotita.syneches_elafron)
-			return 0.6;
+			return 0.5;
 		return 0;
 	}
 

@@ -1,5 +1,5 @@
 import { Glyph } from './glyph.js';
-import { SecondaryCharacter } from './secondary.js';
+import { Character } from './character.js';
 import { Genos } from './genos.js';
 import { Fthongos } from './fthongos.js';
 import { Klimaka } from './klimaka.js';
@@ -9,7 +9,7 @@ import { Klimaka } from './klimaka.js';
  */
 
 
-export class Fthora extends SecondaryCharacter {
+export class Fthora extends Character {
 
 	/**
 	 * @type {Genos}
@@ -38,7 +38,7 @@ export class Fthora extends SecondaryCharacter {
 	 * @param {Glyph} glyph
 	 */
 	constructor(name, genos, fthongos, glyph) {
-		super(name, SecondaryCharacter.type_fthora, glyph);
+		super(name, Character.type_fthora, glyph);
 		this.#genos = genos;
 		this.#fthongos = fthongos;
 	}
@@ -51,16 +51,15 @@ export class Fthora extends SecondaryCharacter {
 	}
 
 	/**
-	 * @param {*} primary
+	 * 
+	 * @param {Fthongos} fthongos
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
-	 * @returns {?HTMLSpanElement}
+	 * @returns {HTMLSpanElement}
 	 */
-	get_main_span(primary, horizontal_offset, vertical_offset) {
-		if (primary instanceof Fthongos) {
-			horizontal_offset += 0.6;
-		}
-		return super.get_main_span(primary, horizontal_offset, vertical_offset);
+	get_martyria_main_span(fthongos, horizontal_offset, vertical_offset) {
+		horizontal_offset += 0.6;
+		return super.get_martyria_main_span(fthongos, horizontal_offset, vertical_offset);
 	}
 
 	/**

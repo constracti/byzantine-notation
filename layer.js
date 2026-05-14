@@ -1,12 +1,14 @@
 /**
- * @import {SecondaryCharacter} from './secondary.js'
+ * @import {Posotita} from './posotita.js'
+ * @import {Fthongos} from './fthongos.js'
+ * @import {Character} from './character.js'
  */
 
 
-export class SecondaryLayer {
+export class Layer {
 
 	/**
-	 * @type {SecondaryCharacter}
+	 * @type {Character}
 	 */
 	#character;
 
@@ -26,7 +28,7 @@ export class SecondaryLayer {
 	#vertical_offset;
 
 	/**
-	 * @param {SecondaryCharacter} character
+	 * @param {Character} character
 	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
@@ -39,7 +41,7 @@ export class SecondaryLayer {
 	}
 
 	/**
-	 * @returns {SecondaryCharacter}
+	 * @returns {Character}
 	 */
 	get_character() {
 		return this.#character;
@@ -53,24 +55,18 @@ export class SecondaryLayer {
 	}
 
 	/**
+	 * @param {Posotita} posotita
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_prev_span() {
-		return this.#character.get_prev_span();
+	get_posotita_main_span(posotita) {
+		return this.#character.get_posotita_main_span(posotita, this.#target, this.#horizontal_offset, this.#vertical_offset);
 	}
 
 	/**
-	 * @returns {number}
+	 * @param {Fthongos} fthongos
+	 * @returns {HTMLSpanElement}
 	 */
-	get_prev_margin() {
-		return this.#character.get_prev_margin();
-	}
-
-	/**
-	 * @param {*} primary
-	 * @returns {?HTMLSpanElement}
-	 */
-	get_main_span(primary) {
-		return this.#character.get_main_span(primary, this.#horizontal_offset, this.#vertical_offset);
+	get_martyria_main_span(fthongos) {
+		return this.#character.get_martyria_main_span(fthongos, this.#horizontal_offset, this.#vertical_offset);
 	}
 }

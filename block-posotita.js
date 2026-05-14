@@ -1,7 +1,7 @@
 import { AbstractBlock } from './block-abstract.js';
 import { Posotita } from './posotita.js';
-import { SecondaryLayer } from './secondary-layer.js';
-import { SecondaryCharacter } from './secondary.js';
+import { Layer } from './layer.js';
+import { Character } from './character.js';
 
 /**
  * @import {Chronos} from './chronos.js'
@@ -23,37 +23,37 @@ export class PosotitaBlock extends AbstractBlock {
 	#posotita;
 
 	/**
-	 * @type {SecondaryLayer[]}
+	 * @type {Layer[]}
 	 */
-	#secondary_list;
+	#layer_list;
 
 	/**
 	 * @type {?string}
 	 */
-	#syllavi;
+	#text;
 
 	/**
 	 * @param {Posotita} posotita
-	 * @param {SecondaryLayer[]} secondary_list
-	 * @param {?string} syllavi
+	 * @param {Layer[]} layer_list
+	 * @param {?string} text
 	 */
-	constructor(posotita, secondary_list, syllavi) {
+	constructor(posotita, layer_list, text) {
 		super(AbstractBlock.type_posotita);
 		this.#posotita = posotita;
-		this.#secondary_list = secondary_list;
-		this.#syllavi = syllavi;
+		this.#layer_list = layer_list;
+		this.#text = text;
 	}
 
 	/**
 	 * @param {Posotita} posotita
-	 * @param {...(SecondaryCharacter|string)} args
+	 * @param {...(Character|string)} args
 	 * @returns {PosotitaBlock}
 	 */
 	static build(posotita, ...args) {
 		/**
-		 * @type {SecondaryLayer[]}
+		 * @type {Layer[]}
 		 */
-		const secondary_list = [];
+		const layer_list = [];
 		/**
 		 * @type {?string}
 		 */
@@ -62,10 +62,10 @@ export class PosotitaBlock extends AbstractBlock {
 			if (typeof(arg) === 'string') {
 				syllavi = arg;
 			} else {
-				secondary_list.push(new SecondaryLayer(arg, arg.get_default_target(posotita), 0, 0));
+				layer_list.push(new Layer(arg, arg.get_default_target(posotita), 0, 0));
 			}
 		});
-		return new PosotitaBlock(posotita, secondary_list, syllavi);
+		return new PosotitaBlock(posotita, layer_list, syllavi);
 	}
 
 	/**
@@ -76,35 +76,33 @@ export class PosotitaBlock extends AbstractBlock {
 		const symbol_div = document.createElement('div');
 		symbol_div.classList.add('bz-symbol');
 		const symbol_prev_div = document.createElement('div');
-		symbol_prev_div.classList.add('bz-symbol-prev');
 		let prev_margin = this.#posotita.get_prev_margin();
-		this.#secondary_list.forEach(secondary => {
-			const span = secondary.get_prev_span();
+		this.#layer_list.forEach(layer => {
+			const span = layer.get_character().get_posotita_prev_span();
 			if (span !== null)
 				symbol_prev_div.append(span);
-			prev_margin += secondary.get_prev_margin();
+			prev_margin += layer.get_character().get_posotita_prev_margin();
 		});
 		const symbol_main_div = document.createElement('div');
 		symbol_main_div.classList.add('bz-symbol-main');
 		symbol_main_div.append(this.#posotita.get_main_span());
-		this.#secondary_list.forEach(secondary => {
-			const span = secondary.get_main_span(this.#posotita);
+		this.#layer_list.forEach(layer => {
+			const span = layer.get_posotita_main_span(this.#posotita);
 			if (span !== null)
 				symbol_main_div.append(span);
 		});
 		const symbol_next_div = document.createElement('div');
-		symbol_next_div.classList.add('bz-symbol-next');
 		const next_span = this.#posotita.get_next_span();
 		if (next_span !== null)
 			symbol_next_div.append(next_span);
 		symbol_div.append(symbol_prev_div, symbol_main_div, symbol_next_div);
 		block_div.append(symbol_div);
-		if (this.#syllavi !== null) {
+		if (this.#text !== null) {
 			const text_row_div = document.createElement('div');
 			text_row_div.style.marginLeft = `${prev_margin.toFixed(2)}em`;
 			const text_span = document.createElement('span');
 			text_span.classList.add('bz-text');
-			text_span.textContent = this.#syllavi;
+			text_span.textContent = this.#text;
 			text_row_div.append(text_span);
 			block_div.append(text_row_div);
 		}
@@ -115,7 +113,7 @@ export class PosotitaBlock extends AbstractBlock {
 	 * @param {string} syllavi
 	 * @returns {HTMLSpanElement}
 	 */
-	static #get_syllavi_span(syllavi) {
+	static #get_text_span(syllavi) {
 		const span = document.createElement('span');
 		span.classList.add('bz-text');
 		span.textContent = syllavi;
@@ -135,19 +133,26 @@ export class PosotitaBlock extends AbstractBlock {
 		this.#posotita.move_list.forEach((move, move_index) => {
 			music_context.melos_pitch += move;
 			let alloiosi_steps = 0;
-			this.#secondary_list.forEach(secondary => {
-				if (secondary.get_target() !== move_index)
+			this.#layer_list.forEach(layer => {
+				if (layer.get_target() !== move_index)
 					return;
-				const character = secondary.get_character();
+				const character = layer.get_character();
 				switch (character.type) {
-					case SecondaryCharacter.type_alloiosi:
+					case Character.type_alloiosi:
 						/**
 						 * @type {Alloiosi}
 						 */
 						const alloiosi = character;
 						alloiosi_steps += alloiosi.get_steps();
 						break;
-					case SecondaryCharacter.type_isokratima:
+					case Character.type_fthora:
+						/**
+						 * @type {Fthora}
+						 */
+						const fthora = character;
+						fthora.apply(music_context);
+						break;
+					case Character.type_isokratima:
 						/**
 						 * @type {Isokratima}
 						 */
@@ -164,8 +169,6 @@ export class PosotitaBlock extends AbstractBlock {
 				block: block_index,
 			});
 		});
-		// if (this.fthora !== null)
-		// 	this.fthora.apply(music_context);
 		// if (this.chroa !== null)
 		// 	this.chroa.apply(music_context);
 		return part_list;
@@ -183,23 +186,23 @@ export class PosotitaBlock extends AbstractBlock {
 			time_list.push({index: -1, beats: 1/2 - 1});
 			time_list.push({index: 0, beats: 1/2 - 1});
 		}
-		this.#secondary_list.forEach(secondary => {
-			const character = secondary.get_character();
+		this.#layer_list.forEach(layer => {
+			const character = layer.get_character();
 			switch (character.type) {
-				case SecondaryCharacter.type_chronos:
+				case Character.type_chronos:
 					/**
 					 * @type {Chronos}
 					 */
 					const chronos = character;
-					time_list.push({index: secondary.get_target(), beats: chronos.beats});
+					time_list.push({index: layer.get_target(), beats: chronos.beats});
 					break;
-				case SecondaryCharacter.type_gorgon:
+				case Character.type_gorgon:
 					/**
 					 * @type {Gorgon}
 					 */
 					const gorgon = character;
 					gorgon.tuple.forEach((value, index) => {
-						time_list.push({index: secondary.get_target() + index - 1, beats: value - 1});
+						time_list.push({index: layer.get_target() + index - 1, beats: value - 1});
 					});
 					break;
 			}
