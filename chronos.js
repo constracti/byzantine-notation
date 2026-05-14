@@ -62,6 +62,9 @@ export class Chronos extends Character {
 			if (posotita === Posotita.apostrofos) {
 				horizontal_offset += 0.5;
 			}
+			if (posotita === Posotita.kentimata_oligon) {
+				vertical_offset += 0.2;
+			}
 		}
 		return super.get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset);
 	}

@@ -74,6 +74,12 @@ export class Fthora extends Character {
 	 */
 	get_martyria_main_span(fthongos, horizontal_offset, vertical_offset) {
 		horizontal_offset += 0.6;
+		if (this === Fthora.diatoniki_pa) {
+			horizontal_offset -= 0.1;
+		}
+		if (this === Fthora.diatoniki_ke) {
+			horizontal_offset -= 0.1;
+		}
 		return super.get_martyria_main_span(fthongos, horizontal_offset, vertical_offset);
 	}
 

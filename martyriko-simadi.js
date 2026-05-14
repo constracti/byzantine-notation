@@ -1,6 +1,10 @@
 import { Glyph } from './glyph.js';
 import { Character } from './character.js';
 
+/**
+ * @import {Fthongos} from './fthongos.js'
+ */
+
 
 export class MartyrikoSimadi extends Character {
 
@@ -36,5 +40,18 @@ export class MartyrikoSimadi extends Character {
 	 */
 	get_color() {
 		return Glyph.color_red;
+	}
+
+	/**
+	 * 
+	 * @param {Fthongos} fthongos
+	 * @param {number} horizontal_offset
+	 * @param {number} vertical_offset
+	 * @returns {HTMLSpanElement}
+	 */
+	get_martyria_main_span(fthongos, horizontal_offset, vertical_offset) {
+		if (fthongos.diapason < 0)
+			vertical_offset -= 0.7;
+		return super.get_martyria_main_span(fthongos, horizontal_offset, vertical_offset);
 	}
 }

@@ -63,12 +63,15 @@ export class Alloiosi extends Character {
 	 * @returns {?HTMLSpanElement}
 	 */
 	get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset) {
-		if (posotita === Posotita.apostrofos) {
-			horizontal_offset += 0.3;
-		}
-		if (posotita === Posotita.oligon_kentimata) {
-			horizontal_offset += 0.3;
-			vertical_offset -= 0.2;
+		if (this.#steps > 0) {
+			if (posotita === Posotita.apostrofos) {
+				horizontal_offset += 0.4;
+			}
+		} else {
+			horizontal_offset += 0.4;
+			if (posotita === Posotita.apostrofos) {
+				vertical_offset -= 0.1;
+			}
 		}
 		return super.get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset);
 	}

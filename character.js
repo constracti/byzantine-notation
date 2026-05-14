@@ -60,6 +60,8 @@ export class Character {
 	 * @returns {number}
 	 */
 	get_default_target(posotita) {
+		if (posotita === Posotita.kentimata_oligon)
+			return 1;
 		return 0;
 	}
 
@@ -103,6 +105,12 @@ export class Character {
 		if (this === Character.antikenoma) {
 			if (posotita === Posotita.apostrofos) {
 				horizontal_offset += 0.4;
+			}
+			if (posotita === Posotita.kentimata_oligon) {
+				vertical_offset += 0.2;
+			}
+			if (posotita === Posotita.oligon_kentima_kato) {
+				vertical_offset += 0.2;
 			}
 		}
 		if (this === Character.omalon_mono) {

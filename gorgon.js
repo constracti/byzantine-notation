@@ -43,6 +43,8 @@ export class Gorgon extends Character {
 			return 1;
 		if (posotita === Posotita.ison_kentimata)
 			return 1;
+		if (posotita === Posotita.kentimata_oligon)
+			return 0;
 		if (posotita === Posotita.oligon_kentimata)
 			return 1;
 		return super.get_default_target(posotita);
@@ -56,53 +58,27 @@ export class Gorgon extends Character {
 	 * @returns {?HTMLSpanElement}
 	 */
 	get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset) {
-		if (this === Gorgon.gorgon) {
+		if (this !== Gorgon.gorgon_kato) {
 			if (posotita === Posotita.apostrofos) {
 				horizontal_offset += 0.3;
 			}
-			if (posotita === Posotita.apostrofos_kentimata) {
-				horizontal_offset += 0.2;
-				vertical_offset -= 0.2;
-			}
-			if (posotita === Posotita.apostrofos_yporroi) {
-				horizontal_offset += 0.6;
-			}
-			if (posotita === Posotita.ison_kentimata) {
+			if (posotita === Posotita.apostrofos_kentimata || posotita === Posotita.elafron_kentimata || posotita === Posotita.ison_kentimata) {
 				horizontal_offset += 0.2;
 				vertical_offset -= 0.2;
 			}
 			if (posotita === Posotita.oligon_kentimata) {
 				vertical_offset -= 0.2;
 			}
-			if (posotita === Posotita.yporroi) {
+			if (posotita === Posotita.yporroi || posotita === Posotita.apostrofos_yporroi) {
 				horizontal_offset += 0.6;
+			}
+			if (this !== Gorgon.gorgon) {
+				vertical_offset += 0.1;
 			}
 		}
 		if (this === Gorgon.gorgon_kato) {
 			if (posotita === Posotita.apostrofos) {
 				horizontal_offset += 0.3;
-			}
-		}
-		if (this === Gorgon.gorgon_meta) {
-			if (posotita === Posotita.elafron_kentimata) {
-				horizontal_offset += 0.2;
-				vertical_offset -= 0.1;
-			}
-			if (posotita === Posotita.ison_kentimata) {
-				horizontal_offset += 0.2;
-				vertical_offset -= 0.1;
-			}
-		}
-		if (this === Gorgon.digorgon) {
-			if (posotita === Posotita.yporroi) {
-				horizontal_offset += 0.6;
-				vertical_offset += 0.1;
-			}
-		}
-		if (this === Gorgon.trigorgon) {
-			if (posotita === Posotita.yporroi) {
-				horizontal_offset += 0.6;
-				vertical_offset += 0.1;
 			}
 		}
 		return super.get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset);
