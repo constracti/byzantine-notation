@@ -1,5 +1,6 @@
 import { AbstractBlock } from './block-abstract.js';
 import { Klimaka } from './klimaka.js';
+import { Layer } from './layer.js';
 
 /**
  * @import {Vathmida} from './vathmida.js'
@@ -43,14 +44,32 @@ export class IchosBlock extends AbstractBlock {
 	 * @returns {HTMLDivElement}
 	 */
 	get_div() {
-		const block_div = super.get_div(); // TODO height
-		const symbol_div = document.createElement('div');
-		symbol_div.classList.add('bz-symbol');
-		symbol_div.append(...this.#ichos.get_span_list());
-		symbol_div.append(this.#vathmida.get_ichos_span());
-		symbol_div.append(this.#fthora.get_ichos_span());
-		block_div.append(symbol_div);
-		return block_div;
+		const div = super.get_div();
+		div.append(this.#get_symbol_div());
+		return div;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	#get_symbol_div() {
+		const div = document.createElement('div');
+		div.classList.add('bz-symbol');
+		div.append(this.#get_symbol_main_div());
+		return div;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	#get_symbol_main_div() {
+		const div = document.createElement('div');
+		div.classList.add('bz-symbol-main');
+		div.append(...this.#ichos.get_span_list());
+		div.append(this.#vathmida.get_ichos_span());
+		const layer = new Layer(this.#fthora, 0, 0, 0);
+		div.append(layer.get_ichos_main_span(this.#vathmida));
+		return div;
 	}
 
 	/**

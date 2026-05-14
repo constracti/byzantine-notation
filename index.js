@@ -20,7 +20,7 @@ const part_map = new Map();
 const music_context = {
 	melos_pitch: 0,
 	ison_fthongos: null,
-	tempo: Agogi.metria.tempo,
+	tempo: Agogi.metria.get_tempo(),
 	klimaka: Klimaka.get_default(),
 };
 

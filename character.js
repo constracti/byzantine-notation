@@ -1,6 +1,10 @@
-import { Fthongos } from './fthongos.js';
 import { Glyph } from './glyph.js';
 import { Posotita } from './posotita.js';
+
+/**
+ * @import {Fthongos} from './fthongos.js'
+ * @import {Vathmida} from './vathmida.js'
+ */
 
 
 export class Character {
@@ -105,6 +109,9 @@ export class Character {
 			horizontal_offset -= 0.2;
 		}
 		if (this.type === Character.type_rythmos) {
+			if (posotita === Posotita.apostrofos) {
+				horizontal_offset += 0.4;
+			}
 			if (posotita === Posotita.petasti_oligon) {
 				vertical_offset -= 0.2;
 			}
@@ -121,6 +128,16 @@ export class Character {
 	 */
 	get_martyria_main_span(fthongos, horizontal_offset, vertical_offset) {
 		return Character.get_main_span(this.glyph, this.get_color(), horizontal_offset + 0.02, vertical_offset);
+	}
+
+	/**
+	 * @param {Vathmida} vathmida
+	 * @param {number} horizontal_offset
+	 * @param {number} vertical_offset
+	 * @returns {HTMLSpanElement}
+	 */
+	get_ichos_main_span(vathmida, horizontal_offset, vertical_offset) {
+		return Character.get_main_span(this.glyph, this.get_color(), horizontal_offset + 0.4, vertical_offset - 0.3);
 	}
 
 	/**

@@ -39,6 +39,8 @@ export class Gorgon extends Character {
 			return 1;
 		if (posotita === Posotita.apostrofos_yporroi)
 			return 1;
+		if (posotita === Posotita.elafron_kentimata)
+			return 1;
 		if (posotita === Posotita.ison_kentimata)
 			return 1;
 		if (posotita === Posotita.oligon_kentimata)
@@ -79,6 +81,16 @@ export class Gorgon extends Character {
 		if (this === Gorgon.gorgon_kato) {
 			if (posotita === Posotita.apostrofos) {
 				horizontal_offset += 0.3;
+			}
+		}
+		if (this === Gorgon.gorgon_meta) {
+			if (posotita === Posotita.elafron_kentimata) {
+				horizontal_offset += 0.2;
+				vertical_offset -= 0.1;
+			}
+			if (posotita === Posotita.ison_kentimata) {
+				horizontal_offset += 0.2;
+				vertical_offset -= 0.1;
 			}
 		}
 		if (this === Gorgon.digorgon) {

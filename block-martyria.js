@@ -94,29 +94,51 @@ export class MartyriaBlock extends AbstractBlock {
 	 * @returns {HTMLDivElement}
 	 */
 	get_div() {
-		const block_div = super.get_div();
-		const symbol_div = document.createElement('div');
-		symbol_div.classList.add('bz-symbol');
-		const symbol_main_div = document.createElement('div');
-		symbol_main_div.classList.add('bz-symbol-main')
-		symbol_main_div.append(this.#fthongos.get_martyria_span());
-		symbol_main_div.append(this.#layer_map.get(this.#simadi).get_martyria_main_span(this.#fthongos));
-		if (this.#fthora !== null)
-			symbol_main_div.append(this.#layer_map.get(this.#fthora).get_martyria_main_span(this.#fthongos));
-		if (this.#agogi !== null)
-			symbol_main_div.append(this.#layer_map.get(this.#agogi).get_martyria_main_span(this.#fthongos));
-		if (this.#simadi.teleies)
-			symbol_main_div.append(MartyriaBlock.#get_teleies_span());
-		const symbol_next_div = document.createElement('div');
-		for (let diapason = 1; diapason <= this.#fthongos.diapason; diapason++)
-			symbol_next_div.append(MartyriaBlock.#get_tonos_span());
-		symbol_div.append(symbol_main_div, symbol_next_div);
+		const div = super.get_div();
+		div.append(this.#get_symbol_div()); // TODO add space after symbol
+		return div;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	#get_symbol_div() {
+		const div = document.createElement('div');
+		div.classList.add('bz-symbol');
+		div.append(this.#get_symbol_main_div())
+		div.append(this.#get_symbol_next_div());
 		// if (this.#fthongos.diapason >= 0)
-		// 	symbol_div.append(this.#simadi.get_normal_span());
+		// 	div.append(this.#simadi.get_normal_span());
 		// else
-		// 	symbol_div.append(this.#simadi.get_flipped_span());
-		block_div.append(symbol_div); // TODO add space after symbol
-		return block_div;
+		// 	div.append(this.#simadi.get_flipped_span());
+		return div;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	#get_symbol_main_div() {
+		const div = document.createElement('div');
+		div.classList.add('bz-symbol-main')
+		div.append(this.#fthongos.get_martyria_span());
+		div.append(this.#layer_map.get(this.#simadi).get_martyria_main_span(this.#fthongos));
+		if (this.#fthora !== null)
+			div.append(this.#layer_map.get(this.#fthora).get_martyria_main_span(this.#fthongos));
+		if (this.#agogi !== null)
+			div.append(this.#layer_map.get(this.#agogi).get_martyria_main_span(this.#fthongos));
+		if (this.#simadi.teleies)
+			div.append(MartyriaBlock.#get_teleies_span());
+		return div;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	#get_symbol_next_div() {
+		const div = document.createElement('div');
+		for (let diapason = 1; diapason <= this.#fthongos.diapason; diapason++)
+			div.append(MartyriaBlock.#get_tonos_span());
+		return div;
 	}
 
 	/**

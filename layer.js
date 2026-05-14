@@ -1,6 +1,7 @@
 /**
  * @import {Posotita} from './posotita.js'
  * @import {Fthongos} from './fthongos.js'
+ * @import {Vathmida} from './vathmida.js'
  * @import {Character} from './character.js'
  */
 
@@ -68,5 +69,13 @@ export class Layer {
 	 */
 	get_martyria_main_span(fthongos) {
 		return this.#character.get_martyria_main_span(fthongos, this.#horizontal_offset, this.#vertical_offset);
+	}
+
+	/**
+	 * @param {Vathmida} vathmida
+	 * @returns {HTMLSpanElement}
+	 */
+	get_ichos_main_span(vathmida) {
+		return this.#character.get_ichos_main_span(vathmida, this.#horizontal_offset, this.#vertical_offset);
 	}
 }

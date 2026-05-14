@@ -40,14 +40,21 @@ export class SimpleBlock extends AbstractBlock {
 	 * @returns {HTMLDivElement}
 	 */
 	get_div() {
-		const block_div = super.get_div();
-		const symbol_div = document.createElement('div');
-		symbol_div.classList.add('bz-symbol');
+		const div = super.get_div();
+		div.append(this.#get_symbol_div());
+		return div;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	#get_symbol_div() {
+		const div = document.createElement('div');
+		div.classList.add('bz-symbol');
 		const span = this.#glyph.get_span();
 		if (this.#color !== null)
 			span.classList.add(this.#color);
-		symbol_div.append(span);
-		block_div.append(symbol_div);
-		return block_div;
+		div.append(span);
+		return div;
 	}
 }

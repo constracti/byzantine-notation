@@ -19,7 +19,7 @@ export class MartyrikoSimadi extends Character {
 	static skliro = new MartyrikoSimadi('skliro', new Glyph(Glyph.font_byzantina, '$'), false);
 	static defteros = new MartyrikoSimadi('defteros', new Glyph(Glyph.font_byzantina, '%'), false);
 	static defteros_teleies = new MartyrikoSimadi('defteros-teleies', new Glyph(Glyph.font_byzantina, '%'), true);
-	static zygos = new MartyrikoSimadi('zygos', new Glyph(Glyph.font_fthores, 'I'), false); // TODO fix both glyphs
+	static zygos = new MartyrikoSimadi('zygos', new Glyph(Glyph.font_fthores, 'I'), false); // TODO fix glyph
 
 	/**
 	 * @param {string} name

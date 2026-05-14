@@ -72,51 +72,87 @@ export class PosotitaBlock extends AbstractBlock {
 	 * @returns {HTMLDivElement}
 	 */
 	get_div() {
-		const block_div = super.get_div();
-		const symbol_div = document.createElement('div');
-		symbol_div.classList.add('bz-symbol');
-		const symbol_prev_div = document.createElement('div');
-		let prev_margin = this.#posotita.get_prev_margin();
-		this.#layer_list.forEach(layer => {
-			const span = layer.get_character().get_posotita_prev_span();
-			if (span !== null)
-				symbol_prev_div.append(span);
-			prev_margin += layer.get_character().get_posotita_prev_margin();
-		});
-		const symbol_main_div = document.createElement('div');
-		symbol_main_div.classList.add('bz-symbol-main');
-		symbol_main_div.append(this.#posotita.get_main_span());
-		this.#layer_list.forEach(layer => {
-			const span = layer.get_posotita_main_span(this.#posotita);
-			if (span !== null)
-				symbol_main_div.append(span);
-		});
-		const symbol_next_div = document.createElement('div');
-		const next_span = this.#posotita.get_next_span();
-		if (next_span !== null)
-			symbol_next_div.append(next_span);
-		symbol_div.append(symbol_prev_div, symbol_main_div, symbol_next_div);
-		block_div.append(symbol_div);
-		if (this.#text !== null) {
-			const text_row_div = document.createElement('div');
-			text_row_div.style.marginLeft = `${prev_margin.toFixed(2)}em`;
-			const text_span = document.createElement('span');
-			text_span.classList.add('bz-text');
-			text_span.textContent = this.#text;
-			text_row_div.append(text_span);
-			block_div.append(text_row_div);
-		}
-		return block_div;
+		const div = super.get_div();
+		div.append(this.#get_symbol_div());
+		div.append(this.#get_text_div());
+		return div;
 	}
 
 	/**
-	 * @param {string} syllavi
+	 * @returns {HTMLDivElement}
+	 */
+	#get_symbol_div() {
+		const div = document.createElement('div');
+		div.classList.add('bz-symbol');
+		div.append(this.#get_symbol_prev_div());
+		div.append(this.#get_symbol_main_div());
+		div.append(this.#get_symbol_next_div());
+		return div;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	#get_symbol_prev_div() {
+		const div = document.createElement('div');
+		this.#layer_list.forEach(layer => {
+			const span = layer.get_character().get_posotita_prev_span();
+			if (span !== null)
+				div.append(span);
+		});
+		return div;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	#get_symbol_main_div() {
+		const div = document.createElement('div');
+		div.classList.add('bz-symbol-main');
+		div.append(this.#posotita.get_main_span());
+		this.#layer_list.forEach(layer => {
+			const span = layer.get_posotita_main_span(this.#posotita);
+			if (span !== null)
+				div.append(span);
+		});
+		return div;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	#get_symbol_next_div() {
+		const div = document.createElement('div');
+		const span = this.#posotita.get_next_span();
+		if (span !== null)
+			div.append(span);
+		return div;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	#get_text_div() {
+		const div = document.createElement('div');
+		if (this.#text !== null) {
+			let prev_margin = this.#posotita.get_prev_margin();
+			this.#layer_list.forEach(layer => {
+				prev_margin += layer.get_character().get_posotita_prev_margin();
+			});
+			div.style.marginLeft = `${prev_margin.toFixed(2)}em`;
+			div.append(PosotitaBlock.#get_text_span(this.#text));
+		}
+		return div;
+	}
+
+	/**
+	 * @param {string} text
 	 * @returns {HTMLSpanElement}
 	 */
-	static #get_text_span(syllavi) {
+	static #get_text_span(text) {
 		const span = document.createElement('span');
 		span.classList.add('bz-text');
-		span.textContent = syllavi;
+		span.textContent = text;
 		return span;
 	}
 

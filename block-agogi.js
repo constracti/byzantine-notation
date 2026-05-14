@@ -26,12 +26,19 @@ export class AgogiBlock extends AbstractBlock {
 	 * @returns {HTMLDivElement}
 	 */
 	get_div() {
-		const block_div = super.get_div();
-		const symbol_div = document.createElement('div');
-		symbol_div.classList.add('bz-symbol');
-		symbol_div.append(this.#agogi.get_block_span());
-		block_div.append(symbol_div);
-		return block_div;
+		const div = super.get_div();
+		div.append(this.#get_symbol_div());
+		return div;
+	}
+
+	/**
+	 * @returns {HTMLDivElement}
+	 */
+	#get_symbol_div() {
+		const div = document.createElement('div');
+		div.classList.add('bz-symbol');
+		div.append(this.#agogi.get_block_span());
+		return div;
 	}
 
 	/**

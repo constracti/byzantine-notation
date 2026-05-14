@@ -1,4 +1,5 @@
 import { Glyph } from './glyph.js';
+import { Posotita } from './posotita.js';
 import { Character } from './character.js';
 import { Genos } from './genos.js';
 import { Fthongos } from './fthongos.js';
@@ -49,6 +50,20 @@ export class Fthora extends Character {
 	get_color() {
 		return Glyph.color_red;
 	}
+	
+	/**
+	 * @param {Posotita} posotita
+	 * @param {number} target
+	 * @param {number} horizontal_offset
+	 * @param {number} vertical_offset
+	 * @returns {?HTMLSpanElement}
+	 */
+	get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset) {
+		if (posotita === Posotita.apostrofos) {
+			horizontal_offset += 0.4;
+		}
+		return super.get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset);
+	}
 
 	/**
 	 * 
@@ -60,15 +75,6 @@ export class Fthora extends Character {
 	get_martyria_main_span(fthongos, horizontal_offset, vertical_offset) {
 		horizontal_offset += 0.6;
 		return super.get_martyria_main_span(fthongos, horizontal_offset, vertical_offset);
-	}
-
-	/**
-	 * @returns {HTMLSpanElement}
-	 */
-	get_ichos_span() {
-		const span = this.glyph.get_span(); // TODO fix position
-		span.classList.add(Glyph.color_red);
-		return span;
 	}
 
 	/**

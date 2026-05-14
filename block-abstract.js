@@ -30,11 +30,11 @@ export class AbstractBlock {
 	 * @returns {HTMLDivElement}
 	 */
 	get_div() {
-		const block_div = document.createElement('div');
-		block_div.classList.add('bz-block');
+		const div = document.createElement('div');
+		div.classList.add('bz-block');
 		if (this === AbstractBlock.newline)
-			block_div.classList.add('bz-newline');
-		return block_div;
+			div.classList.add('bz-newline');
+		return div;
 	}
 
 	/**
