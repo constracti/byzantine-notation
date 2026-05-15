@@ -23,7 +23,7 @@ export class MartyrikoSimadi extends Character {
 	static skliro = new MartyrikoSimadi('skliro', new Glyph(Glyph.font_byzantina, '$'), false);
 	static defteros = new MartyrikoSimadi('defteros', new Glyph(Glyph.font_byzantina, '%'), false);
 	static defteros_teleies = new MartyrikoSimadi('defteros-teleies', new Glyph(Glyph.font_byzantina, '%'), true);
-	static zygos = new MartyrikoSimadi('zygos', new Glyph(Glyph.font_fthores, 'I'), false); // TODO fix glyph
+	static zygos = new MartyrikoSimadi('zygos', new Glyph(Glyph.font_fthores, '9'), false);
 
 	/**
 	 * @param {string} name
@@ -52,6 +52,10 @@ export class MartyrikoSimadi extends Character {
 	get_martyria_main_span(fthongos, horizontal_offset, vertical_offset) {
 		if (fthongos.diapason < 0)
 			vertical_offset -= 0.7;
+		if (this === MartyrikoSimadi.zygos) {
+			horizontal_offset += 0.4;
+			vertical_offset += 1.2;
+		}
 		return super.get_martyria_main_span(fthongos, horizontal_offset, vertical_offset);
 	}
 }

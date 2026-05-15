@@ -77,7 +77,7 @@ export class Gorgon extends Character {
 			}
 		}
 		if (this === Gorgon.gorgon_kato) {
-			if (posotita === Posotita.apostrofos) {
+			if (posotita === Posotita.apostrofos || posotita === Posotita.kentimata) {
 				horizontal_offset += 0.3;
 			}
 		}

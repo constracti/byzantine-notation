@@ -188,6 +188,13 @@ export class PosotitaBlock extends AbstractBlock {
 						const fthora = character;
 						fthora.apply(music_context);
 						break;
+					case Character.type_chroa:
+						/**
+						 * @type {Chroa}
+						 */
+						const chroa = character;
+						chroa.apply(music_context);
+						break;
 					case Character.type_isokratima:
 						/**
 						 * @type {Isokratima}
@@ -205,8 +212,6 @@ export class PosotitaBlock extends AbstractBlock {
 				block: block_index,
 			});
 		});
-		// if (this.chroa !== null)
-		// 	this.chroa.apply(music_context);
 		return part_list;
 	}
 
