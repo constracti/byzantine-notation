@@ -15,7 +15,7 @@ export class Character {
 	name;
 
 	/**
-	 * @type {string}
+	 * @type {?string}
 	 */
 	type;
 
@@ -26,7 +26,6 @@ export class Character {
 
 	static type_chronos = 'chronos';
 	static type_gorgon = 'gorgon';
-	static type_kallopismos = 'kallopismos';
 	static type_alloiosi = 'alloiosi';
 	static type_fthora = 'fthora';
 	static type_chroa = 'chroa';
@@ -35,18 +34,20 @@ export class Character {
 	static type_simadi = 'simadi';
 	static type_agogi = 'agogi';
 
-	static vareia = new Character('vareia', Character.type_kallopismos, new Glyph(Glyph.font_byzantina, '\\'));
-	static psifiston = new Character('psifiston', Character.type_kallopismos, new Glyph(Glyph.font_byzantina, '/'));
-	static antikenoma = new Character('antikenoma', Character.type_kallopismos, new Glyph(Glyph.font_byzantina, 'm'));
-	static omalon_mono = new Character('omalon-mono', Character.type_kallopismos, new Glyph(Glyph.font_byzantina, '<'));
-	static omalon_diplo = new Character('omalon-diplo', Character.type_kallopismos, new Glyph(Glyph.font_byzantina, ','));
-	static syndesmos = new Character('omalon-mono', Character.type_kallopismos, new Glyph(Glyph.font_loipa, '}'));
+	static vareia = new Character('vareia', null, new Glyph(Glyph.font_byzantina, '\\'));
+	static psifiston = new Character('psifiston', null, new Glyph(Glyph.font_byzantina, '/'));
+	static antikenoma = new Character('antikenoma', null, new Glyph(Glyph.font_byzantina, 'm'));
+	static omalon_mono = new Character('omalon-mono', null, new Glyph(Glyph.font_byzantina, '<'));
+	static omalon_diplo = new Character('omalon-diplo', null, new Glyph(Glyph.font_byzantina, ','));
+	static syndesmos = new Character('omalon-mono', null, new Glyph(Glyph.font_loipa, '}'));
+	static diastoli = new Character('diastoli', null, new Glyph(Glyph.font_byzantina, 'o'));
 	static rythmos_trisimos = new Character('rythmos-trisimos', Character.type_rythmos, new Glyph(Glyph.font_fthores, '6'));
 	static rythmos_tetrasimos = new Character('rythmos-tetrasimos', Character.type_rythmos, new Glyph(Glyph.font_fthores, '7'));
+	static stavros = new Character('stavros', null, new Glyph(Glyph.font_fthores, '\''));
 
 	/**
 	 * @param {string} name
-	 * @param {string} type
+	 * @param {?string} type
 	 * @param {Glyph} glyph
 	 */
 	constructor(name, type, glyph) {
@@ -70,6 +71,8 @@ export class Character {
 	 */
 	get_color() {
 		if (this.type === Character.type_rythmos)
+			return Glyph.color_red;
+		if (this === Character.stavros)
 			return Glyph.color_red;
 		return null;
 	}

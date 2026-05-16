@@ -1,4 +1,4 @@
-import { AbstractBlock } from './block-abstract.js';
+import { Block } from './block.js';
 import { Klimaka } from './klimaka.js';
 import { Layer } from './layer.js';
 
@@ -11,7 +11,7 @@ import { Layer } from './layer.js';
  */
 
 
-export class IchosBlock extends AbstractBlock {
+export class IchosBlock extends Block {
 
 	/**
 	 * @type {Ichos}
@@ -34,7 +34,7 @@ export class IchosBlock extends AbstractBlock {
 	 * @param {Fthora} fthora
 	 */
 	constructor(ichos, vathmida, fthora) {
-		super(AbstractBlock.type_ichos);
+		super(Block.type_ichos);
 		this.#ichos = ichos;
 		this.#vathmida = vathmida;
 		this.#fthora = fthora;

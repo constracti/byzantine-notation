@@ -1,4 +1,4 @@
-import { AbstractBlock } from './block-abstract.js';
+import { Block } from './block.js';
 
 /**
  * @import {Agogi} from './agogi.js'
@@ -7,7 +7,7 @@ import { AbstractBlock } from './block-abstract.js';
  */
 
 
-export class AgogiBlock extends AbstractBlock {
+export class AgogiBlock extends Block {
 
 	/**
 	 * @type {Agogi}
@@ -18,7 +18,7 @@ export class AgogiBlock extends AbstractBlock {
 	 * @param {Agogi} agogi
 	 */
 	constructor(agogi) {
-		super(AbstractBlock.type_agogi);
+		super(Block.type_agogi);
 		this.#agogi = agogi;
 	}
 

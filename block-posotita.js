@@ -1,4 +1,4 @@
-import { AbstractBlock } from './block-abstract.js';
+import { Block } from './block.js';
 import { Posotita } from './posotita.js';
 import { Layer } from './layer.js';
 import { Character } from './character.js';
@@ -15,7 +15,9 @@ import { Character } from './character.js';
  */
 
 
-export class PosotitaBlock extends AbstractBlock {
+// TODO stick syneches elafron, omalon diplon and syndesmos with previous character
+
+export class PosotitaBlock extends Block {
 
 	/**
 	 * @type {Posotita}
@@ -38,7 +40,7 @@ export class PosotitaBlock extends AbstractBlock {
 	 * @param {?string} text
 	 */
 	constructor(posotita, layer_list, text) {
-		super(AbstractBlock.type_posotita);
+		super(Block.type_posotita);
 		this.#posotita = posotita;
 		this.#layer_list = layer_list;
 		this.#text = text;
@@ -96,9 +98,7 @@ export class PosotitaBlock extends AbstractBlock {
 	#get_symbol_prev_div() {
 		const div = document.createElement('div');
 		this.#layer_list.forEach(layer => {
-			const span = layer.get_character().get_posotita_prev_span();
-			if (span !== null)
-				div.append(span);
+			div.append(layer.get_character().get_posotita_prev_span() ?? '');
 		});
 		return div;
 	}
@@ -111,9 +111,7 @@ export class PosotitaBlock extends AbstractBlock {
 		div.classList.add('bz-symbol-main');
 		div.append(this.#posotita.get_main_span());
 		this.#layer_list.forEach(layer => {
-			const span = layer.get_posotita_main_span(this.#posotita);
-			if (span !== null)
-				div.append(span);
+			div.append(layer.get_posotita_main_span(this.#posotita) ?? '');
 		});
 		return div;
 	}
@@ -123,9 +121,7 @@ export class PosotitaBlock extends AbstractBlock {
 	 */
 	#get_symbol_next_div() {
 		const div = document.createElement('div');
-		const span = this.#posotita.get_next_span();
-		if (span !== null)
-			div.append(span);
+		div.append(this.#posotita.get_next_span() ?? '');
 		return div;
 	}
 

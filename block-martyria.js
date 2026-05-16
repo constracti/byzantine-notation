@@ -1,5 +1,5 @@
 import { Glyph } from './glyph.js';
-import { AbstractBlock } from './block-abstract.js';
+import { Block } from './block.js';
 import { Layer } from './layer.js';
 import { Character } from './character.js';
 
@@ -13,7 +13,7 @@ import { Character } from './character.js';
  */
 
 
-export class MartyriaBlock extends AbstractBlock {
+export class MartyriaBlock extends Block {
 
 	/**
 	 * @type {Fthongos}
@@ -47,7 +47,7 @@ export class MartyriaBlock extends AbstractBlock {
 	 * @param {?Agogi} agogi
 	 */
 	constructor(fthongos, simadi, fthora, agogi, layer_map) {
-		super(AbstractBlock.type_martyria);
+		super(Block.type_martyria);
 		this.#fthongos = fthongos;
 		this.#simadi = simadi;
 		this.#fthora = fthora;
@@ -107,10 +107,6 @@ export class MartyriaBlock extends AbstractBlock {
 		div.classList.add('bz-symbol');
 		div.append(this.#get_symbol_main_div())
 		div.append(this.#get_symbol_next_div());
-		// if (this.#fthongos.diapason >= 0)
-		// 	div.append(this.#simadi.get_normal_span());
-		// else
-		// 	div.append(this.#simadi.get_flipped_span());
 		return div;
 	}
 
