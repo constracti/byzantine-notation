@@ -4,12 +4,12 @@ import { Layer } from './layer.js';
 import { Character } from './character.js';
 
 /**
- * @import {Chronos} from './chronos.js'
- * @import {Gorgon} from './gorgon.js'
- * @import {Alloiosi} from './alloiosi.js'
- * @import {Fthora} from './fthora.js'
- * @import {Chroa} from './chroa.js'
- * @import {Isokratima} from './isokratima.js'
+ * @import {Chronos} from './character-chronos.js'
+ * @import {Gorgon} from './character-gorgon.js'
+ * @import {Alloiosi} from './character-alloiosi.js'
+ * @import {Fthora} from './character-fthora.js'
+ * @import {Chroa} from './character-chroa.js'
+ * @import {Isokratima} from './character-isokratima.js'
  * @import {MusicContext} from './common.js'
  * @import {Part} from './common.js'
  */

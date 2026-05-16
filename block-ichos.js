@@ -4,7 +4,7 @@ import { Layer } from './layer.js';
 
 /**
  * @import {Vathmida} from './vathmida.js'
- * @import {Fthora} from './fthora.js'
+ * @import {Fthora} from './character-fthora.js'
  * @import {Ichos} from './ichos.js'
  * @import {MusicContext} from './common.js'
  * @import {Part} from './common.js'

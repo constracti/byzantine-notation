@@ -1,7 +1,7 @@
 import { Block } from './block.js';
 
 /**
- * @import {Agogi} from './agogi.js'
+ * @import {Agogi} from './character-agogi.js'
  * @import {MusicContext} from './common.js'
  * @import {Part} from './common.js'
  */

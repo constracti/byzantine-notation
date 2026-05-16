@@ -5,9 +5,9 @@ import { Character } from './character.js';
 
 /**
  * @import {Fthongos} from './fthongos.js'
- * @import {Fthora} from './fthora.js'
- * @import {Agogi} from './agogi.js'
- * @import {MartyrikoSimadi} from './martyriko-simadi.js'
+ * @import {Fthora} from './character-fthora.js'
+ * @import {Agogi} from './character-agogi.js'
+ * @import {MartyrikoSimadi} from './character-martyriko-simadi.js'
  * @import {MusicContext} from './common.js'
  * @import {Part} from './common.js'
  */

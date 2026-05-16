@@ -1,5 +1,5 @@
 import { Klimaka } from './klimaka.js';
-import { Agogi } from './agogi.js';
+import { Agogi } from './character-agogi.js';
 
 import { block_list } from './demo.js';
 
