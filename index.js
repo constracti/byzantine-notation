@@ -1,3 +1,4 @@
+import { Block } from './block.js';
 import { Klimaka } from './klimaka.js';
 import { Agogi } from './character-agogi.js';
 
@@ -10,9 +11,15 @@ import { block_list } from './demo.js';
 
 /**
  * map block index to part index
- * @type {Map<number, number}
+ * @type {Map<number, number>}
  */
 const part_map = new Map();
+
+/**
+ * map block index to block div
+ * @type {Map<number, HTMLDivElement>}
+ */
+const block_map = new Map();
 
 /**
  * @type {MusicContext}
@@ -48,9 +55,14 @@ block_list.forEach((block, block_index) => {
 /**
  * @type {HTMLDivElement}
  */
-const container_div = document.getElementById('container-div');
+const container_div = document.getElementById('bz-container');
 
-container_div.append(...block_list.map((block, block_index) => {
+/**
+ * @type {?HTMLDivElement}
+ */
+let group_div = null;
+
+block_list.forEach((block, block_index) => {
 	const block_div = block.get_div();
 	const part_index = part_map.get(block_index);
 	if (part_index !== undefined) {
@@ -59,8 +71,20 @@ container_div.append(...block_list.map((block, block_index) => {
 			play(part_index);
 		});
 	}
-	return block_div;
-}));
+	if (block.type !== Block.type_newline) {
+		if (group_div === null || !block.keep_with_previous()) {
+			group_div = document.createElement('div');
+			group_div.classList.add('bz-group');
+			container_div.append(group_div);
+		}
+		group_div.append(block_div);
+	} else {
+		if (group_div !== null)
+			group_div.classList.add('bz-grow');
+		container_div.append(block_div);
+	}
+	block_map.set(block_index, block_div);
+});
 
 const audio_context = new AudioContext();
 
@@ -79,8 +103,8 @@ function play(index) {
 		frequency: 440 * Math.pow(2, (part.ison_steps ?? part.melos_steps) / 72),
 		type: 'sine',
 	});
-	const block_div = container_div.children[part.block];
-	block_div.classList.add('bz-active');
+	const block_div = block_map.get(part.block);
+	block_div.classList.add('bz-active'); // TODO causes faulty character rendering in macos safari
 	melos_node.connect(audio_context.destination);
 	ison_node.connect(audio_context.destination);
 	melos_node.start();

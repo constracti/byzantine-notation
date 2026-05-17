@@ -156,6 +156,13 @@ export class MartyriaBlock extends Block {
 	}
 
 	/**
+	 * @returns {boolean}
+	 */
+	keep_with_previous() {
+		return true;
+	}
+
+	/**
 	 * @param {MusicContext} music_context
 	 * @param {number} block_index
 	 * @returns {Part[]}

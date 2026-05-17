@@ -71,6 +71,13 @@ export class Block {
 	}
 
 	/**
+	 * @returns {boolean}
+	 */
+	keep_with_previous() {
+		return false;
+	}
+
+	/**
 	 * @param {MusicContext} music_context
 	 * @param {number} block_index
 	 * @returns {Part[]}

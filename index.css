@@ -24,11 +24,16 @@
 	font-weight: normal;
 	font-style: normal;
 }
-#container-div {
+#bz-container {
 	display: flex;
 	flex-wrap: wrap;
-	/* justify-content: space-between; */
-	/* background-color: white; */
+	justify-content: space-between; /* TODO causes faulty character rendering in macos safari */
+}
+.bz-group {
+	display: flex;
+}
+.bz-group.bz-grow {
+	flex-grow: 1;
 }
 .bz-block {
 	display: flex;

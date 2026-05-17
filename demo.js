@@ -1013,4 +1013,5 @@ block_list.push(
 	Block.diastoli,
 	PosotitaBlock.build(Posotita.ison, Chronos.dipli, Character.rythmos_tetrasimos, 'σιν'),
 	MartyriaBlock.build(Fthongos.ni, MartyrikoSimadi.delta),
+	Block.newline,
 );

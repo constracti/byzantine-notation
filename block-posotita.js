@@ -15,7 +15,7 @@ import { Character } from './character.js';
  */
 
 
-// TODO stick syneches elafron, omalon diplon and syndesmos with previous character
+// TODO drop-cap block
 
 export class PosotitaBlock extends Block {
 
@@ -150,6 +150,27 @@ export class PosotitaBlock extends Block {
 		span.classList.add('bz-text');
 		span.textContent = text;
 		return span;
+	}
+
+	/**
+	 * @returns {boolean}
+	 */
+	keep_with_previous() {
+		if (this.#posotita === Posotita.syneches_elafron)
+			return true;
+		let keep = false;
+		this.#layer_list.forEach(layer => {
+			const character = layer.get_character();
+			if (character === Character.omalon_diplo)
+				keep = true;
+			if (character === Character.syndesmos)
+				keep = true;
+			if (character.type === Character.type_gorgon && layer.get_target() === 0)
+				keep = true;
+		});
+		if (keep)
+			return true;
+		return super.keep_with_previous();
 	}
 
 	/**
