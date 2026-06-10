@@ -1,5 +1,5 @@
 /**
- * @import {Posotita} from './posotita.js'
+ * @import {PosotitaBlock} from './block-posotita.js'
  * @import {Fthongos} from './fthongos.js'
  * @import {Vathmida} from './vathmida.js'
  * @import {Character} from './character.js'
@@ -56,11 +56,11 @@ export class Layer {
 	}
 
 	/**
-	 * @param {Posotita} posotita
+	 * @param {PosotitaBlock} block
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_posotita_main_span(posotita) {
-		return this.#character.get_posotita_main_span(posotita, this.#target, this.#horizontal_offset, this.#vertical_offset);
+	get_posotita_main_span(block) {
+		return this.#character.get_posotita_main_span(block, this.#target, this.#horizontal_offset, this.#vertical_offset);
 	}
 
 	/**

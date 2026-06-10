@@ -25,6 +25,11 @@ export class PosotitaBlock extends Block {
 	#posotita;
 
 	/**
+	 * @type {Map<string, Character>[]}
+	 */
+	#character_map_list;
+
+	/**
 	 * @type {Layer[]}
 	 */
 	#layer_list;
@@ -35,15 +40,23 @@ export class PosotitaBlock extends Block {
 	#text;
 
 	/**
+	 * @type {?PosotitaBlock}
+	 */
+	#previous_block;
+
+	/**
 	 * @param {Posotita} posotita
+	 * @param {Map<string, Character>[]} character_map_list
 	 * @param {Layer[]} layer_list
 	 * @param {?string} text
 	 */
-	constructor(posotita, layer_list, text) {
+	constructor(posotita, character_map_list, layer_list, text) {
 		super(Block.type_posotita);
 		this.#posotita = posotita;
+		this.#character_map_list = character_map_list;
 		this.#layer_list = layer_list;
 		this.#text = text;
+		this.#previous_block = null;
 	}
 
 	/**
@@ -52,6 +65,10 @@ export class PosotitaBlock extends Block {
 	 * @returns {PosotitaBlock}
 	 */
 	static build(posotita, ...args) {
+		/**
+		 * @type {Map<string, Character>[]}
+		 */
+		const character_map_list = posotita.move_list.map(move => new Map());
 		/**
 		 * @type {Layer[]}
 		 */
@@ -64,10 +81,118 @@ export class PosotitaBlock extends Block {
 			if (typeof(arg) === 'string') {
 				syllavi = arg;
 			} else {
+				if (arg.type !== null)
+					character_map_list[arg.get_default_target(posotita)].set(arg.type, arg);
 				layer_list.push(new Layer(arg, arg.get_default_target(posotita), 0, 0));
 			}
 		});
-		return new PosotitaBlock(posotita, layer_list, syllavi);
+		return new PosotitaBlock(posotita, character_map_list, layer_list, syllavi);
+	}
+
+	/**
+	 * @type {Posotita}
+	 */
+	get_posotita() {
+		return this.#posotita;
+	}
+
+	/**
+	 * @returns {?PosotitaBlock}
+	 */
+	get_previous_block() {
+		return this.#previous_block;
+	}
+
+	/**
+	 * @param {?PosotitaBlock} block
+	 */
+	set_previous_block(block) {
+		this.#previous_block = block;
+	}
+
+	/**
+	 * @param {number} target
+	 * @returns {?Chronos}
+	 */
+	#get_chronos(target) {
+		return this.#character_map_list[target].get(Character.type_chronos) ?? null;
+	}
+
+	/**
+	 * @param {number} target
+	 * @returns {?Gorgon}
+	 */
+	#get_gorgon(target) {
+		return this.#character_map_list[target].get(Character.type_gorgon) ?? null;
+	}
+
+	/**
+	 * @param {number} target
+	 * @returns {?Alloiosi}
+	 */
+	#get_alloiosi(target) {
+		return this.#character_map_list[target].get(Character.type_alloiosi) ?? null;
+	}
+
+	/**
+	 * @param {number} target
+	 * @returns {?Fthora}
+	 */
+	#get_fthora(target) {
+		return this.#character_map_list[target].get(Character.type_fthora) ?? null;
+	}
+
+	/**
+	 * @param {number} target
+	 * @returns {?Chroa}
+	 */
+	#get_chroa(target) {
+		return this.#character_map_list[target].get(Character.type_chroa) ?? null;
+	}
+
+	/**
+	 * @param {number} target
+	 * @returns {?Isokratima}
+	 */
+	#get_isokratima(target) {
+		return this.#character_map_list[target].get(Character.type_isokratima) ?? null;
+	}
+
+	/**
+	 * @returns {boolean}
+	 */
+	has_kallopismos() {
+		let value = false;
+		this.#layer_list.forEach(layer => {
+			switch (layer.get_character()) {
+				case Character.antikenoma:
+				case Character.omalon_mono:
+				case Character.omalon_diplo:
+				case Character.syndesmos:
+					value = true;
+					break;
+			}
+		});
+		return value;
+	}
+
+	/**
+	 * keep gorgon over simple character on the next block
+	 * @returns {boolean}
+	 */
+	keep_gorgon_over_simple() {
+		return this.#posotita.is_petasti()
+			|| this.#layer_list.some(layer => layer.get_character() === Character.vareia)
+			|| this.#layer_list.some(layer => layer.get_character() === Character.antikenoma)
+			;
+	}
+
+	/**
+	 * keep gorgon over apostrofos on the next block
+	 * @returns {boolean}
+	 */
+	keep_gorgon_over_apostrofos() {
+		return this.#posotita === Posotita.apostrofos || this.#posotita === Posotita.syneches_elafron;
 	}
 
 	/**
@@ -111,7 +236,7 @@ export class PosotitaBlock extends Block {
 		div.classList.add('bz-symbol-main');
 		div.append(this.#posotita.get_main_span());
 		this.#layer_list.forEach(layer => {
-			div.append(layer.get_posotita_main_span(this.#posotita) ?? '');
+			div.append(layer.get_posotita_main_span(this) ?? '');
 		});
 		return div;
 	}
@@ -165,10 +290,10 @@ export class PosotitaBlock extends Block {
 				keep = true;
 			if (character === Character.syndesmos)
 				keep = true;
-			if (character.type === Character.type_gorgon && layer.get_target() === 0)
-				keep = true;
 		});
 		if (keep)
+			return true;
+		if (this.#get_gorgon(0))
 			return true;
 		return super.keep_with_previous();
 	}
@@ -185,42 +310,10 @@ export class PosotitaBlock extends Block {
 		const part_list = [];
 		this.#posotita.move_list.forEach((move, move_index) => {
 			music_context.melos_pitch += move;
-			let alloiosi_steps = 0;
-			this.#layer_list.forEach(layer => {
-				if (layer.get_target() !== move_index)
-					return;
-				const character = layer.get_character();
-				switch (character.type) {
-					case Character.type_alloiosi:
-						/**
-						 * @type {Alloiosi}
-						 */
-						const alloiosi = character;
-						alloiosi_steps += alloiosi.get_steps();
-						break;
-					case Character.type_fthora:
-						/**
-						 * @type {Fthora}
-						 */
-						const fthora = character;
-						fthora.apply(music_context);
-						break;
-					case Character.type_chroa:
-						/**
-						 * @type {Chroa}
-						 */
-						const chroa = character;
-						chroa.apply(music_context);
-						break;
-					case Character.type_isokratima:
-						/**
-						 * @type {Isokratima}
-						 */
-						const isokratima = character;
-						music_context.ison_fthongos = isokratima.get_fthongos();
-						break;
-				}
-			});
+			const alloiosi_steps = this.#get_alloiosi(move_index)?.get_steps() ?? 0;
+			this.#get_fthora(move_index)?.apply(music_context);
+			this.#get_chroa(move_index)?.apply(music_context);
+			this.#get_isokratima(move_index)?.apply(music_context);
 			part_list.push({
 				melos_steps: music_context.klimaka.get_steps(music_context.melos_pitch) + alloiosi_steps,
 				ison_steps: music_context.ison_fthongos !== null ? music_context.klimaka.get_steps(music_context.ison_fthongos.pitch) : null,
@@ -244,25 +337,16 @@ export class PosotitaBlock extends Block {
 			time_list.push({index: -1, beats: 1/2 - 1});
 			time_list.push({index: 0, beats: 1/2 - 1});
 		}
-		this.#layer_list.forEach(layer => {
-			const character = layer.get_character();
-			switch (character.type) {
-				case Character.type_chronos:
-					/**
-					 * @type {Chronos}
-					 */
-					const chronos = character;
-					time_list.push({index: layer.get_target(), beats: chronos.beats});
-					break;
-				case Character.type_gorgon:
-					/**
-					 * @type {Gorgon}
-					 */
-					const gorgon = character;
-					gorgon.tuple.forEach((value, index) => {
-						time_list.push({index: layer.get_target() + index - 1, beats: value - 1});
-					});
-					break;
+		this.#posotita.move_list.forEach((move, move_index) => {
+			const chronos = this.#get_chronos(move_index);
+			if (chronos !== null) {
+				time_list.push({index: move_index, beats: chronos.beats});
+			}
+			const gorgon = this.#get_gorgon(move_index);
+			if (gorgon !== null) {
+				gorgon.tuple.forEach((value, index) => {
+					time_list.push({index: move_index + index - 1, beats: value - 1});
+				});
 			}
 		});
 		return time_list;

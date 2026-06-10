@@ -5,9 +5,29 @@ import { Agogi } from './character-agogi.js';
 import { block_list } from './demo.js';
 
 /**
+ * @import {PosotitaBlock} from './block-posotita.js'
  * @import {MusicContext} from './common.js'
  * @import {Part} from './common.js'
  */
+
+// TODO type script
+
+/**
+ * @type {?PosotitaBlock}
+ */
+let previous_block = null;
+block_list.forEach(block => {
+	if (block.type === Block.type_posotita) {
+		/**
+		 * @type {PosotitaBlock}
+		 */
+		const posotita_block = block;
+		posotita_block.set_previous_block(previous_block);
+		previous_block = posotita_block;
+	} else {
+		previous_block = null;
+	}
+});
 
 /**
  * map block index to part index
@@ -114,5 +134,5 @@ function play(index) {
 		melos_node.stop();
 		ison_node.stop();
 		play(index + 1);
-	}, 60 / part.tempo * part.beats * 1000);
+	}, 60 / part.tempo * part.beats * 1000 / 2);
 }

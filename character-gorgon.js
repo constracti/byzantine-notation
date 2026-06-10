@@ -2,6 +2,10 @@ import { Glyph } from './glyph.js';
 import { Posotita } from './posotita.js';
 import { Character } from './character.js';
 
+/**
+ * @import {PosotitaBlock} from './block-posotita.js'
+ */
+
 
 export class Gorgon extends Character {
 
@@ -11,7 +15,6 @@ export class Gorgon extends Character {
 	tuple;
 
 	static gorgon = new Gorgon('gorgon', [1/2, 1/2], new Glyph(Glyph.font_byzantina, 'e'));
-	static gorgon_kato = new Gorgon('gorgon-kato', [1/2, 1/2], new Glyph(Glyph.font_byzantina, 'E'));// TODO maybe auto select
 	static gorgon_prin = new Gorgon('gorgon-prin', [2/3, 1/3], new Glyph(Glyph.font_loipa, '`'));
 	static gorgon_meta = new Gorgon('gorgon-meta', [1/3, 2/3], new Glyph(Glyph.font_loipa, '1'));
 	static digorgon = new Gorgon('digorgon', [1/3, 1/3, 1/3], new Glyph(Glyph.font_loipa, '2'));
@@ -50,37 +53,55 @@ export class Gorgon extends Character {
 		return super.get_default_target(posotita);
 	}
 
+	static #simple_posotita_set = new Set([
+		Posotita.ison,
+		Posotita.oligon,
+		Posotita.oligon_kentima_dipla,
+		Posotita.kentimata,
+		Posotita.apostrofos,
+	]);
+
 	/**
-	 * @param {Posotita} posotita
+	 * @param {PosotitaBlock} block
 	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset) {
-		if (this !== Gorgon.gorgon_kato) {
-			if (posotita === Posotita.apostrofos) {
-				horizontal_offset += 0.3;
-			}
-			if (posotita === Posotita.apostrofos_kentimata || posotita === Posotita.elafron_kentimata || posotita === Posotita.ison_kentimata) {
-				horizontal_offset += 0.2;
-				vertical_offset -= 0.2;
-			}
-			if (posotita === Posotita.oligon_kentimata) {
-				vertical_offset -= 0.2;
-			}
-			if (posotita === Posotita.yporroi || posotita === Posotita.apostrofos_yporroi) {
-				horizontal_offset += 0.6;
-			}
-			if (this !== Gorgon.gorgon) {
-				vertical_offset += 0.1;
-			}
+	get_posotita_main_span(block, target, horizontal_offset, vertical_offset) {
+		const posotita = block.get_posotita();
+		// place gorgon below posotita
+		const previous_block = block.get_previous_block();
+		const move_gorgon_down = this.tuple.length === 2 && Gorgon.#simple_posotita_set.has(posotita) && !block.has_kallopismos() && (
+			previous_block === null
+			||
+			!(
+				previous_block.keep_gorgon_over_simple()
+				||
+				(posotita === Posotita.apostrofos && previous_block.keep_gorgon_over_apostrofos())
+			)
+		);
+		if (move_gorgon_down) {
+			vertical_offset += 0.7;
 		}
-		if (this === Gorgon.gorgon_kato) {
-			if (posotita === Posotita.apostrofos || posotita === Posotita.kentimata) {
-				horizontal_offset += 0.3;
-			}
+		if (posotita === Posotita.apostrofos) {
+			horizontal_offset += 0.3;
 		}
-		return super.get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset);
+		if (posotita === Posotita.kentimata) {
+			horizontal_offset += 0.3;
+			if (move_gorgon_down)
+				horizontal_offset += 0.05;
+		}
+		if (posotita === Posotita.apostrofos_kentimata || posotita === Posotita.elafron_kentimata || posotita === Posotita.ison_kentimata) {
+			horizontal_offset += 0.2;
+			vertical_offset -= 0.2;
+		}
+		if (posotita === Posotita.oligon_kentimata) {
+			vertical_offset -= 0.2;
+		}
+		if (posotita === Posotita.yporroi || posotita === Posotita.apostrofos_yporroi) {
+			horizontal_offset += 0.6;
+		}
+		return super.get_posotita_main_span(block, target, horizontal_offset, vertical_offset);
 	}
 }

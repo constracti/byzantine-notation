@@ -2,6 +2,10 @@ import { Glyph } from './glyph.js';
 import { Posotita } from './posotita.js';
 import { Character } from './character.js';
 
+/**
+ * @import {PosotitaBlock} from './block-posotita.js'
+ */
+
 
 export class Chronos extends Character {
 
@@ -36,13 +40,14 @@ export class Chronos extends Character {
 	}
 
 	/**
-	 * @param {Posotita} posotita
+	 * @param {PosotitaBlock} block
 	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset) {
+	get_posotita_main_span(block, target, horizontal_offset, vertical_offset) {
+		const posotita = block.get_posotita();
 		if (this === Chronos.klasma) {
 			if (posotita.is_petasti()) {
 				vertical_offset += 0.6;
@@ -57,6 +62,9 @@ export class Chronos extends Character {
 			if (posotita === Posotita.oligon_ypsili_dexia) {
 				horizontal_offset -= 0.2;
 			}
+			if (posotita === Posotita.oligon_ypsili_aristera) {
+				horizontal_offset += 0.1;
+			}
 		}
 		if (this === Chronos.apli) {
 			if (posotita === Posotita.apostrofos) {
@@ -66,6 +74,6 @@ export class Chronos extends Character {
 				vertical_offset += 0.2;
 			}
 		}
-		return super.get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset);
+		return super.get_posotita_main_span(block, target, horizontal_offset, vertical_offset);
 	}
 }

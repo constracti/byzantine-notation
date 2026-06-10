@@ -2,6 +2,10 @@ import { Glyph } from './glyph.js';
 import { Posotita } from './posotita.js';
 import { Character } from './character.js';
 
+/**
+ * @import {PosotitaBlock} from './block-posotita.js'
+ */
+
 
 export class Alloiosi extends Character {
 
@@ -21,7 +25,6 @@ export class Alloiosi extends Character {
 	static diesi_trigrammi = new Alloiosi('diesi-trigrammi', +8, new Glyph(Glyph.font_fthores, 'B'));
 
 	/**
-	 * 
 	 * @param {string} name
 	 * @param {number} steps
 	 * @param {Glyph} glyph
@@ -56,13 +59,14 @@ export class Alloiosi extends Character {
 	}
 
 	/**
-	 * @param {Posotita} posotita
+	 * @param {PosotitaBlock} block
 	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset) {
+	get_posotita_main_span(block, target, horizontal_offset, vertical_offset) {
+		const posotita = block.get_posotita();
 		if (this.#steps > 0) {
 			if (posotita === Posotita.apostrofos) {
 				horizontal_offset += 0.4;
@@ -73,6 +77,6 @@ export class Alloiosi extends Character {
 				vertical_offset -= 0.1;
 			}
 		}
-		return super.get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset);
+		return super.get_posotita_main_span(block, target, horizontal_offset, vertical_offset);
 	}
 }

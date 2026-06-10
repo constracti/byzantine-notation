@@ -3,6 +3,11 @@ import { Fthongos } from './fthongos.js';
 import { Posotita } from './posotita.js';
 import { Character } from './character.js';
 
+/**
+ * @import {PosotitaBlock} from './block-posotita.js'
+ * @import {MusicContext} from './common.js'
+ */
+
 
 export class Isokratima extends Character {
 
@@ -35,13 +40,6 @@ export class Isokratima extends Character {
 	}
 
 	/**
-	 * @returns {Fthongos}
-	 */
-	get_fthongos() {
-		return this.#fthongos;
-	}
-
-	/**
 	 * @returns {?string}
 	 */
 	get_color() {
@@ -49,19 +47,27 @@ export class Isokratima extends Character {
 	}
 
 	/**
-	 * @param {Posotita} posotita
+	 * @param {PosotitaBlock} block
 	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset) {
+	get_posotita_main_span(block, target, horizontal_offset, vertical_offset) {
+		const posotita = block.get_posotita();
 		if (posotita === Posotita.apostrofos) {
 			horizontal_offset += 0.5;
 		}
 		if (posotita === Posotita.oligon_ypsili_aristera) {
 			horizontal_offset += 0.3;
 		}
-		return super.get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset + 0.1);
+		return super.get_posotita_main_span(block, target, horizontal_offset, vertical_offset);
+	}
+	
+	/**
+	 * @param {MusicContext} music_context
+	 */
+	apply(music_context) {
+		music_context.ison_fthongos = this.#fthongos;
 	}
 }

@@ -2,6 +2,7 @@ import { Glyph } from './glyph.js';
 import { Posotita } from './posotita.js';
 
 /**
+ * @import {PosotitaBlock} from './block-posotita.js'
  * @import {Fthongos} from './fthongos.js'
  * @import {Vathmida} from './vathmida.js'
  */
@@ -96,13 +97,14 @@ export class Character {
 	}
 
 	/**
-	 * @param {Posotita} posotita
+	 * @param {PosotitaBlock} block
 	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
 	 * @returns {?HTMLSpanElement}
 	 */
-	get_posotita_main_span(posotita, target, horizontal_offset, vertical_offset) {
+	get_posotita_main_span(block, target, horizontal_offset, vertical_offset) {
+		const posotita = block.get_posotita();
 		if (this === Character.vareia)
 			return null;
 		if (this === Character.antikenoma) {
