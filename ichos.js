@@ -13,17 +13,14 @@ export class Ichos {
 	 */
 	#glyph_list;
 
-	static #ichos_glyph = new Glyph(Glyph.font_ison, '`');
-	static #plagios_glyph = new Glyph(Glyph.font_ison, '~');
-
-	static protos = new Ichos('protos', [new Glyph(Glyph.font_ison, '&')]);
-	static defteros = new Ichos('defteros', [new Glyph(Glyph.font_ison, '*')]);
-	static tritos = new Ichos('tritos', [new Glyph(Glyph.font_ison, ')')]);
-	static tetartos = new Ichos('tetartos', [new Glyph(Glyph.font_ison, '^')]);
-	static plagios_protos = new Ichos('plagios-protos', [Ichos.#plagios_glyph, new Glyph(Glyph.font_ison, '7')]);
-	static plagios_defteros = new Ichos('plagios-defteros', [Ichos.#plagios_glyph, new Glyph(Glyph.font_ison, '8')]);
-	static varys = new Ichos('varys', [new Glyph(Glyph.font_ison, '(')]);
-	static plagios_tetartos = new Ichos('plagios-tetartos', [Ichos.#plagios_glyph, new Glyph(Glyph.font_ison, '6')]);
+	static protos = new Ichos('protos', [Glyph.ichos_protos]);
+	static defteros = new Ichos('defteros', [Glyph.ichos_defteros]);
+	static tritos = new Ichos('tritos', [Glyph.ichos_tritos]);
+	static tetartos = new Ichos('tetartos', [Glyph.ichos_tetartos]);
+	static plagios_protos = new Ichos('plagios-protos', [Glyph.ichos_plagios, Glyph.ichos_plagios_protos]);
+	static plagios_defteros = new Ichos('plagios-defteros', [Glyph.ichos_plagios, Glyph.ichos_plagios_defteros]);
+	static varys = new Ichos('varys', [Glyph.ichos_varys]);
+	static plagios_tetartos = new Ichos('plagios-tetartos', [Glyph.ichos_plagios, Glyph.ichos_plagios_tetartos]);
 
 	/**
 	 * @param {string} name
@@ -35,24 +32,24 @@ export class Ichos {
 	}
 
 	/**
-	 * @returns {HTMLSpanElement[]}
+	 * @returns {HTMLImageElement[]}
 	 */
-	get_span_list() {
+	get_img_list() {
 		/**
-		 * @type {HTMLSpanElement[]}
+		 * @type {HTMLImageElement[]}
 		 */
-		const span_list = [];
+		const img_list = [];
 		// ichos
-		const span = Ichos.#ichos_glyph.get_span();
-		span.classList.add(Glyph.color_red);
-		span_list.push(span);
+		const img = Glyph.ichos.get_img();
+		img.classList.add(Glyph.color_red);
+		img_list.push(img);
 		// rest
 		this.#glyph_list.forEach(glyph => {
-			const span = glyph.get_span();
-			span.classList.add(Glyph.color_red);
-			span_list.push(span);
+			const img = glyph.get_img();
+			img.classList.add(Glyph.color_red);
+			img_list.push(img);
 		});
 		// return
-		return span_list;
+		return img_list;
 	}
 }

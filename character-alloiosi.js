@@ -14,15 +14,15 @@ export class Alloiosi extends Character {
 	 */
 	#steps;
 
-	static yfesi_apli = new Alloiosi('yfesi_apli', -2, new Glyph(Glyph.font_byzantina, 't'));
-	static yfesi_monogrammi = new Alloiosi('yfesi-monogrammi', -4, new Glyph(Glyph.font_byzantina, 'T'));
-	static yfesi_digrammi = new Alloiosi('yfesi-digrammi', -6, new Glyph(Glyph.font_fthores, 't'));
-	static yfesi_trigrammi = new Alloiosi('yfesi-trigrammi', -8, new Glyph(Glyph.font_fthores, 'T'));
+	static yfesi_apli = new Alloiosi('yfesi_apli', -2, Glyph.yfesi_apli);
+	static yfesi_monogrammi = new Alloiosi('yfesi-monogrammi', -4, Glyph.yfesi_monogrammi);
+	static yfesi_digrammi = new Alloiosi('yfesi-digrammi', -6, Glyph.yfesi_digrammi);
+	static yfesi_trigrammi = new Alloiosi('yfesi-trigrammi', -8, Glyph.yfesi_trigrammi);
 
-	static diesi_apli = new Alloiosi('diesi-apli', +2, new Glyph(Glyph.font_fthores, 'b'));
-	static diesi_monogrammi = new Alloiosi('diesi-monogrammi', +4, new Glyph(Glyph.font_byzantina, 'b'));
-	static diesi_digrammi = new Alloiosi('diesi-digrammi', +6, new Glyph(Glyph.font_byzantina, 'B'));
-	static diesi_trigrammi = new Alloiosi('diesi-trigrammi', +8, new Glyph(Glyph.font_fthores, 'B'));
+	static diesi_apli = new Alloiosi('diesi-apli', +2, Glyph.diesi_apli);
+	static diesi_monogrammi = new Alloiosi('diesi-monogrammi', +4, Glyph.diesi_monogrammi);
+	static diesi_digrammi = new Alloiosi('diesi-digrammi', +6, Glyph.diesi_digrammi);
+	static diesi_trigrammi = new Alloiosi('diesi-trigrammi', +8, Glyph.diesi_trigrammi);
 
 	/**
 	 * @param {string} name
@@ -63,9 +63,9 @@ export class Alloiosi extends Character {
 	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
-	 * @returns {?HTMLSpanElement}
+	 * @returns {?HTMLImageElement}
 	 */
-	get_posotita_main_span(block, target, horizontal_offset, vertical_offset) {
+	get_posotita_main_img(block, target, horizontal_offset, vertical_offset) {
 		const posotita = block.get_posotita();
 		if (this.#steps > 0) {
 			if (posotita === Posotita.apostrofos) {
@@ -77,6 +77,6 @@ export class Alloiosi extends Character {
 				vertical_offset -= 0.1;
 			}
 		}
-		return super.get_posotita_main_span(block, target, horizontal_offset, vertical_offset);
+		return super.get_posotita_main_img(block, target, horizontal_offset, vertical_offset);
 	}
 }

@@ -14,8 +14,8 @@ export class Agogi extends Character {
 	 */
 	#block_glyph;
 
-	static metria = new Agogi('metria', 120, new Glyph(Glyph.font_chronos, 'k'), new Glyph(Glyph.font_chronos, 'K'));
-	static tacheia = new Agogi('tacheia', 180, new Glyph(Glyph.font_chronos, 'l'), new Glyph(Glyph.font_chronos, 'L'));
+	static metria = new Agogi('metria', 120, Glyph.agogi_metria, Glyph.agogi_metria_martyria);
+	static tacheia = new Agogi('tacheia', 180, Glyph.agogi_tacheia, Glyph.agogi_tacheia_martyria);
 
 	/**
 	 * @param {string} name
@@ -44,11 +44,11 @@ export class Agogi extends Character {
 	}
 
 	/**
-	 * @returns {HTMLSpanElement}
+	 * @returns {HTMLImageElement}
 	 */
-	get_block_span() {
-		const span = this.#block_glyph.get_span();
-		span.classList.add(Glyph.color_red);
-		return span;
+	get_block_img() {
+		const img = this.#block_glyph.get_img();
+		img.classList.add(Glyph.color_red);
+		return img;
 	}
 }

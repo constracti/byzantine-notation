@@ -14,14 +14,14 @@ export class Gorgon extends Character {
 	 */
 	tuple;
 
-	static gorgon = new Gorgon('gorgon', [1/2, 1/2], new Glyph(Glyph.font_byzantina, 'e'));
-	static gorgon_prin = new Gorgon('gorgon-prin', [2/3, 1/3], new Glyph(Glyph.font_loipa, '`'));
-	static gorgon_meta = new Gorgon('gorgon-meta', [1/3, 2/3], new Glyph(Glyph.font_loipa, '1'));
-	static digorgon = new Gorgon('digorgon', [1/3, 1/3, 1/3], new Glyph(Glyph.font_loipa, '2'));
-	static digorgon_prin = new Gorgon('digorgon-prin', [2/4, 1/4, 1/4], new Glyph(Glyph.font_loipa, '3'));
-	static digorgon_mesi = new Gorgon('digorgon-mesi', [1/4, 2/4, 1/4], new Glyph(Glyph.font_loipa, '4'));
-	static digorgon_meta = new Gorgon('digorgon-meta', [1/4, 1/4, 2/4], new Glyph(Glyph.font_loipa, '5'));
-	static trigorgon = new Gorgon('trigorgon', [1/4, 1/4, 1/4, 1/4], new Glyph(Glyph.font_loipa, '6'));
+	static gorgon = new Gorgon('gorgon', [1/2, 1/2], Glyph.gorgon);
+	static gorgon_prin = new Gorgon('gorgon-prin', [2/3, 1/3], Glyph.gorgon_prin);
+	static gorgon_meta = new Gorgon('gorgon-meta', [1/3, 2/3], Glyph.gorgon_meta);
+	static digorgon = new Gorgon('digorgon', [1/3, 1/3, 1/3], Glyph.digorgon);
+	static digorgon_prin = new Gorgon('digorgon-prin', [2/4, 1/4, 1/4], Glyph.digorgon_prin);
+	static digorgon_mesi = new Gorgon('digorgon-mesi', [1/4, 2/4, 1/4], Glyph.digorgon_mesi);
+	static digorgon_meta = new Gorgon('digorgon-meta', [1/4, 1/4, 2/4], Glyph.digorgon_meta);
+	static trigorgon = new Gorgon('trigorgon', [1/4, 1/4, 1/4, 1/4], Glyph.trigorgon);
 
 	/**
 	 * @param {string} name
@@ -66,9 +66,9 @@ export class Gorgon extends Character {
 	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
-	 * @returns {?HTMLSpanElement}
+	 * @returns {?HTMLImageElement}
 	 */
-	get_posotita_main_span(block, target, horizontal_offset, vertical_offset) {
+	get_posotita_main_img(block, target, horizontal_offset, vertical_offset) {
 		const posotita = block.get_posotita();
 		// place gorgon below posotita
 		const previous_block = block.get_previous_block();
@@ -82,26 +82,28 @@ export class Gorgon extends Character {
 			)
 		);
 		if (move_gorgon_down) {
-			vertical_offset += 0.7;
+			vertical_offset += 0.9;
 		}
 		if (posotita === Posotita.apostrofos) {
-			horizontal_offset += 0.3;
+			horizontal_offset += 0.4;
+			if (move_gorgon_down)
+				vertical_offset += 0.1;
 		}
 		if (posotita === Posotita.kentimata) {
 			horizontal_offset += 0.3;
 			if (move_gorgon_down)
-				horizontal_offset += 0.05;
+				horizontal_offset += 0.2;
 		}
 		if (posotita === Posotita.apostrofos_kentimata || posotita === Posotita.elafron_kentimata || posotita === Posotita.ison_kentimata) {
 			horizontal_offset += 0.2;
 			vertical_offset -= 0.2;
 		}
 		if (posotita === Posotita.oligon_kentimata) {
-			vertical_offset -= 0.2;
+			vertical_offset -= 0.25;
 		}
 		if (posotita === Posotita.yporroi || posotita === Posotita.apostrofos_yporroi) {
-			horizontal_offset += 0.6;
+			horizontal_offset += 0.8;
 		}
-		return super.get_posotita_main_span(block, target, horizontal_offset, vertical_offset);
+		return super.get_posotita_main_img(block, target, horizontal_offset, vertical_offset);
 	}
 }

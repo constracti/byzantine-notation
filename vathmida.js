@@ -19,13 +19,13 @@ export class Vathmida {
 	 */
 	#glyph_ichos;
 
-	static ni = new Vathmida('ni', 0, new Glyph(Glyph.font_ison, 'p'));
-	static pa = new Vathmida('pa', 1, new Glyph(Glyph.font_ison, '['));
-	static vou = new Vathmida('vou', 2, new Glyph(Glyph.font_ison, ']'));
-	static ga = new Vathmida('ga', 3, new Glyph(Glyph.font_ison, '\\'));
-	static di = new Vathmida('di', 4, new Glyph(Glyph.font_ison, 'P'));
-	static ke = new Vathmida('ke', 5, new Glyph(Glyph.font_ison, '{'));
-	static zo = new Vathmida('zo', -1, new Glyph(Glyph.font_ison, '}'));
+	static ni = new Vathmida('ni', 0, Glyph.vathmida_ni);
+	static pa = new Vathmida('pa', 1, Glyph.vathmida_pa);
+	static vou = new Vathmida('vou', 2, Glyph.vathmida_vou);
+	static ga = new Vathmida('ga', 3, Glyph.vathmida_ga);
+	static di = new Vathmida('di', 4, Glyph.vathmida_di);
+	static ke = new Vathmida('ke', 5, Glyph.vathmida_ke);
+	static zo = new Vathmida('zo', -1, Glyph.vathmida_zo);
 
 	/**
 	 * @param {string} name
@@ -39,11 +39,11 @@ export class Vathmida {
 	}
 
 	/**
-	 * @returns {HTMLSpanElement}
+	 * @returns {HTMLImageElement}
 	 */
-	get_ichos_span() {
-		const span = this.#glyph_ichos.get_span();
-		span.classList.add(Glyph.color_red);
-		return span;
+	get_ichos_img() {
+		const img = this.#glyph_ichos.get_img();
+		img.classList.add(Glyph.color_red);
+		return img;
 	}
 }

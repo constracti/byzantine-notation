@@ -18,9 +18,9 @@ export class Chroa extends Character {
 	 */
 	#upper_distance_list;
 
-	static zygos = new Chroa('zygos', [4, 16, 4], [], new Glyph(Glyph.font_fthores, '9'));
-	static spathi = new Chroa('spathi', [4], [4], new Glyph(Glyph.font_fthores, '`'));
-	static kliton = new Chroa('kliton', [4, 12], [], new Glyph(Glyph.font_fthores, '-'));
+	static zygos = new Chroa('zygos', [4, 16, 4], [], Glyph.zygos);
+	static spathi = new Chroa('spathi', [4], [4], Glyph.spathi);
+	static kliton = new Chroa('kliton', [4, 12], [], Glyph.kliton);
 
 	/**
 	 * @param {string} name

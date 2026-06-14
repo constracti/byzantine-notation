@@ -124,7 +124,7 @@ function play(index) {
 		type: 'sine',
 	});
 	const block_div = block_map.get(part.block);
-	block_div.classList.add('bz-active'); // TODO causes faulty character rendering in macos safari
+	block_div.classList.add('bz-active');
 	melos_node.connect(audio_context.destination);
 	ison_node.connect(audio_context.destination);
 	melos_node.start();
@@ -134,5 +134,5 @@ function play(index) {
 		melos_node.stop();
 		ison_node.stop();
 		play(index + 1);
-	}, 60 / part.tempo * part.beats * 1000 / 2);
+	}, 60 / part.tempo * part.beats * 1000);
 }

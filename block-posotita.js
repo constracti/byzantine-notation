@@ -213,7 +213,7 @@ export class PosotitaBlock extends Block {
 		div.classList.add('bz-symbol');
 		div.append(this.#get_symbol_prev_div());
 		div.append(this.#get_symbol_main_div());
-		div.append(this.#get_symbol_next_div());
+		div.append(this.#posotita.get_next_img() ?? '');
 		return div;
 	}
 
@@ -223,7 +223,7 @@ export class PosotitaBlock extends Block {
 	#get_symbol_prev_div() {
 		const div = document.createElement('div');
 		this.#layer_list.forEach(layer => {
-			div.append(layer.get_character().get_posotita_prev_span() ?? '');
+			div.append(layer.get_character().get_posotita_prev_img() ?? '');
 		});
 		return div;
 	}
@@ -234,19 +234,10 @@ export class PosotitaBlock extends Block {
 	#get_symbol_main_div() {
 		const div = document.createElement('div');
 		div.classList.add('bz-symbol-main');
-		div.append(this.#posotita.get_main_span());
+		div.append(...this.#posotita.get_main_img_list());
 		this.#layer_list.forEach(layer => {
-			div.append(layer.get_posotita_main_span(this) ?? '');
+			div.append(layer.get_posotita_main_img(this) ?? '');
 		});
-		return div;
-	}
-
-	/**
-	 * @returns {HTMLDivElement}
-	 */
-	#get_symbol_next_div() {
-		const div = document.createElement('div');
-		div.append(this.#posotita.get_next_span() ?? '');
 		return div;
 	}
 

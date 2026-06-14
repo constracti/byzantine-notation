@@ -65,10 +65,10 @@ export class IchosBlock extends Block {
 	#get_symbol_main_div() {
 		const div = document.createElement('div');
 		div.classList.add('bz-symbol-main');
-		div.append(...this.#ichos.get_span_list());
-		div.append(this.#vathmida.get_ichos_span());
+		div.append(...this.#ichos.get_img_list());
+		div.append(this.#vathmida.get_ichos_img());
 		const layer = new Layer(this.#fthora, 0, 0, 0);
-		div.append(layer.get_ichos_main_span(this.#vathmida));
+		div.append(layer.get_ichos_main_img(this.#vathmida));
 		return div;
 	}
 

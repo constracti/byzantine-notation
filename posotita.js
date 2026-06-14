@@ -19,39 +19,39 @@ export class Posotita {
 	#glyph;
 
 	// isotita
-	static ison = new Posotita('ison', [0], new Glyph(Glyph.font_byzantina, 'a')); // TODO ison and *_ison repeat alloiosi
-	static petasti_ison = new Posotita('petasti-ison', [0], new Glyph(Glyph.font_byzantina, 'A'));
-	static oligon_ison = new Posotita('oligon-ison', [0], new Glyph(Glyph.font_loipa, '0'));
+	static ison = new Posotita('ison', [0], Glyph.ison); // TODO ison and *_ison repeat alloiosi
+	static oligon_ison = new Posotita('oligon-ison', [0], Glyph.oligon_ison);
+	static petasti_ison = new Posotita('petasti-ison', [0], Glyph.petasti_ison);
 	// anavasi
-	static oligon = new Posotita('oligon', [+1], new Glyph(Glyph.font_byzantina, 's'));
-	static petasti = new Posotita('petasti', [+1], new Glyph(Glyph.font_byzantina, 'S'));
-	static kentimata = new Posotita('kentimata', [+1], new Glyph(Glyph.font_byzantina, 'x'));
-	static oligon_kentima_kato = new Posotita('oligon-kentima-kato', [+2], new Glyph(Glyph.font_byzantina, 'd'));
-	static oligon_kentima_dipla = new Posotita('oligon-kentima-dipla', [+2], new Glyph(Glyph.font_byzantina, 's'));
-	static petasti_oligon = new Posotita('petasti-oligon', [+2], new Glyph(Glyph.font_byzantina, 'D'));
-	static oligon_kentima = new Posotita('oligon-kentima', [+3], new Glyph(Glyph.font_byzantina, 'f'));
-	static petasti_kentima = new Posotita('petasti-kentima', [+3], new Glyph(Glyph.font_byzantina, 'F'));
-	static oligon_ypsili_dexia = new Posotita('oligon-ypsili-dexia', [+4], new Glyph(Glyph.font_byzantina, 'g'));
-	static petasti_ypsili_dexia = new Posotita('petasti-ypsili-dexia', [+4], new Glyph(Glyph.font_byzantina, 'G'));
-	static oligon_ypsili_aristera = new Posotita('oligon-ypsili-aristera', [+5], new Glyph(Glyph.font_loipa, 's'));
-	static petasti_kentima_ypsili_kentro = new Posotita('petasti-kentima-ypsili-kentro', [+7], new Glyph(Glyph.font_loipa, 'F'));
+	static oligon = new Posotita('oligon', [+1], Glyph.oligon);
+	static petasti = new Posotita('petasti', [+1], Glyph.petasti);
+	static kentimata = new Posotita('kentimata', [+1], Glyph.kentimata);
+	static oligon_kentima_kato = new Posotita('oligon-kentima-kato', [+2], Glyph.oligon_kentima_kato);
+	static oligon_kentima_dipla = new Posotita('oligon-kentima-dipla', [+2], Glyph.oligon);
+	static petasti_oligon = new Posotita('petasti-oligon', [+2], Glyph.petasti_oligon);
+	static oligon_kentima = new Posotita('oligon-kentima', [+3], Glyph.oligon_kentima);
+	static petasti_kentima = new Posotita('petasti-kentima', [+3], Glyph.petasti_kentima);
+	static oligon_ypsili_dexia = new Posotita('oligon-ypsili-dexia', [+4], Glyph.oligon_ypsili_dexia);
+	static petasti_ypsili_dexia = new Posotita('petasti-ypsili-dexia', [+4], Glyph.petasti_ypsili_dexia);
+	static oligon_ypsili_aristera = new Posotita('oligon-ypsili-aristera', [+5], Glyph.oligon_ypsili_aristera);
+	static petasti_kentima_ypsili_kentro = new Posotita('petasti-kentima-ypsili-kentro', [+7], Glyph.petasti_kentima_ypsili_kentro);
 	// katavasi
-	static apostrofos = new Posotita('apostrofos', [-1], new Glyph(Glyph.font_byzantina, 'j'));
-	static oligon_apostrofos = new Posotita('oligon-apostrofos', [-1], new Glyph(Glyph.font_loipa, ')'));
-	static petasti_apostrofos = new Posotita('petasti-apostrofos', [-1], new Glyph(Glyph.font_byzantina, 'J'));
-	static elafron = new Posotita('elafron', [-2], new Glyph(Glyph.font_byzantina, 'k'));
-	static petasti_elafron = new Posotita('petasti-elafron', [-2], new Glyph(Glyph.font_byzantina, 'K'));
-	static elafron_apostrofos = new Posotita('elafron-apostrofos', [-3], new Glyph(Glyph.font_byzantina, 'l'));
-	static chamili = new Posotita('chamili', [-4], new Glyph(Glyph.font_byzantina, ';'));
+	static apostrofos = new Posotita('apostrofos', [-1], Glyph.apostrofos);
+	static oligon_apostrofos = new Posotita('oligon-apostrofos', [-1], Glyph.oligon_apostrofos);
+	static petasti_apostrofos = new Posotita('petasti-apostrofos', [-1], Glyph.petasti_apostrofos);
+	static elafron = new Posotita('elafron', [-2], Glyph.elafron);
+	static petasti_elafron = new Posotita('petasti-elafron', [-2], Glyph.petasti_elafron);
+	static elafron_apostrofos = new Posotita('elafron-apostrofos', [-3], Glyph.elafron_apostrofos);
+	static chamili = new Posotita('chamili', [-4], Glyph.chamili);
 	// symploki
-	static oligon_kentimata = new Posotita('oligon-kentimata', [+1, +1], new Glyph(Glyph.font_byzantina, 'v'));
-	static kentimata_oligon = new Posotita('kentimata-oligon', [+1, +1], new Glyph(Glyph.font_byzantina, 'c'));
-	static syneches_elafron = new Posotita('syneches-elafron', [-1, -1], new Glyph(Glyph.font_byzantina, 'h'));
-	static yporroi = new Posotita('yporroi', [-1, -1], new Glyph(Glyph.font_byzantina, '\''));
-	static ison_kentimata = new Posotita('ison-kentimata', [0, +1], new Glyph(Glyph.font_byzantina, '_'));
-	static apostrofos_kentimata = new Posotita('apostrofos-kentimata', [-1, +1], new Glyph(Glyph.font_byzantina, '-'));
-	static elafron_kentimata = new Posotita('elafron-kentimata', [-2, +1], new Glyph(Glyph.font_loipa, 'p'));
-	static apostrofos_yporroi = new Posotita('apostrofos-yporroi', [-1, -1, -1], new Glyph(Glyph.font_byzantina, 'j\''));
+	static oligon_kentimata = new Posotita('oligon-kentimata', [+1, +1], Glyph.oligon_kentimata);
+	static kentimata_oligon = new Posotita('kentimata-oligon', [+1, +1], Glyph.kentimata_oligon);
+	static syneches_elafron = new Posotita('syneches-elafron', [-1, -1], Glyph.syneches_elafron);
+	static yporroi = new Posotita('yporroi', [-1, -1], Glyph.yporroi);
+	static ison_kentimata = new Posotita('ison-kentimata', [0, +1], Glyph.ison_kentimata);
+	static apostrofos_kentimata = new Posotita('apostrofos-kentimata', [-1, +1], Glyph.apostrofos_kentimata);
+	static elafron_kentimata = new Posotita('elafron-kentimata', [-2, +1], Glyph.elafron_kentimata);
+	static apostrofos_yporroi = new Posotita('apostrofos-yporroi', [-1, -1, -1], Glyph.apostrofos);
 
 	/**
 	 * @param {string} name
@@ -69,25 +69,30 @@ export class Posotita {
 	 */
 	get_prev_margin() {
 		if (this === Posotita.syneches_elafron)
-			return 0.5;
+			return 0.7;
 		return 0;
 	}
 
 	/**
-	 * @returns {HTMLSpanElement}
+	 * @returns {HTMLImageElement[]}
 	 */
-	get_main_span() {
-		const span = this.#glyph.get_span();
-		span.classList.add('bz-posotita');
-		return span;
+	get_main_img_list() {
+		/**
+		 * @type {HTMLImageElement[]}
+		 */
+		const img_list = [];
+		img_list.push(this.#glyph.get_img());
+		if (this === Posotita.apostrofos_yporroi)
+			img_list.push(Glyph.yporroi.get_img())
+		return img_list;
 	}
 
 	/**
-	 * @returns {?HTMLSpanElement}
+	 * @returns {?HTMLImageElement}
 	 */
-	get_next_span() {
+	get_next_img() {
 		if (this === Posotita.oligon_kentima_dipla)
-			return new Glyph(Glyph.font_byzantina, 'C').get_span();
+			return Glyph.kentima.get_img();
 		return null;
 	}
 

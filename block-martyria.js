@@ -116,14 +116,14 @@ export class MartyriaBlock extends Block {
 	#get_symbol_main_div() {
 		const div = document.createElement('div');
 		div.classList.add('bz-symbol-main')
-		div.append(this.#fthongos.get_martyria_span());
-		div.append(this.#layer_map.get(this.#simadi).get_martyria_main_span(this.#fthongos));
+		div.append(this.#fthongos.get_martyria_img());
+		div.append(this.#layer_map.get(this.#simadi).get_martyria_main_img(this.#fthongos));
 		if (this.#fthora !== null)
-			div.append(this.#layer_map.get(this.#fthora).get_martyria_main_span(this.#fthongos));
+			div.append(this.#layer_map.get(this.#fthora).get_martyria_main_img(this.#fthongos));
 		if (this.#agogi !== null)
-			div.append(this.#layer_map.get(this.#agogi).get_martyria_main_span(this.#fthongos));
+			div.append(this.#layer_map.get(this.#agogi).get_martyria_main_img(this.#fthongos));
 		if (this.#simadi.teleies)
-			div.append(MartyriaBlock.#get_teleies_span());
+			div.append(MartyriaBlock.#get_teleies_img());
 		return div;
 	}
 
@@ -133,26 +133,24 @@ export class MartyriaBlock extends Block {
 	#get_symbol_next_div() {
 		const div = document.createElement('div');
 		for (let diapason = 1; diapason <= this.#fthongos.diapason; diapason++)
-			div.append(MartyriaBlock.#get_tonos_span());
+			div.append(MartyriaBlock.#get_tonos_img());
 		return div;
 	}
 
 	/**
-	 * @returns {HTMLSpanElement}
+	 * @returns {HTMLImageElement}
 	 */
-	static #get_teleies_span() {
-		const glyph = new Glyph(Glyph.font_byzantina, '`');
-		return Character.get_main_span(glyph, Glyph.color_red, 0.02, 0);
+	static #get_teleies_img() {
+		return Character.get_main_img(Glyph.simadi_teleies, Glyph.color_red, 0.03, 0.05);
 	}
 
 	/**
-	 * @returns {HTMLSpanElement}
+	 * @returns {HTMLImageElement}
 	 */
-	static #get_tonos_span() {
-		const glyph = new Glyph(Glyph.font_byzantina, '~');
-		const span = glyph.get_span();
-		span.classList.add(Glyph.color_red);
-		return span;
+	static #get_tonos_img() {
+		const img = Glyph.martyria_tonos.get_img();
+		img.classList.add(Glyph.color_red);
+		return img;
 	}
 
 	/**

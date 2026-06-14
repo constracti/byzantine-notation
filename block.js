@@ -62,11 +62,11 @@ export class Block {
 	static #get_symbol_div_by_character(character) {
 		const div = document.createElement('div');
 		div.classList.add('bz-symbol');
-		const span = character.glyph.get_span();
+		const img = character.glyph.get_img();
 		const color = character.get_color();
 		if (color !== null)
-			span.classList.add(color);
-		div.append(span);
+			img.classList.add(color);
+		div.append(img);
 		return div;
 	}
 

@@ -14,10 +14,10 @@ export class Chronos extends Character {
 	 */
 	beats;
 
-	static klasma = new Chronos('klasma', 1, new Glyph(Glyph.font_byzantina, 'u'));
-	static apli = new Chronos('apli', 1, new Glyph(Glyph.font_byzantina, '8'));
-	static dipli = new Chronos('dipli', 2, new Glyph(Glyph.font_byzantina, '9'));
-	static tripli = new Chronos('tripli', 3, new Glyph(Glyph.font_byzantina, '0'));
+	static klasma = new Chronos('klasma', 1, Glyph.klasma);
+	static apli = new Chronos('apli', 1, Glyph.apli);
+	static dipli = new Chronos('dipli', 2, Glyph.dipli);
+	static tripli = new Chronos('tripli', 3, Glyph.tripli);
 
 	/**
 	 * @param {string} name
@@ -44,20 +44,14 @@ export class Chronos extends Character {
 	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
-	 * @returns {?HTMLSpanElement}
+	 * @returns {?HTMLImageElement}
 	 */
-	get_posotita_main_span(block, target, horizontal_offset, vertical_offset) {
+	get_posotita_main_img(block, target, horizontal_offset, vertical_offset) {
 		const posotita = block.get_posotita();
 		if (this === Chronos.klasma) {
 			if (posotita.is_petasti()) {
-				vertical_offset += 0.6;
+				vertical_offset += 0.8;
 				horizontal_offset -= 0.05;
-			}
-			if (posotita === Posotita.apostrofos) {
-				horizontal_offset += 0.4;
-			}
-			if (posotita === Posotita.oligon_apostrofos) {
-				vertical_offset += 0.6;
 			}
 			if (posotita === Posotita.oligon_ypsili_dexia) {
 				horizontal_offset -= 0.2;
@@ -65,15 +59,21 @@ export class Chronos extends Character {
 			if (posotita === Posotita.oligon_ypsili_aristera) {
 				horizontal_offset += 0.1;
 			}
+			if (posotita === Posotita.apostrofos) {
+				horizontal_offset += 0.5;
+			}
+			if (posotita === Posotita.oligon_apostrofos) {
+				vertical_offset += 0.8;
+			}
 		}
 		if (this === Chronos.apli) {
 			if (posotita === Posotita.apostrofos) {
 				horizontal_offset += 0.5;
 			}
 			if (posotita === Posotita.kentimata_oligon) {
-				vertical_offset += 0.2;
+				vertical_offset += 0.25;
 			}
 		}
-		return super.get_posotita_main_span(block, target, horizontal_offset, vertical_offset);
+		return super.get_posotita_main_img(block, target, horizontal_offset, vertical_offset);
 	}
 }

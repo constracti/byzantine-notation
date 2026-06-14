@@ -23,15 +23,15 @@ export class Fthora extends Character {
 	 */
 	#fthongos;
 
-	static diatoniki_ni = new Fthora('diatoniki-ni', Genos.diatoniko, Fthongos.ni, new Glyph(Glyph.font_fthores, 'd'));
-	static diatoniki_vou = new Fthora('diatoniki-vou', Genos.diatoniko, Fthongos.vou, new Glyph(Glyph.font_fthores, 'g'));
-	static diatoniki_pa = new Fthora('diatoniki-pa', Genos.diatoniko, Fthongos.pa, new Glyph(Glyph.font_fthores, 'f'));
-	static diatoniki_ga = new Fthora('diatoniki-ga', Genos.diatoniko, Fthongos.ga, new Glyph(Glyph.font_fthores, 'h'));
-	static diatoniki_di = new Fthora('diatoniki-di', Genos.diatoniko, Fthongos.di, new Glyph(Glyph.font_fthores, 'j'));
-	static diatoniki_ke = new Fthora('diatoniki-ke', Genos.diatoniko, Fthongos.ke, new Glyph(Glyph.font_fthores, 'k'));
-	static chromatiki_malaki_di = new Fthora('chromatiki-malaki-di', Genos.chromatiko_malako, Fthongos.di, new Glyph(Glyph.font_fthores, '2'));
-	static chromatiki_skliri_pa = new Fthora('chromatiki-skliri-pa', Genos.chromatiko_skliro, Fthongos.pa, new Glyph(Glyph.font_fthores, '1'));
-	static chromatiki_skliri_di = new Fthora('chromatiki-skliri-di', Genos.chromatiko_skliro, Fthongos.di, new Glyph(Glyph.font_fthores, '4'));
+	static diatoniki_ni = new Fthora('diatoniki-ni', Genos.diatoniko, Fthongos.ni, Glyph.diatoniki_ni);
+	static diatoniki_pa = new Fthora('diatoniki-pa', Genos.diatoniko, Fthongos.pa, Glyph.diatoniki_pa);
+	static diatoniki_vou = new Fthora('diatoniki-vou', Genos.diatoniko, Fthongos.vou, Glyph.diatoniki_vou);
+	static diatoniki_ga = new Fthora('diatoniki-ga', Genos.diatoniko, Fthongos.ga, Glyph.diatoniki_ga);
+	static diatoniki_di = new Fthora('diatoniki-di', Genos.diatoniko, Fthongos.di, Glyph.diatoniki_di);
+	static diatoniki_ke = new Fthora('diatoniki-ke', Genos.diatoniko, Fthongos.ke, Glyph.diatoniki_ke);
+	static malaki_di = new Fthora('malaki-di', Genos.chromatiko_malako, Fthongos.di, Glyph.malaki_di);
+	static skliri_pa = new Fthora('skliri-pa', Genos.chromatiko_skliro, Fthongos.pa, Glyph.skliri_pa);
+	static skliri_di = new Fthora('skliri-di', Genos.chromatiko_skliro, Fthongos.di, Glyph.skliri_di);
 
 	/**
 	 * @param {string} name
@@ -57,14 +57,14 @@ export class Fthora extends Character {
 	 * @param {number} target
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
-	 * @returns {?HTMLSpanElement}
+	 * @returns {?HTMLImageElement}
 	 */
-	get_posotita_main_span(block, target, horizontal_offset, vertical_offset) {
+	get_posotita_main_img(block, target, horizontal_offset, vertical_offset) {
 		const posotita = block.get_posotita();
 		if (posotita === Posotita.apostrofos) {
 			horizontal_offset += 0.4;
 		}
-		return super.get_posotita_main_span(block, target, horizontal_offset, vertical_offset);
+		return super.get_posotita_main_img(block, target, horizontal_offset, vertical_offset);
 	}
 
 	/**
@@ -72,17 +72,11 @@ export class Fthora extends Character {
 	 * @param {Fthongos} fthongos
 	 * @param {number} horizontal_offset
 	 * @param {number} vertical_offset
-	 * @returns {HTMLSpanElement}
+	 * @returns {HTMLImageElement}
 	 */
-	get_martyria_main_span(fthongos, horizontal_offset, vertical_offset) {
-		horizontal_offset += 0.6;
-		if (this === Fthora.diatoniki_pa) {
-			horizontal_offset -= 0.1;
-		}
-		if (this === Fthora.diatoniki_ke) {
-			horizontal_offset -= 0.1;
-		}
-		return super.get_martyria_main_span(fthongos, horizontal_offset, vertical_offset);
+	get_martyria_main_img(fthongos, horizontal_offset, vertical_offset) {
+		horizontal_offset += 0.7;
+		return super.get_martyria_main_img(fthongos, horizontal_offset, vertical_offset);
 	}
 
 	/**

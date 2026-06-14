@@ -391,7 +391,7 @@ block_list.push(
 	Block.diastoli,
 	PosotitaBlock.build(Posotita.apostrofos, Chronos.klasma, Character.rythmos_trisimos, 'μων'),
 	MartyriaBlock.build(Fthongos.di, MartyrikoSimadi.delta_teleies),
-	PosotitaBlock.build(Posotita.elafron_apostrofos, Fthora.chromatiki_skliri_pa, 'ο'),
+	PosotitaBlock.build(Posotita.elafron_apostrofos, Fthora.skliri_pa, 'ο'),
 	Block.diastoli,
 	PosotitaBlock.build(Posotita.oligon, 'εκ'),
 	PosotitaBlock.build(Posotita.oligon, 'της'),
@@ -499,7 +499,7 @@ block_list.push(
 	Block.diastoli,
 	PosotitaBlock.build(Posotita.ison, 'α'),
 	PosotitaBlock.build(Posotita.ison, 'μαρ'),
-	PosotitaBlock.build(Posotita.petasti_ison, Chronos.klasma, Fthora.chromatiki_skliri_di, 'τι'), // TODO fthora position, fthongos hint
+	PosotitaBlock.build(Posotita.petasti_ison, Chronos.klasma, Fthora.skliri_di, 'τι'), // TODO fthora position, fthongos hint
 	PosotitaBlock.build(Posotita.syneches_elafron, 'ας'),
 	PosotitaBlock.build(Posotita.oligon, 'η'),
 	PosotitaBlock.build(Posotita.oligon, Chronos.klasma, Isokratima.pa, 'μων'),
@@ -550,7 +550,7 @@ block_list.push(
 );
 
 block_list.push(
-	new IchosBlock(Ichos.defteros, Vathmida.di, Fthora.chromatiki_malaki_di),
+	new IchosBlock(Ichos.defteros, Vathmida.di, Fthora.malaki_di),
 	Block.newline,
 	PosotitaBlock.build(Posotita.elafron, Isokratima.melos, 'Κυ'),
 	PosotitaBlock.build(Posotita.kentimata_oligon, Isokratima.di, 'υ'),
@@ -631,7 +631,7 @@ block_list.push(
 	PosotitaBlock.build(Posotita.petasti_oligon, 'προ'),
 	PosotitaBlock.build(Posotita.apostrofos, 'ο'),
 	PosotitaBlock.build(Posotita.apostrofos, Gorgon.gorgon, 'ο'),
-	PosotitaBlock.build(Posotita.ison, Chronos.klasma, Fthora.chromatiki_skliri_pa, 'σχες'), // TODO fthora kato
+	PosotitaBlock.build(Posotita.ison, Chronos.klasma, Fthora.skliri_pa, 'σχες'), // TODO fthora kato
 	PosotitaBlock.build(Posotita.oligon, Chronos.klasma, 'τη'),
 	PosotitaBlock.build(Posotita.oligon_kentima_kato, Chronos.klasma, 'φω'),
 	PosotitaBlock.build(Posotita.oligon, Character.psifiston, 'νη'),
@@ -669,7 +669,7 @@ block_list.push(
 	PosotitaBlock.build(Posotita.ison, 'κου'),
 	PosotitaBlock.build(Posotita.oligon_apostrofos, Chronos.klasma, Character.psifiston, 'σο'),
 	PosotitaBlock.build(Posotita.yporroi, Gorgon.gorgon, 'ον'),
-	PosotitaBlock.build(Posotita.apostrofos, Fthora.chromatiki_malaki_di, 'μου'), // TODO fthora kato
+	PosotitaBlock.build(Posotita.apostrofos, Fthora.malaki_di, 'μου'), // TODO fthora kato
 	PosotitaBlock.build(Posotita.ison, Character.vareia, 'Κυ'),
 	PosotitaBlock.build(Posotita.apostrofos, Gorgon.gorgon, Alloiosi.diesi_apli, 'υ'),
 	PosotitaBlock.build(Posotita.ison, Character.syndesmos, 'υ'),
@@ -731,7 +731,7 @@ block_list.push(
 	PosotitaBlock.build(Posotita.oligon, 'ι'),
 	PosotitaBlock.build(Posotita.oligon, Chronos.klasma, Isokratima.ke, 'ον'),
 	MartyriaBlock.build(Fthongos.ke, MartyrikoSimadi.alfa_teleies),
-	PosotitaBlock.build(Posotita.ison, Gorgon.gorgon, Fthora.chromatiki_skliri_pa, 'εκ'),
+	PosotitaBlock.build(Posotita.ison, Gorgon.gorgon, Fthora.skliri_pa, 'εκ'),
 	PosotitaBlock.build(Posotita.oligon, 'τω'),
 	PosotitaBlock.build(Posotita.kentimata_oligon, Chronos.apli, Character.antikenoma, 'ω'),
 	PosotitaBlock.build(Posotita.apostrofos, Gorgon.gorgon, 'ων'),
@@ -925,7 +925,7 @@ block_list.push(
 	PosotitaBlock.build(Posotita.kentimata_oligon, Gorgon.gorgon, Alloiosi.yfesi_apli, 'ο'),
 	PosotitaBlock.build(Posotita.elafron, 'πλον'),
 	PosotitaBlock.build(Posotita.ison, 'κα'),
-	PosotitaBlock.build(Posotita.petasti_ison, Fthora.chromatiki_malaki_di, Isokratima.di, 'τα'), // TODO fthora position
+	PosotitaBlock.build(Posotita.petasti_ison, Fthora.malaki_di, Isokratima.di, 'τα'), // TODO fthora position
 	PosotitaBlock.build(Posotita.apostrofos, Alloiosi.diesi_apli, 'του'),
 	PosotitaBlock.build(Posotita.oligon, 'δι'),
 	PosotitaBlock.build(Posotita.oligon, 'α'),

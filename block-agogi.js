@@ -37,7 +37,7 @@ export class AgogiBlock extends Block {
 	#get_symbol_div() {
 		const div = document.createElement('div');
 		div.classList.add('bz-symbol');
-		div.append(this.#agogi.get_block_span());
+		div.append(this.#agogi.get_block_img());
 		return div;
 	}
 

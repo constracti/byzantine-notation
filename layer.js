@@ -57,25 +57,25 @@ export class Layer {
 
 	/**
 	 * @param {PosotitaBlock} block
-	 * @returns {?HTMLSpanElement}
+	 * @returns {?HTMLImageElement}
 	 */
-	get_posotita_main_span(block) {
-		return this.#character.get_posotita_main_span(block, this.#target, this.#horizontal_offset, this.#vertical_offset);
+	get_posotita_main_img(block) {
+		return this.#character.get_posotita_main_img(block, this.#target, this.#horizontal_offset, this.#vertical_offset);
 	}
 
 	/**
 	 * @param {Fthongos} fthongos
-	 * @returns {HTMLSpanElement}
+	 * @returns {HTMLImageElement}
 	 */
-	get_martyria_main_span(fthongos) {
-		return this.#character.get_martyria_main_span(fthongos, this.#horizontal_offset, this.#vertical_offset);
+	get_martyria_main_img(fthongos) {
+		return this.#character.get_martyria_main_img(fthongos, this.#horizontal_offset, this.#vertical_offset);
 	}
 
 	/**
 	 * @param {Vathmida} vathmida
-	 * @returns {HTMLSpanElement}
+	 * @returns {HTMLImageElement}
 	 */
-	get_ichos_main_span(vathmida) {
-		return this.#character.get_ichos_main_span(vathmida, this.#horizontal_offset, this.#vertical_offset);
+	get_ichos_main_img(vathmida) {
+		return this.#character.get_ichos_main_img(vathmida, this.#horizontal_offset, this.#vertical_offset);
 	}
 }

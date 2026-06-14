@@ -1,24 +1,4 @@
 @font-face {
-	font-family: BZByzantina;
-	src: url(fonts/BZByzantina.TTF);
-}
-@font-face {
-	font-family: BZLoipa;
-	src: url(fonts/BZLoipa.TTF);
-}
-@font-face {
-	font-family: BZFthores;
-	src: url(fonts/BZFthores.TTF);
-}
-@font-face {
-	font-family: BZIson;
-	src: url(fonts/BZIson.TTF);
-}
-@font-face {
-	font-family: BZXronos;
-	src: url(fonts/BZXronos.TTF);
-}
-@font-face {
 	font-family: GFSDidot;
 	src: url(fonts/GFSDidot.otf);
 	font-weight: normal;
@@ -27,7 +7,8 @@
 #bz-container {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between; /* TODO causes faulty character rendering in macos safari */
+	justify-content: space-between;
+	overflow-x: hidden; /* elements with absolute position might overflow */
 }
 .bz-group {
 	display: flex;
@@ -39,14 +20,14 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center; /* center align symbol and text */
-	font-size: 24pt;
+	font-size: 20pt;
 	margin-bottom: 1em;
 }
 .bz-block.bz-pointer {
 	cursor: pointer;
 }
 .bz-block.bz-active {
-	text-shadow: 0 0 0.5em yellow, 0 0 0.5em yellow, 0 0 0.5em yellow, 0 0 0.5em yellow;
+	filter: drop-shadow(0 0 0.2em yellow) drop-shadow(0 0 0.2em yellow);
 }
 .bz-block.bz-newline {
 	flex-basis: 100%; /* occupy whole line */
@@ -54,41 +35,27 @@
 }
 .bz-symbol {
 	display: flex;
-	margin-bottom: -0.8em; /* bring text closer to symbol */
+	margin-left: 0.05em;
+	margin-right: 0.05em;
+	margin-bottom: -1em; /* bring text closer to symbol */
 }
 .bz-symbol-main {
 	position: relative;
 }
+.bz-glyph {
+	height: 4em;
+}
 .bz-text {
 	font-family: GFSDidot;
-	font-size: 16pt;
+	font-size: 20pt;
 	margin: 0 0.1em;
 }
 
-.bz-byzantina {
-	font-family: BZByzantina;
-}
-.bz-loipa {
-	font-family: BZLoipa;
-}
-.bz-fthores {
-	font-family: BZFthores;
-}
-.bz-ison {
-	font-family: BZIson;
-}
-.bz-chronos {
-	font-family: BZXronos;
-}
-
-/* fix loipa height */
-.bz-symbol-main:has(.bz-posotita.bz-loipa) {
-	margin-top: -0.1em;
-}
-
+/* https://codepen.io/sosuke/pen/Pjoqqp */
+/* NOTE maybe use css mask */
 .bz-red {
-	color: red;
+	filter: invert(17%) sepia(81%) saturate(7461%) hue-rotate(1deg) brightness(126%) contrast(123%);
 }
 .bz-blue {
-	color: blue;
+	filter: invert(8%) sepia(100%) saturate(6610%) hue-rotate(248deg) brightness(105%) contrast(147%);
 }
