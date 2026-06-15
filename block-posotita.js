@@ -15,8 +15,6 @@ import { Character } from './character.js';
  */
 
 
-// TODO drop-cap block
-
 export class PosotitaBlock extends Block {
 
 	/**

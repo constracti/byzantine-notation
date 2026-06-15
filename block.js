@@ -20,6 +20,7 @@ export class Block {
 	static type_agogi = 'agogi';
 	static type_newline = 'newline';
 	static type_stavros = 'stavros';
+	static type_drop_cap = 'drop-cap';
 
 	static diastoli = new Block(Block.type_diastoli);
 	static newline = new Block(Block.type_newline);

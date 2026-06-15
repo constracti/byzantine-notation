@@ -3,6 +3,7 @@ import { IchosBlock } from './block-ichos.js';
 import { PosotitaBlock } from './block-posotita.js';
 import { MartyriaBlock } from './block-martyria.js';
 import { AgogiBlock } from './block-agogi.js';
+import { DropCapBlock } from './block-drop-cap.js';
 import { Ichos } from './ichos.js';
 import { Posotita } from './posotita.js';
 import { Character } from './character.js';
@@ -26,7 +27,8 @@ block_list.push(
 	new IchosBlock(Ichos.plagios_tetartos, Vathmida.ni, Fthora.diatoniki_ni),
 	Block.newline,
 	// Εκ νεότητός μου
-	PosotitaBlock.build(Posotita.ison, Isokratima.ni, 'Εκ'),
+	new DropCapBlock('Ε'),
+	PosotitaBlock.build(Posotita.ison, Isokratima.ni, 'κ'),
 	PosotitaBlock.build(Posotita.ison, 'νε'),
 	PosotitaBlock.build(Posotita.oligon_kentima_dipla, 'ο'),
 	PosotitaBlock.build(Posotita.oligon, 'τη'),
@@ -66,7 +68,8 @@ block_list.push(
 	MartyriaBlock.build(Fthongos.ni, MartyrikoSimadi.delta),
 	Block.newline,
 	// Οι μισούντες Σιών
-	PosotitaBlock.build(Posotita.oligon_kentima_dipla, Isokratima.ni, 'Οι'),
+	new DropCapBlock('Ο'),
+	PosotitaBlock.build(Posotita.oligon_kentima_dipla, Isokratima.ni, 'ι'),
 	PosotitaBlock.build(Posotita.oligon, 'μι'),
 	Block.diastoli,
 	PosotitaBlock.build(Posotita.petasti, Character.rythmos_trisimos, 'σου'),
@@ -117,9 +120,10 @@ block_list.push(
 	MartyriaBlock.build(Fthongos.ni, MartyrikoSimadi.delta),
 	Block.newline,
 	// Δόξα, Και νυν
+	new DropCapBlock('Δ'),
 	Block.diastoli,
 	new AgogiBlock(Agogi.tacheia),
-	PosotitaBlock.build(Posotita.oligon_ypsili_dexia, Isokratima.ni, Character.rythmos_trisimos, 'Δο'),
+	PosotitaBlock.build(Posotita.oligon_ypsili_dexia, Isokratima.ni, Character.rythmos_trisimos, 'ο'),
 	PosotitaBlock.build(Posotita.ison, 'ξα'),
 	PosotitaBlock.build(Posotita.ison, 'Πα'),
 	Block.diastoli,
@@ -163,7 +167,8 @@ block_list.push(
 	MartyriaBlock.build(Fthongos.ni, MartyrikoSimadi.delta),
 	Block.newline,
 	// Αγίω Πνεύματι
-	PosotitaBlock.build(Posotita.ison, Isokratima.ni, 'Α'),
+	new DropCapBlock('Α'),
+	PosotitaBlock.build(Posotita.ison, Isokratima.ni),
 	Block.diastoli,
 	PosotitaBlock.build(Posotita.oligon_kentima_dipla, 'γι'),
 	PosotitaBlock.build(Posotita.oligon, 'ω'),
@@ -209,7 +214,8 @@ block_list.push(
 block_list.push(
 	new IchosBlock(Ichos.protos, Vathmida.pa, Fthora.diatoniki_pa),
 	Block.newline,
-	PosotitaBlock.build(Posotita.petasti, Isokratima.pa, 'Κυ'),
+	new DropCapBlock('Κ'),
+	PosotitaBlock.build(Posotita.petasti, Isokratima.pa, 'υ'),
 	PosotitaBlock.build(Posotita.apostrofos, 'ρι'),
 	PosotitaBlock.build(Posotita.ison, 'ε'),
 	Block.stavros,
@@ -339,8 +345,9 @@ block_list.push(
 block_list.push(
 	new IchosBlock(Ichos.protos, Vathmida.pa, Fthora.diatoniki_pa),
 	Block.newline,
+	new DropCapBlock('Δ'),
 	Block.diastoli,
-	PosotitaBlock.build(Posotita.oligon_kentima, Isokratima.pa, Character.rythmos_trisimos, 'Δευ'), // TODO isokratima position
+	PosotitaBlock.build(Posotita.oligon_kentima, Isokratima.pa, Character.rythmos_trisimos, 'ευ'), // TODO isokratima position
 	PosotitaBlock.build(Posotita.ison, 'τε'),
 	PosotitaBlock.build(Posotita.apostrofos, 'λα'),
 	Block.diastoli,
@@ -415,8 +422,9 @@ block_list.push(
 	PosotitaBlock.build(Posotita.ison, Chronos.dipli, Character.rythmos_tetrasimos, 'νος'),
 	MartyriaBlock.build(Fthongos.pa, MartyrikoSimadi.alfa),
 	Block.newline,
+	new DropCapBlock('Γ'),
 	new AgogiBlock(Agogi.tacheia),
-	PosotitaBlock.build(Posotita.ison, Isokratima.pa, 'Γε'),
+	PosotitaBlock.build(Posotita.ison, Isokratima.pa, 'ε'),
 	PosotitaBlock.build(Posotita.ison, Gorgon.gorgon, 'νη'),
 	Block.diastoli,
 	PosotitaBlock.build(Posotita.oligon_kentima, Character.rythmos_trisimos, 'θη'),
@@ -445,7 +453,8 @@ block_list.push(
 	PosotitaBlock.build(Posotita.ison, Chronos.klasma, Chronos.rythmos_trisimos, 'μου'),
 	MartyriaBlock.build(Fthongos.di, MartyrikoSimadi.delta_teleies),
 	Block.newline,
-	PosotitaBlock.build(Posotita.ison, Isokratima.pa, 'Ευ'),
+	new DropCapBlock('Ε'),
+	PosotitaBlock.build(Posotita.ison, Isokratima.pa, 'υ'),
 	Block.diastoli,
 	PosotitaBlock.build(Posotita.petasti, Chronos.klasma, 'φρα'),
 	PosotitaBlock.build(Posotita.apostrofos, 'νθη'),
@@ -552,7 +561,8 @@ block_list.push(
 block_list.push(
 	new IchosBlock(Ichos.defteros, Vathmida.di, Fthora.malaki_di),
 	Block.newline,
-	PosotitaBlock.build(Posotita.elafron, Isokratima.melos, 'Κυ'),
+	new DropCapBlock('Κ'),
+	PosotitaBlock.build(Posotita.elafron, Isokratima.melos, 'υ'),
 	PosotitaBlock.build(Posotita.kentimata_oligon, Isokratima.di, 'υ'),
 	PosotitaBlock.build(Posotita.oligon_kentimata, Gorgon.gorgon, 'υ'),
 	PosotitaBlock.build(Posotita.elafron, Chronos.klasma, 'ρι'),
@@ -689,7 +699,8 @@ block_list.push(
 block_list.push(
 	new IchosBlock(Ichos.plagios_protos, Vathmida.pa, Fthora.diatoniki_pa),
 	Block.newline,
-	PosotitaBlock.build(Posotita.oligon_ypsili_aristera, Chronos.klasma, Alloiosi.yfesi_apli, Isokratima.pa, Character.omalon_mono, 'Πα'), // TODO yfesi and isokratima to the right
+	new DropCapBlock('Π'),
+	PosotitaBlock.build(Posotita.oligon_ypsili_aristera, Chronos.klasma, Alloiosi.yfesi_apli, Isokratima.pa, Character.omalon_mono, 'α'), // TODO yfesi and isokratima to the right
 	PosotitaBlock.build(Posotita.apostrofos, Chronos.klasma, 'α'),
 	PosotitaBlock.build(Posotita.ison, Character.psifiston, 'α'),
 	PosotitaBlock.build(Posotita.apostrofos, 'α'),
@@ -784,7 +795,8 @@ block_list.push(
 block_list.push(
 	new IchosBlock(Ichos.tetartos, Vathmida.pa, Fthora.diatoniki_pa),
 	Block.newline,
-	PosotitaBlock.build(Posotita.petasti_ison, Chronos.klasma, Isokratima.melos, 'Ορ'),
+	new DropCapBlock('Ο'),
+	PosotitaBlock.build(Posotita.petasti_ison, Chronos.klasma, Isokratima.melos, 'ρ'),
 	PosotitaBlock.build(Posotita.apostrofos_yporroi, Gorgon.gorgon, 'θρος'),
 	PosotitaBlock.build(Posotita.oligon, Isokratima.di_kato, 'η'),
 	PosotitaBlock.build(Posotita.kentimata, 'η'),
@@ -836,7 +848,8 @@ block_list.push(
 block_list.push(
 	new IchosBlock(Ichos.plagios_protos, Vathmida.ke, Fthora.diatoniki_pa), // TODO support correct notation
 	Block.newline,
-	PosotitaBlock.build(Posotita.petasti_ison, Isokratima.ke, 'Κυ'),
+	new DropCapBlock('Κ'),
+	PosotitaBlock.build(Posotita.petasti_ison, Isokratima.ke, 'υ'),
 	PosotitaBlock.build(Posotita.apostrofos, 'ρι'),
 	PosotitaBlock.build(Posotita.oligon, 'ε'),
 	Block.stavros,
@@ -917,7 +930,8 @@ block_list.push(
 block_list.push(
 	new IchosBlock(Ichos.plagios_tetartos, Vathmida.ni, Fthora.diatoniki_ni),
 	Block.newline,
-	PosotitaBlock.build(Posotita.oligon_kentima_dipla, Isokratima.ni, 'Κυ'),
+	new DropCapBlock('Κ'),
+	PosotitaBlock.build(Posotita.oligon_kentima_dipla, Isokratima.ni, 'υ'),
 	PosotitaBlock.build(Posotita.kentimata_oligon, Gorgon.gorgon, 'υ'),
 	PosotitaBlock.build(Posotita.ison, 'ρι'),
 	PosotitaBlock.build(Posotita.ison, 'ε'),
