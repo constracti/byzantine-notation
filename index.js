@@ -106,7 +106,19 @@ block_list.forEach((block, block_index) => {
 	block_map.set(block_index, block_div);
 });
 
-const audio_context = new AudioContext();
+const audio_context = new AudioContext(); // TODO simulate musical instrument
+
+// limit oscillator outputs through gain nodes to prevent clipping
+
+const melos_gain_node = new GainNode(audio_context, {
+	gain: 0.6,
+});
+melos_gain_node.connect(audio_context.destination);
+
+const ison_gain_node = new GainNode(audio_context, {
+	gain: 0.4,
+});
+ison_gain_node.connect(audio_context.destination);
 
 /**
  * @param {number} index part
@@ -115,24 +127,24 @@ function play(index) {
 	if (index === part_list.length)
 		return;
 	const part = part_list[index];
-	const melos_node = new OscillatorNode(audio_context, {
+	const melos_oscillator_node = new OscillatorNode(audio_context, {
 		frequency: 440 * Math.pow(2, part.melos_steps / 72),
-		type: 'triangle', // TODO simulate musical instrument
+		type: 'triangle',
 	});
-	const ison_node = new OscillatorNode(audio_context, {
+	const ison_oscillator_node = new OscillatorNode(audio_context, {
 		frequency: 440 * Math.pow(2, (part.ison_steps ?? part.melos_steps) / 72),
 		type: 'sine',
 	});
 	const block_div = block_map.get(part.block);
 	block_div.classList.add('bz-active');
-	melos_node.connect(audio_context.destination);
-	ison_node.connect(audio_context.destination);
-	melos_node.start();
-	ison_node.start();
+	melos_oscillator_node.connect(melos_gain_node);
+	ison_oscillator_node.connect(ison_gain_node);
+	melos_oscillator_node.start();
+	ison_oscillator_node.start();
 	setTimeout(() => {
 		block_div.classList.remove('bz-active');
-		melos_node.stop();
-		ison_node.stop();
+		melos_oscillator_node.stop();
+		ison_oscillator_node.stop();
 		play(index + 1);
 	}, 60 / part.tempo * part.beats * 1000);
 }

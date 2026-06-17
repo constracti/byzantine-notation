@@ -1,7 +1,7 @@
 # Glyphs
 
 Glyphs were originally displayed loading the _Byzantina_ (BZ*) font package, designed by _Stefanos Souldatos_.
-This collection was selected as it is compliant with existing byzantine music writing software (e.g. [MK](https://papline.gr)) and is consistent with [various other packages](https://mega.nz/#!uU0AWRiY!GsdhdJlOTJSPAoC4ocjEyja_9BJcJDOmUmRC7p5FEZc).
+This collection was selected as it is compatible with existing byzantine music writing software (e.g. [MK](https://papline.gr)) and structurally equivalent with [various other packages](https://mega.nz/#!uU0AWRiY!GsdhdJlOTJSPAoC4ocjEyja_9BJcJDOmUmRC7p5FEZc).
 
 However, rendering of fonts isn't consistent across different browsers and operating systems.
 Fonts appear with different ascent, descent, and total height values.
@@ -23,7 +23,7 @@ Syntax instructions can be found in the [documentation](https://fontforge.org/do
 
 Vertical [viewBox](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/viewBox) values of the `svg` element of all resulting files are `position: 0` and `dimension: 2048`.
 This configuration hides content above the glyph baseline when loaded on a browser.
-A simple `sed` command is applied to replace the above values with `position: -4096` and `dimension: 6144`.
+Thus, a simple `sed` command is applied to replace the above values with `position: -4096` and `dimension: 6144`:
 
 ```bash
 sed -i -E 's/ 0 ([[:digit:]]+) 2048/ -4096 \1 6144/g' *.svg
