@@ -106,19 +106,12 @@ block_list.forEach((block, block_index) => {
 	block_map.set(block_index, block_div);
 });
 
-const audio_context = new AudioContext(); // TODO simulate musical instrument
+// TODO simulate musical instrument
 
-// limit oscillator outputs through gain nodes to prevent clipping
+const audio_context = new AudioContext();
 
-const melos_gain_node = new GainNode(audio_context, {
-	gain: 0.6,
-});
-melos_gain_node.connect(audio_context.destination);
-
-const ison_gain_node = new GainNode(audio_context, {
-	gain: 0.4,
-});
-ison_gain_node.connect(audio_context.destination);
+// achieve smoother transitions applying a crossfade effect
+const time_constant = 0.01; // in seconds
 
 /**
  * @param {number} index part
@@ -127,24 +120,44 @@ function play(index) {
 	if (index === part_list.length)
 		return;
 	const part = part_list[index];
+	// limit oscillator outputs through gain nodes to prevent clipping
+	const melos_gain_node = new GainNode(audio_context, {
+		gain: 0.0,
+	});
+	melos_gain_node.connect(audio_context.destination);
 	const melos_oscillator_node = new OscillatorNode(audio_context, {
 		frequency: 440 * Math.pow(2, part.melos_steps / 72),
 		type: 'triangle',
 	});
+	melos_oscillator_node.connect(melos_gain_node);
+	melos_gain_node.gain.setTargetAtTime(0.6, audio_context.currentTime, time_constant);
+	const ison_gain_node = new GainNode(audio_context, {
+		gain: 0.0,
+	});
+	ison_gain_node.connect(audio_context.destination);
 	const ison_oscillator_node = new OscillatorNode(audio_context, {
 		frequency: 440 * Math.pow(2, (part.ison_steps ?? part.melos_steps) / 72),
 		type: 'sine',
 	});
+	ison_oscillator_node.connect(ison_gain_node);
+	ison_gain_node.gain.setTargetAtTime(0.4, audio_context.currentTime, time_constant);
 	const block_div = block_map.get(part.block);
 	block_div.classList.add('bz-active');
-	melos_oscillator_node.connect(melos_gain_node);
-	ison_oscillator_node.connect(ison_gain_node);
 	melos_oscillator_node.start();
 	ison_oscillator_node.start();
 	setTimeout(() => {
 		block_div.classList.remove('bz-active');
-		melos_oscillator_node.stop();
-		ison_oscillator_node.stop();
+		melos_gain_node.gain.setTargetAtTime(0.0, audio_context.currentTime, time_constant);
+		ison_gain_node.gain.setTargetAtTime(0.0, audio_context.currentTime, time_constant);
+		// disconnect when the gain is practically zero
+		setTimeout(() => {
+			melos_oscillator_node.stop();
+			melos_oscillator_node.disconnect();
+			melos_gain_node.disconnect();
+			ison_oscillator_node.stop();
+			ison_oscillator_node.disconnect();
+			ison_gain_node.disconnect();
+		}, time_constant * 1000 * 4);
 		play(index + 1);
 	}, 60 / part.tempo * part.beats * 1000);
 }
